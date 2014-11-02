@@ -3,6 +3,7 @@ from flask import *
 from functools import wraps
 import user
 import databaseMethods as db
+import statistics
 app = Flask(__name__)
 
 app.secret_key = 'b\xb2\xd9\x81\xaf\xea\xfe\xbb\xe3\x1e\xebt3\x06\x07\x9f\xc9\xd1`\xbdG\xf1\xf8;-'
@@ -83,15 +84,39 @@ def createLeague():
   data = (player1, player2, player3, player4)
 #  db.create_group(session['username'], groupName, data)
   return redirect('leagues.html')
+
+
 @app.route('/home.html')
 def loadhome():
  return render_template('home.html')
+
 
 @app.route('/logout.html')
 def logout():
   session.pop('logged_in', None)
   return redirect(url_for('home'))
 
+@app.route('/leagues.html')
+def showLeagues():
+  leagues = db.get_groups_in(session['username'])
+  for league in leagues:
+    print(db.get_group_name(league))
+    flash(str(league) + " " + db.get_group_name(league))
+  return render_template('leagues.html')
+@app.route('/league/<groupid>')
+def showgroup(groupid):
+  name = db.get_group_name(groupid)
+  data = db.get_group_data(groupid)
+  print(name)
+  print(data)
+  flash(name)
+  for summoner in data:
+    flash(summoner + " " + str(statistics.evaluate_points(data[summoner]["stats"])))
+  return redirect('league.html')
+
+@app.route('/league.html')
+def showleague():
+  return render_template('league.html')
 #@login_manager.user_loader
 #def load_user(id):
 #  return user.User.getUser(username)
