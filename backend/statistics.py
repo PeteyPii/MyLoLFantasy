@@ -2,7 +2,24 @@ import leagueoflegends as leagueapi
 import time
 import database as db
 
+
 lol = leagueapi.LeagueOfLegends("a11424c1-eb9b-470c-8405-d52ef58c5a67")
+
+
+def evaluate_points(stats):
+  total = 0
+
+  total += stats["championsKilled"]   * 2
+  total += stats["numDeaths"]         * -1
+  total += stats["assists"]           * 1
+  total += stats["minionsKilled"]     * 0.01
+  total += stats["doubleKills"]       * 3
+  total += stats["tripleKills"]       * 5
+  total += stats["qudraKills"]        * 10
+  total += stats["pentaKills"]        * 25
+  total += stats["totalGames"]        * 0
+
+  return total
 
 
 def get_common_games_in_history(summoner_ids):
