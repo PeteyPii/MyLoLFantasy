@@ -82,7 +82,7 @@ def createLeague():
   player3 = request.form['name3']
   player4 = request.form['name4']
   data = (player1, player2, player3, player4)
-#  db.create_group(session['username'], groupName, data)
+  db.create_group(session['username'], groupName, data)
   return redirect('leagues.html')
 
 
@@ -96,6 +96,7 @@ def logout():
   session.pop('logged_in', None)
   return redirect(url_for('home'))
 
+
 @app.route('/leagues.html')
 def showLeagues():
   leagues = db.get_groups_in(session['username'])
@@ -103,6 +104,8 @@ def showLeagues():
     print(db.get_group_name(league))
     flash(str(league) + " " + db.get_group_name(league))
   return render_template('leagues.html')
+
+
 @app.route('/league/<groupid>')
 def showgroup(groupid):
   name = db.get_group_name(groupid)
@@ -113,6 +116,7 @@ def showgroup(groupid):
   for summoner in data:
     flash(summoner + " " + str(statistics.evaluate_points(data[summoner]["stats"])))
   return redirect('league.html')
+
 
 @app.route('/league.html')
 def showleague():
