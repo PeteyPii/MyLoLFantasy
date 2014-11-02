@@ -3,8 +3,8 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".git"],
-      "file_exclude_patterns": ["bad_file"]
+      "folder_exclude_patterns": [".git", "__pycache__"],
+      "file_exclude_patterns": ["*.pyc"]
     }
   ],
   "settings":
