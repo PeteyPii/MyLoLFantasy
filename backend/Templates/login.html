@@ -19,6 +19,7 @@
           <li><a href="home.html">Home</a></li>
           <li class="active"><a href="#">Login</a></li>
           <li><a href="signup.html">Sign Up</a></li>
+          <li><a href="createleague.html"> Create a League </a> </li>   
           <li><a href="leagues.html">View Leagues</a></li>
         </ul>
       </div><!--/.nav-collapse -->
@@ -37,10 +38,15 @@
       </div>
       <input class="btn btn-primary btn-block" type="submit"></input>
     </form>
-    {% if error %}
-      <p class="error"><strong>Error:</strong> {{ error }}</p>
-    {% endif %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <p class="error">{{ message }}</p>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
   </section>
-
 </body>
 </html>

@@ -15,7 +15,7 @@ def home():
  return render_template('home.html')
 
 
-def login_requred(url):
+def login_requred():
   if "logged_in" in session:
     return True
   else:
@@ -53,10 +53,8 @@ def AuthenticateSignUp():
 
 @app.route('/login.html', methods =['GET', 'POST'])
 def login():
-  print (request.method)
   if request.method == 'GET':
     return render_template('login.html')
-  print("got here")
   username = request.form['username']
   password = request.form['password']
   data = (username, password)
@@ -71,6 +69,23 @@ def login():
     return render_template('login.html', error=error)
   return render_template('home.html')
 
+
+@app.route('/createleague.html', methods=['GET','POST'])
+def createLeague():
+  loggedIn = login_requred()
+  if loggedIn == False:
+    flash("You must be logged in to view that!")
+    return redirect('login.html')
+  if request.method == 'GET':
+    return render_template('createLeague.html')
+  groupName = request.form['groupName']
+  player1 = request.form['name1']
+  player2 = request.form['name2']
+  player3 = request.form['name3']
+  player4 = request.form['name4']
+  data = (player1, player2, player3, player4)
+#  db.create_group(session['username'], groupName, data)
+  return redirect('leagues.html')
 @app.route('/home.html')
 def loadhome():
  return render_template('home.html')
