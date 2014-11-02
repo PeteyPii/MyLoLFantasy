@@ -33,9 +33,8 @@ def AuthenticateSignUp():
     summonerID = request.form['summonerName']
     if confirmPassword == password:
       newUser = user.User(username,password,summonerID)
-      data = (username, password, summonerID)
       try:
-        db.create_user(data)
+        db.create_user(username, password, summonerID)
       except Exception as e:
         error = "Username is taken"
       if error == None:
@@ -57,9 +56,7 @@ def login():
     return render_template('login.html')
   username = request.form['username']
   password = request.form['password']
-  data = (username, password)
-  checkLogin = db.try_login(data)
-  print (checkLogin)
+  checkLogin = db.try_login(username, password)
   if checkLogin == True:
     print ("login success")
     session["logged_in"] = True
