@@ -29,12 +29,13 @@ def get_tracked_match_ids(group_id):
     cur = con.cursor()
     cur.execute("SELECT matches_tracked FROM T_DATA WHERE Group_ID= ? ", (str(group_id),))
     data = cur.fetchall()
-    s = data[0][0]
-    s = s.split(",")
     retList = set([])
-    for num in s:
-      num = num.strip()
-      retList.add(int(num))
+    s = data[0][0]
+    if s:
+      s = s.split(",")
+      for num in s:
+        num = num.strip()
+        retList.add(int(num))
 
     return retList
 
@@ -122,6 +123,17 @@ def try_login(account, password):
       return password == result[0]
     else:
       return False
+
+
+def get_lol_account(account):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT LoL_account FROM T_ADMIN WHERE Account = ?", (account,))
+    result = cur.fetchone()[0]
+    return result
 
 
 def get_groups_in(account):

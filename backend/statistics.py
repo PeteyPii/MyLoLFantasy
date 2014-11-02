@@ -24,7 +24,7 @@ def evaluate_points(stats):
 
 def get_common_games_in_history(summoner_ids):
 
-  if len(summoner_ids) < 2:
+  if len(summoner_ids) < 1:
     raise InputError
 
   firstGames = lol.get_summoner_games(next(iter(summoner_ids)))
@@ -84,45 +84,45 @@ def update_stats(group_id=None):
     all_groups = [group_id]
 
   for group_id in all_groups:
-    already_tracked_games = db.get_tracked_match_ids(group_id)
-    group_data = db.get_group_data(group_id)
-    name_ids = {}
-    for player in group_data:
-      name_ids[player] = group_data[player]["summonerId"]
+    if group_id == 112:
+      already_tracked_games = db.get_tracked_match_ids(group_id)
+      group_data = db.get_group_data(group_id)
+      name_ids = {}
+      for player in group_data:
+        name_ids[player] = group_data[player]["summonerId"]
 
-    ids = set([])
-    for player in name_ids:
-      ids.add(name_ids[player])
+      ids = set([])
+      for player in name_ids:
+        ids.add(name_ids[player])
 
-    common_matches = get_common_games_in_history(ids)
-    stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
-    print(stats)
-    for player in stats:
-      for stat in stats[player]:
-        group_data[player]["stats"][stat] += stats[player][stat]
+      common_matches = get_common_games_in_history(ids)
+      stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
+      for player in stats:
+        for stat in stats[player]:
+          group_data[player]["stats"][stat] += stats[player][stat]
 
-    db.update_group_data(group_id, group_data)
-    db.add_tracked_matches(group_id, common_matches)
+      db.update_group_data(group_id, group_data)
+      db.add_tracked_matches(group_id, common_matches)
 
   return
 
 
 def auto_refresh_stats():
   while True:
-    try:
+    # try:
       update_stats()
       print("Updated stats at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-    except Exception as e:
-      print(e)
+    # except Exception as e:
+    #   print(e)
 
-    time.sleep(5)
+    # time.sleep(5)
 
   return
 
 
 if __name__ == "__main__":
 
-  print(db.get_tracked_match_ids(333))
-  print(db.get_group_data(333))
+  # print(db.get_tracked_match_ids(333))
+  # print(db.get_group_data(333))
 
   auto_refresh_stats()

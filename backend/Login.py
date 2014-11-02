@@ -75,12 +75,26 @@ def createLeague():
   if request.method == 'GET':
     return render_template('createLeague.html')
   groupName = request.form['groupName']
+
+  players = [db.get_lol_account(session['username'])]
+
   player1 = request.form['name1']
+  if player1:
+    players.append(player1)
+
   player2 = request.form['name2']
+  if player2:
+    players.append(player2)
+
   player3 = request.form['name3']
+  if player3:
+    players.append(player3)
+
   player4 = request.form['name4']
-  data = (player1, player2, player3, player4)
-  db.create_group(session['username'], groupName, data)
+  if player4:
+    players.append(player4)
+
+  db.create_group(session['username'], groupName, players)
   return redirect('leagues.html')
 
 
@@ -116,8 +130,6 @@ def showgroup(groupid):
     return redirect('login.html')
   name = db.get_group_name(groupid)
   data = db.get_group_data(groupid)
-  print(name)
-  print(data)
   flash(name)
   for summoner in data:
     flash(summoner + " " + str(statistics.evaluate_points(data[summoner]["stats"])))
