@@ -263,6 +263,12 @@ class LeagueOfLegends:
         response = json.loads(self.__webrequest(url).decode())
         return response
 
+    def get_match_info(self, match_id):
+        self.set_api_version('2.2')
+        url = self.api_url + 'match/%s?api_key=%s' % (match_id, self.api_key)
+        response = json.loads(self.__webrequest(url).decode())
+        return response
+
     # Convenience function to set local summoner ID variable
     # from summoner name. All future API calls will use this
     # ID if there is none passed in.
