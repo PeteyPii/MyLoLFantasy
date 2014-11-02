@@ -24,7 +24,6 @@ import re
 class LeagueOfLegends:
 
     API_BASE_URL = 'https://na.api.pvp.net/api/lol'
-    # na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/pulsefire%20annie?api_key=a11424c1-eb9b-470c-8405-d52ef58c5a67
     api_version = '1.4'
     api_region = 'na'
     api_url = API_BASE_URL + '/' + api_region + '/' + 'v' + api_version + '/'
