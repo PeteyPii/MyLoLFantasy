@@ -9,9 +9,9 @@ import sys
 import os
 
 #Check to see if the DB (with the same name) exists.
-if os.path.exists("myLoLFantasy.db"):
-    print("ERROR: file with name 'myLoLFantasy.db' already exists in current directory.")
-    sys.exit(1)
+# if os.path.exists("myLoLFantasy.db"):
+#     print("ERROR: file with name 'myLoLFantasy.db' already exists in current directory.")
+#     sys.exit(1)
 
 #If file doesn't exist, create it
 with open("myLoLFantasy.db", "w") as db:
@@ -27,12 +27,12 @@ with open("myLoLFantasy.db", "w") as db:
 
         cur.executescript("""
             CREATE TABLE T_ADMIN(Account TEXT, LoL_account TEXT, password TEXT, groups_in TEXT);
-            CREATE TABLE T_DATA(Group_ID INT, Stats TEXT, matches_tracked TEXT);
+            CREATE TABLE T_DATA(Group_ID INT, Stats TEXT, matches_tracked TEXT, Name TEXT);
             INSERT INTO T_DATA VALUES(333, '{"Patrick":{"summonerId":22333494,"stats":{"tripleKills":0,"numDeaths":15,"totalGames":2,
                 "qudraKills":0,"championsKilled":11,"minionsKilled":26,"pentaKills":0,"assists":44,
                 "doubleKills":2}},"PulseFire Annie":{"summonerId":35379243,"stats":{"tripleKills":2,
                  "numDeaths":53,"totalGames":7,"qudraKills":0,"championsKilled":53,"minionsKilled":937,
-                "pentaKills":0,"assists":81,"doubleKills":8}}}', "12345, 12321");
+                "pentaKills":0,"assists":81,"doubleKills":8}}}', "12345, 12321", "BEST_NAME");
             """)
 
         con.commit()

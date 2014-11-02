@@ -1,8 +1,11 @@
 #Database methods for working with the DB
 
 import sqlite3 as lite
-import sys
+import leagueoflegends as leagueapi
 import json
+
+
+lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 
 
 def get_all_groups():
@@ -16,8 +19,8 @@ def get_all_groups():
     for item in data:
       retList.append(item[0])
 
-
     return retList
+
 
 def get_tracked_match_ids(group_id):
   con = lite.connect("myLoLFantasy.db")
@@ -35,6 +38,7 @@ def get_tracked_match_ids(group_id):
 
     return retList
 
+
 def get_group_data(group_id):
   con = lite.connect("myLoLFantasy.db")
 
@@ -46,6 +50,18 @@ def get_group_data(group_id):
     data = json.loads(data[0][0])
 
     return data
+
+
+def get_group_name(group_id):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+    cur.execute("SELECT Name FROM T_DATA WHERE Group_ID= ? ", (str(group_id),))
+    data = cur.fetchone()
+
+    return data[0]
+
 
 def update_group_data(group_id, data):
 
@@ -61,64 +77,106 @@ def add_tracked_matches(group_id, data):
 
   updateString = ""
 
-  x = get_tracked_match_ids(group_id)
+  existing_matches = get_tracked_match_ids(group_id)
 
   with con:
     cur = con.cursor()
 
-    for i in data:
-      x.add(i)
+    for match in data:
+      existing_matches.add(match)
 
-    for i in x:
-      updateString = updateString + str(i) + ","
+    for match in existing_matches:
+      updateString = updateString + str(match) + ","
 
     updateString = updateString[0:-1]  #remove comma at the end
 
     cur.execute("UPDATE T_DATA SET matches_tracked = ? WHERE Group_ID = ?", (str(updateString), str(group_id)))
 
 
-def create_user(data):
-  #Data is a 3-tuple: account, password, lol_account
-
-  try:
-    con = lite.connect("myLoLFantasy.db")
-    cur = con.cursor()
-
-    cur.execute("SELECT 1 FROM T_ADMIN WHERE Account = ?", (data[0],))
-
-    existCheck = cur.fetchone()
-    if existCheck:
-      raise Exception('User already exists in the database!')
-    else:
-      print("haha")
-      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (data[0], data[2], data[1], ""))
-
-    con.commit()
-
-  except lite.Error as e:
-    con.rollback()
-    raise
-
-  except Exception as e:
-    raise  #will have done nothing, but throw it up a level
-
-  else:
-    return True   #everything went ok
-  finally:
-    if con:
-      con.close()
-
-def try_login(data):
-  #data is a 2-tuple: acount, password
-
+def create_user(account, password, lol_account):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
     cur = con.cursor()
 
-    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (data[0],))
+    cur.execute("SELECT 1 FROM T_ADMIN WHERE Account = ?", (account,))
+
+    existCheck = cur.fetchone()
+    if existCheck:
+      raise Exception('User already exists in the database!')
+    else:
+      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, password, lol_account, ""))
+
+    con.commit()
+
+
+def try_login(account, password):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (account,))
     result = cur.fetchone()
     if result:
-      return data[1] == result[0]
+      return password == result[0]
     else:
       return False
+
+
+def get_groups_in(account):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT groups_in FROM T_ADMIN WHERE Account = ?", (account,))
+    groups = set([])
+    s = cur.fetchone()[0]
+    if s:
+      group_list = s.split(" ")
+      for group in group_list:
+        groups.add(int(group))
+
+    return groups
+
+
+def create_group(account, name, summoners):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    with open("dbState.json", "r") as fr:
+      db_state = json.load(fr)
+
+    stats = {}
+    for summoner in summoners:
+      stats[summoner] = {}
+
+      stats[summoner]["summonerId"] = lol.get_summoner_id_from_name(summoner)
+      stats[summoner]["stats"] = {}
+
+      stats[summoner]["stats"]["championsKilled"] = 0
+      stats[summoner]["stats"]["numDeaths"] = 0
+      stats[summoner]["stats"]["assists"] = 0
+      stats[summoner]["stats"]["minionsKilled"] = 0
+      stats[summoner]["stats"]["doubleKills"] = 0
+      stats[summoner]["stats"]["tripleKills"] = 0
+      stats[summoner]["stats"]["qudraKills"] = 0
+      stats[summoner]["stats"]["pentaKills"] = 0
+      stats[summoner]["stats"]["totalGames"] = 0
+
+    cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?)", (str(db_state["group_id"]), json.dumps(stats), "", name))
+    current_groups = get_groups_in(account)
+    groups_text = str(db_state["group_id"]) + " "
+    for group in current_groups:
+      groups_text += str(group) + " "
+    groups_text = groups_text.strip()
+    cur.execute("UPDATE T_ADMIN SET groups_in = ? WHERE Account = ?", (groups_text, account))
+
+    db_state["group_id"] += 1
+    with open("dbState.json", "w") as fw:
+      json.dump(db_state, fw)
+
+    con.commit()
