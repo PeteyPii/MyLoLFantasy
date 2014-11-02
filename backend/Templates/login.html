@@ -26,16 +26,16 @@
   </nav>
 
   <section class="container" role="main">
-    <form class="form-signin" role="form">
+    <form method="post" class="form-signin" role="form" action="">
       <h2 class="form-signin-heading">Please sign in</h2>
-      <input type="email" class="form-control" placeholder="Email address" required autofocus>
-      <input type="password" class="form-control" placeholder="Password" required>
+      <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+      <input type="password" class="form-control" name="password" placeholder="Password" required>
       <div class="checkbox">
         <label>
-          <input type="checkbox" value="remember-me"> Remember me
+          <input type="checkbox" value="remember-me"> Remember me </input>
         </label>
       </div>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      <input class="btn btn-primary btn-block" type="submit"></input>
     </form>
     {% if error %}
       <p class="error"><strong>Error:</strong> {{ error }}</p>
