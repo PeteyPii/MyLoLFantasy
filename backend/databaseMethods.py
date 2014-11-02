@@ -80,21 +80,21 @@ def add_tracked_matches(group_id, data):
 def create_user(data):
   #Data is a 3-tuple: account, password, lol_account
 
-  try: 
+  try:
     con = lite.connect("myLoLFantasy.db")
-    cur = con.cursor()   
+    cur = con.cursor()
 
     cur.execute("SELECT 1 FROM T_ADMIN WHERE Account = ?", (data[0],))
 
     existCheck = cur.fetchone()
     if existCheck:
-      raise Exception('User already exists in the database!') 
+      raise Exception('User already exists in the database!')
     else:
       print("haha")
       cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (data[0], data[2], data[1], ""))
 
     con.commit()
-    
+
   except lite.Error as e:
     con.rollback()
     raise
@@ -104,6 +104,21 @@ def create_user(data):
 
   else:
     return True   #everything went ok
-  finally: 
+  finally:
     if con:
       con.close()
+
+def try_login(data):
+  #data is a 2-tuple: acount, password
+
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (data[0],))
+    result = cur.fetchone()
+    if result:
+      return data[1] == result[0]
+    else:
+      return False
