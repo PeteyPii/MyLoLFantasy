@@ -90,10 +90,16 @@ def update_stats(group_id=None):
     for player in group_data:
       name_ids[player] = group_data[player]["summonerId"]
 
-    common_matches = get_common_games_in_history(name_ids)
+    ids = set([])
+    for player in name_ids:
+      ids.add(name_ids[player])
+
+    common_matches = get_common_games_in_history(ids)
     stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
-    for stat in stats:
-      group_data["stats"][stat] += stats[stat]
+    print(stats)
+    for player in stats:
+      for stat in stats[player]:
+        group_data[player]["stats"][stat] += stats[player][stat]
 
     db.update_group_data(group_id, group_data)
     db.add_tracked_matches(group_id, common_matches)
@@ -109,18 +115,14 @@ def auto_refresh_stats():
     except Exception as e:
       print(e)
 
-    time.sleep(0)
+    time.sleep(5)
 
   return
 
 
 if __name__ == "__main__":
-  # auto_refresh_stats()
 
-  while True:
-    try:
-      print("check")
-      balajiId = lol.get_summoner_id_from_name("PulseFire Annie")
-      print(balajiId)
-    except Exception as e:
-      print(e)
+  print(db.get_tracked_match_ids(333))
+  print(db.get_group_data(333))
+
+  auto_refresh_stats()

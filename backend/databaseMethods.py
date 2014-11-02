@@ -61,7 +61,7 @@ def add_tracked_matches(group_id, data):
 
   updateString = ""
 
-  x = get_tracked_match_IDs(group_id)
+  x = get_tracked_match_ids(group_id)
 
   with con:
     cur = con.cursor()
