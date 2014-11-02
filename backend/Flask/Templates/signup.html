@@ -1,0 +1,58 @@
+<html>
+<head>
+      <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Font Awesome social icons -->
+    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/theme.css" rel="stylesheet">
+</head>
+<body>
+
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li class="active"><a href="#">Sign Up</a></li>
+          <li><a href="leagues.html">View Leagues</a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+
+  <section class="container" role="main">
+    <div class="login">
+      <h1>Sign up</h1>
+      <form method="post" action="">
+        <div class="form-group">
+          <label for="InputUsername">Username</label>
+          <input type="text" class="form-control" id="InputUsername" name="username" placeholder="Enter Username or Email"  value="{{
+            request.form.username }}" />
+        </div>
+        <div class="form-group">
+          <label for="InputPassword">Password</label>
+          <input type="password" class="form-control" id="InputPassword" name="password" placeholder="Password" value="{{
+          request.form.password }}" />
+          <input type="password" class="form-control" id="ConfirmPassword" name="confirmPass" placeholder="Comfirm Password" value="{{
+          request.form.confirmpass }}" />
+        </div>
+        <div class="form-group">
+          <label for="SummonerID">Summoner Name</label>
+          <input type="text" class="form-control" id="SummonerID" name="summonerName" placeholder="Enter Summoner Name" value="{{
+            request.form.summonerid }}" />
+        </div>
+        <input class="btn btn-primary btn-block" type="submit"></input>
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+    </div>
+  </section>
+
+</body>
+</html>
