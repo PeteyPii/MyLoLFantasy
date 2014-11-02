@@ -18,6 +18,14 @@ def AuthenticateLogin():
     username = request.form['username']
     password = request.form['password']
     confirmPassword = request.form['confirmPass']
+    summonerID = request.form['summonerName']
+    if confirmPassword == password:
+      newUser = user.User(username,password,summonerID)
+      data = (username, password, summonerID)
+      flash ("Signup Successful")
+      return render_template("home.html")
+    else:
+      error = "Passwords do not Match"
   return render_template('signup.html', error=error)
 
 @app.route('/')
