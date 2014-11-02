@@ -17,25 +17,36 @@
       <div class="container">
         <div class="navbar-collapse">
           <ul class="nav navbar-nav">
-            <li><a href="#">Home</a></li>
+            <li><a href="home.html">Home</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a href="signup.html">Sign Up</a></li>
-            <li><a href="createleague.html"> Create a League </a> </li>     
-            <li class="active"><a href="leagues.html">View Leagues</a></li>
+            <li><a href="createleague.html"> Create a League </a></li>
+            <li class="active"><a href="#">View Leagues</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div >
-      <table>
+    <section class="container" role="main">
+      <div>
         {% with messages = get_flashed_messages() %}
-          {% if messages %}
+        {% if messages %}
+        <table class="table">
+          <thead>
+            <tr><th>Leagues</th></tr>
+          </thead>
+          <tbody>
             {% for message in messages %}
-              <row> <a href="/league/{{ message.partition(' ')[0]}}">{{ message.partition(' ')[2] }} </a></row>
+            <tr><td><a href="/league/{{ message.partition(' ')[0]}}">{{ message.partition(' ')[2] }}</a></td></tr>
             {% endfor %}
-          {% endif %}
+          </table>
+        </tbody>
+        {% else %}
+        <h3>Leagues</h3>
+        <hr>
+        <div class="well"><p>You have no leagues! Create one <a href="createleague.html">here</a>.</p></div>
+        {% endif %}
         {% endwith %}
-      </table>
-    </div>
+      </div>
+    </section>
   </body>
 </HTML>

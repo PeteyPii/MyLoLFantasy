@@ -49,8 +49,6 @@ def AuthenticateSignUp():
   return render_template('signup.html', error=error)
 
 
-
-
 @app.route('/login.html', methods =['GET', 'POST'])
 def login():
   if request.method == 'GET':
@@ -65,7 +63,7 @@ def login():
   else:
     error = "Username/Password is incorrect"
     return render_template('login.html', error=error)
-  return render_template('home.html')
+  return redirect('leagues.html')
 
 
 @app.route('/createleague.html', methods=['GET','POST'])
@@ -99,6 +97,10 @@ def logout():
 
 @app.route('/leagues.html')
 def showLeagues():
+  loggedIn = login_requred()
+  if loggedIn == False:
+    flash("You must be logged in to view that!")
+    return redirect('login.html')
   leagues = db.get_groups_in(session['username'])
   for league in leagues:
     print(db.get_group_name(league))
@@ -108,6 +110,10 @@ def showLeagues():
 
 @app.route('/league/<groupid>')
 def showgroup(groupid):
+  loggedIn = login_requred()
+  if loggedIn == False:
+    flash("You must be logged in to view that!")
+    return redirect('login.html')
   name = db.get_group_name(groupid)
   data = db.get_group_data(groupid)
   print(name)
@@ -121,9 +127,6 @@ def showgroup(groupid):
 @app.route('/league.html')
 def showleague():
   return render_template('league.html')
-#@login_manager.user_loader
-#def load_user(id):
-#  return user.User.getUser(username)
 
 
 if __name__ == '__main__':

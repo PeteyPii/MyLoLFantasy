@@ -20,40 +20,47 @@
             <li><a href="home.html">Home</a></li>
             <li><a href="login.html">Login</a></li>
             <li><a href="signup.html">Sign Up</a></li>
-            <li><a href="createleague.html"> Create a League </a> </li>     
-            <li class="active"><a href="leagues.html">View Leagues</a></li>
+            <li><a href="createleague.html"> Create a League </a> </li>
+            <li><a href="leagues.html">View Leagues</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    <div >
+
+    <section class="container" role="main">
+      <div>
         {% with messages = get_flashed_messages() %}
-        {% if messages %}
-      <h1>
-        {{ messages[0] }}
-      </h1>
-      <table>
-          <tr>
-            <td>
-              Summoner
-            </td>
-            <td>
-              Points
-            </td>
-          </tr>
-            {% for message in messages[1:] %}
-            <tr>
-              <td>
-                {{ message.rpartition(' ')[0]}}
-              </td>
-              <td>
-                {{ message.rpartition(' ')[2]}}
-              </td>
-            </tr>
-            {% endfor %}
-          {% endif %}
-        {% endwith %}
-      </table>
-    </div>
+          {% if messages %}
+            <h1>
+              {{ messages[0] }}
+            </h1>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>
+                    Summoner
+                  </th>
+                  <th>
+                    Points
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for message in messages[1:] %}
+                <tr>
+                  <td>
+                    {{ message.rpartition(' ')[0]}}
+                  </td>
+                  <td>
+                    {{ message.rpartition(' ')[2]}}
+                  </td>
+                </tr>
+              {% endfor %}
+              </tbody>
+            {% endif %}
+          {% endwith %}
+        </table>
+      </div>
+    </section>
   </body>
 </HTML>

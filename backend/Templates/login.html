@@ -19,7 +19,7 @@
           <li><a href="home.html">Home</a></li>
           <li class="active"><a href="#">Login</a></li>
           <li><a href="signup.html">Sign Up</a></li>
-          <li><a href="createleague.html"> Create a League </a> </li>   
+          <li><a href="createleague.html"> Create a League </a> </li>
           <li><a href="leagues.html">View Leagues</a></li>
         </ul>
       </div><!--/.nav-collapse -->
@@ -27,26 +27,27 @@
   </nav>
 
   <section class="container" role="main">
-    <form method="post" class="form-signin" role="form" action="">
+    <form method="post" class="form-mfl" role="form" action="">
       <h2 class="form-signin-heading">Please sign in</h2>
       <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+      <br>
       <input type="password" class="form-control" name="password" placeholder="Password" required>
-      <div class="checkbox">
+      <!-- <div class="checkbox">
         <label>
           <input type="checkbox" value="remember-me"> Remember me </input>
         </label>
-      </div>
+      </div> -->
       <input class="btn btn-primary btn-block" type="submit"></input>
     </form>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <p class="error">{{ message }}</p>
-    {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+          <p class="error">{{ message }}</p>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
   </section>
 </body>
 </html>
