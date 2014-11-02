@@ -27,6 +27,7 @@ with open("myLoLFantasy.db", "w") as db:
 
         cur.executescript("""
             CREATE TABLE T_ADMIN(Account TEXT, LoL_account TEXT, password TEXT, groups_in TEXT);
+            INSERT INTO T_ADMIN VALUES("test", "Wonkeee", "password", "");
             CREATE TABLE T_DATA(Group_ID INT, Stats TEXT, matches_tracked TEXT, Name TEXT);
             INSERT INTO T_DATA VALUES(333, '{"Patrick":{"summonerId":22333494,"stats":{"tripleKills":0,"numDeaths":15,"totalGames":2,
                 "qudraKills":0,"championsKilled":11,"minionsKilled":26,"pentaKills":0,"assists":44,

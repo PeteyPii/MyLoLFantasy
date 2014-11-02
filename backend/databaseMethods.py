@@ -105,7 +105,7 @@ def create_user(account, password, lol_account):
     if existCheck:
       raise Exception('User already exists in the database!')
     else:
-      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, password, lol_account, ""))
+      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))
 
     con.commit()
 
