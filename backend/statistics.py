@@ -1,9 +1,9 @@
 import leagueoflegends as leagueapi
 import time
-import database as db
+import databaseMethods as db
 
 
-lol = leagueapi.LeagueOfLegends("a11424c1-eb9b-470c-8405-d52ef58c5a67")
+lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 
 
 def evaluate_points(stats):
@@ -25,7 +25,7 @@ def evaluate_points(stats):
 def get_common_games_in_history(summoner_ids):
 
   if len(summoner_ids) < 2:
-    return
+    raise InputError
 
   firstGames = lol.get_summoner_games(next(iter(summoner_ids)))
   commonGames = []
@@ -103,23 +103,24 @@ def update_stats(group_id=None):
 
 def auto_refresh_stats():
   while True:
-    try
+    try:
       update_stats()
       print("Updated stats at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
     except Exception as e:
       print(e)
 
-    time.sleep(15)
+    time.sleep(0)
 
   return
 
 
 if __name__ == "__main__":
-  auto_refresh_stats()
+  # auto_refresh_stats()
 
-  # balajiId = lol.get_summoner_id_from_name("PulseFire Annie")
-  # patrickId = lol.get_summoner_id_from_name("BasicBananas")
-
-  # commonGames = get_common_games_in_history([balajiId, patrickId])
-
-  # print(get_stats_of_games({"BasicBananas" : patrickId, "PulseFire Annie" : balajiId}, commonGames, set([])))
+  while True:
+    try:
+      print("check")
+      balajiId = lol.get_summoner_id_from_name("PulseFire Annie")
+      print(balajiId)
+    except Exception as e:
+      print(e)
