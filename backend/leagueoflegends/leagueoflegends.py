@@ -20,6 +20,7 @@ import urllib.error
 import json
 import unicodedata
 import re
+import time
 
 class LeagueOfLegends:
 
@@ -28,70 +29,39 @@ class LeagueOfLegends:
     api_region = 'na'
     api_url = API_BASE_URL + '/' + api_region + '/' + 'v' + api_version + '/'
 
-    def __init__(self, api_key, cache={}):
+    def __init__(self, api_key):
         self.api_key = api_key
-        self.__cache = cache
+        self.request_times = [0, 0, 0, 0]
 
     def __webrequest(self, url):
         # print('Making request to: ' + url)
         try:
+            # if we've made four calls in the last 10 seconds wait until we can make another request
+            now = time.time()
+            if now - self.request_times[0] < 10:
+                time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
+
+            self.request_times[0] = self.request_times[1]
+            self.request_times[1] = self.request_times[2]
+            self.request_times[2] = self.request_times[3]
+            self.request_times[3] = time.time()
+
             opener = urllib.request.build_opener(NotModifiedHandler())
             req = urllib.request.Request(url)
 
-            if url in self.__cache:
-                # Return summoner detail URLs from cache explicitly
-                # to avoid repeated API calls
-                if url.find('summoner/by-name'):
-                    return self.__cache[url]['response']
-
-                if 'etag' in self.__cache[url]:
-                    print('Adding ETag to request header: ' + str(self.__cache[url]['etag']))
-                    req.add_header('If-None-Match',
-                                   self.__cache[url]['etag'])
-                if 'last_modified' in self.__cache[url]:
-                    print('Adding Last-Modified to request header: ' + str(self.__cache[url]['last_modified']))
-                    req.add_header('If-Modified-Since',
-                                   self.__cache[url]['last_modified'])
-
             url_handle = opener.open(req)
 
-            if hasattr(url_handle, 'code') and url_handle.code == 304:
-                print('Got 304 response, no body send')
-                return self.__cache[url]['response']
-            else:
-                headers = url_handle.info()
-                response = url_handle.read()
+            headers = url_handle.info()
+            response = url_handle.read()
 
-                cache_data = {
-                    'response': response,
-                    'url': url.replace('?api_key=' + self.api_key, '')}
+            return response
 
-                # if headers.getheader('Last-Modified'):
-                #     cache_data['last_modified'] = headers.getheader('Last-Modified')
-
-                # if headers.getheader('ETag'):
-                #     cache_data['etag'] = headers.getheader('ETag').replace('"', '')
-
-                if headers.get('Last-Modified'):
-                    cache_data['last_modified'] = headers.get('Last-Modified')
-
-                if headers.get('ETag'):
-                    cache_data['etag'] = headers.get('ETag').replace('"', '')
-
-                self.__cache[url] = cache_data
-                return response
         except urllib.error.HTTPError as e:
             # You should surround your code with try/catch that looks for a HTTPError
             # code 429 -- this is a rate limit error from Riot.
             # print('HTTPError calling ' + url)
             raise RiotError(e.code)
             return None
-
-    def get_cache(self, url=None):
-        if url is not None:
-            return self.__cache[url]
-        else:
-            return self.__cache
 
     def set_api_region(self, region):
         if region is not None:

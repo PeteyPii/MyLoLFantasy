@@ -1,6 +1,7 @@
 import leagueoflegends as leagueapi
 import time
 import databaseMethods as db
+import traceback
 
 
 lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
@@ -109,13 +110,14 @@ def update_stats(group_id=None):
 
 def auto_refresh_stats():
   while True:
-    # try:
+    try:
       update_stats()
-      print("Updated stats at " + time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()))
-    # except Exception as e:
-    #   print(e)
+      print("Updated stats on:  " + time.asctime(time.gmtime()))
+    except Exception as e:
+      # print(e)
+      print(traceback.format_exc())
 
-    # time.sleep(5)
+    time.sleep(30)
 
   return
 
