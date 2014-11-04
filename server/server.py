@@ -2,7 +2,7 @@ from flask import *
 #from flask.ext.login import login_user , logout_user , current_user , login_required, LoginManager
 from functools import wraps
 import user
-import databaseMethods as db
+import database as db
 import statistics
 app = Flask(__name__)
 

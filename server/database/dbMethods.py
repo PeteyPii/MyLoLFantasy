@@ -159,8 +159,13 @@ def create_group(account, name, summoners):
   with con:
     cur = con.cursor()
 
-    with open("dbState.json", "r") as fr:
-      db_state = json.load(fr)
+    db_state = {"group_id": 100}
+
+    try:
+      with open("dbState.json", "r") as fr:
+        db_state = json.load(fr)
+    except IOError as e:
+      pass
 
     stats = {}
     for summoner in summoners:

@@ -1,6 +1,6 @@
 import leagueoflegends as leagueapi
 import time
-import databaseMethods as db
+import database as db
 import traceback
 
 
