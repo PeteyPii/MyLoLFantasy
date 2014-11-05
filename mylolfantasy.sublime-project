@@ -4,7 +4,7 @@
     {
       "path": ".",
       "folder_exclude_patterns": [".git", "__pycache__"],
-      "file_exclude_patterns": ["*.pyc"]
+      "file_exclude_patterns": ["*.pyc", "*.sublime-workspace"]
     }
   ],
   "settings":

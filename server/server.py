@@ -1,5 +1,4 @@
 from flask import *
-#from flask.ext.login import login_user , logout_user , current_user , login_required, LoginManager
 from functools import wraps
 import user
 import database as db
@@ -16,15 +15,14 @@ def home():
  return render_template('home.html')
 
 
-def login_requred():
+def login_status():
   if "logged_in" in session:
     return True
   else:
     return False
-  return wrap
 
 
-@app.route('/signup.html', methods=['GET', 'POST'])
+@app.route('/Signup', methods=['GET', 'POST'])
 def AuthenticateSignUp():
   error = None
   if request.method == 'POST':
@@ -33,7 +31,7 @@ def AuthenticateSignUp():
     confirmPassword = request.form['confirmPass']
     summonerID = request.form['summonerName']
     if confirmPassword == password:
-      newUser = user.User(username,password,summonerID)
+      newUser = user.User(username, password, summonerID)
       try:
         db.create_user(username, password, summonerID)
       except Exception as e:
@@ -49,7 +47,7 @@ def AuthenticateSignUp():
   return render_template('signup.html', error=error)
 
 
-@app.route('/login.html', methods =['GET', 'POST'])
+@app.route('/Login', methods =['GET', 'POST'])
 def login():
   if request.method == 'GET':
     return render_template('login.html')
@@ -60,18 +58,18 @@ def login():
     print ("login success")
     session["logged_in"] = True
     session["username"] = username
+    return redirect('Leagues')
   else:
     error = "Username/Password is incorrect"
     return render_template('login.html', error=error)
-  return redirect('leagues.html')
 
 
-@app.route('/createleague.html', methods=['GET','POST'])
+@app.route('/CreateLeague', methods=['GET','POST'])
 def createLeague():
-  loggedIn = login_requred()
+  loggedIn = login_status()
   if loggedIn == False:
     flash("You must be logged in to view that!")
-    return redirect('login.html')
+    return redirect('Login')
   if request.method == 'GET':
     return render_template('createLeague.html')
   groupName = request.form['groupName']
@@ -95,26 +93,26 @@ def createLeague():
     players.append(player4)
 
   db.create_group(session['username'], groupName, players)
-  return redirect('leagues.html')
+  return redirect('Leagues')
 
 
-@app.route('/home.html')
+@app.route('/Home')
 def loadhome():
  return render_template('home.html')
 
 
-@app.route('/logout.html')
+@app.route('/Logout')
 def logout():
   session.pop('logged_in', None)
   return redirect(url_for('home'))
 
 
-@app.route('/leagues.html')
+@app.route('/Leagues')
 def showLeagues():
-  loggedIn = login_requred()
+  loggedIn = login_status()
   if loggedIn == False:
     flash("You must be logged in to view that!")
-    return redirect('login.html')
+    return redirect('Login')
   leagues = db.get_groups_in(session['username'])
   for league in leagues:
     print(db.get_group_name(league))
@@ -122,23 +120,23 @@ def showLeagues():
   return render_template('leagues.html')
 
 
-@app.route('/league/<groupid>')
+@app.route('/League_<groupid>')
 def showgroup(groupid):
-  loggedIn = login_requred()
+  loggedIn = login_status()
   if loggedIn == False:
     flash("You must be logged in to view that!")
-    return redirect('login.html')
+    return redirect('Login')
   name = db.get_group_name(groupid)
   data = db.get_group_data(groupid)
   flash(name)
   for summoner in data:
     flash(summoner + " " + str(statistics.evaluate_points(data[summoner]["stats"])))
-  return redirect('league.html')
-
-
-@app.route('/league.html')
-def showleague():
   return render_template('league.html')
+
+
+# @app.route('/league.html')
+# def showleague():
+#   return render_template('league.html')
 
 
 if __name__ == '__main__':
