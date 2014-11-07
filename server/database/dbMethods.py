@@ -111,31 +111,9 @@ def create_user(account, password, lol_account):
   with con:
     cur = con.cursor()
 
-    """cur.execute("SELECT 1 FROM T_ADMIN WHERE Account = ?", (account,))
-
-    existCheck = cur.fetchone()
-    if existCheck:
-      raise Exception('User already exists in the database!')
-    else:
-      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))"""
-
     cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))
 
     con.commit()
-
-
-"""def try_login(account, password):
-  con = lite.connect("myLoLFantasy.db")
-
-  with con:
-    cur = con.cursor()
-
-    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (account,))
-    result = cur.fetchone()
-    if result:
-      return password == result[0]
-    else:
-      return False"""
 
 
 def get_password(account):
