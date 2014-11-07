@@ -23,7 +23,7 @@ def get_tracked_match_ids(group_id):
 
   with con:
     cur = con.cursor()
-    cur.execute("SELECT matches_tracked FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
+    cur.execute("SELECT MatchesTracked FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
     ret_set = set([])
     s = cur.fetchone()[0]
     if s:
@@ -93,7 +93,7 @@ def add_tracked_matches(group_id, data):
 
     update_string = update_string.strip()
 
-    cur.execute("UPDATE T_DATA SET matches_tracked = ? WHERE Group_ID = ?", (str(update_string), str(group_id)))
+    cur.execute("UPDATE T_DATA SET MatchesTracked = ? WHERE Group_ID = ?", (str(update_string), str(group_id)))
 
 
 def user_exists(account):
@@ -111,24 +111,24 @@ def user_exists(account):
       return False
 
 
-def create_user(account, password, lol_account):
+def create_user(account, password_hash, lol_account):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
     cur = con.cursor()
 
-    cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))
+    cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password_hash, ""))
 
     con.commit()
 
 
-def get_password(account):
+def get_password_hash(account):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
     cur = con.cursor()
 
-    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (account,))
+    cur.execute("SELECT PasswordHashes FROM T_ADMIN WHERE Account = ?", (account,))
     result = cur.fetchone()[0]
     return result
 
@@ -150,7 +150,7 @@ def get_groups_in(account):
   with con:
     cur = con.cursor()
 
-    cur.execute("SELECT groups_in FROM T_ADMIN WHERE Account = ?", (account,))
+    cur.execute("SELECT GroupsIn FROM T_ADMIN WHERE Account = ?", (account,))
     groups = set([])
     s = cur.fetchone()[0]
     if s:
@@ -200,7 +200,7 @@ def create_group(account, name, summoners, summoner_ids):
     for group in current_groups:
       groups_text += str(group) + " "
     groups_text = groups_text.strip()
-    cur.execute("UPDATE T_ADMIN SET groups_in = ? WHERE Account = ?", (groups_text, account))
+    cur.execute("UPDATE T_ADMIN SET GroupsIn = ? WHERE Account = ?", (groups_text, account))
 
     db_state["group_id"] += 1
     with open("dbState.json", "w") as fw:

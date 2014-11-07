@@ -18,8 +18,8 @@ def createFreshExampleDB():
       # All others are just normal strings
 
       cur.executescript("""
-        CREATE TABLE T_ADMIN(Account TEXT, LoL_account TEXT, password TEXT, groups_in TEXT);
-        CREATE TABLE T_DATA(Group_ID INT, Creator TEXT, Stats TEXT, matches_tracked TEXT, Name TEXT);""")
+        CREATE TABLE T_ADMIN(Account TEXT, LoL_account TEXT, PasswordHashes TEXT, GroupsIn TEXT);
+        CREATE TABLE T_DATA(Group_ID INT, Creator TEXT, Stats TEXT, MatchesTracked TEXT, Name TEXT);""")
 
       con.commit()
 

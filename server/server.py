@@ -3,6 +3,10 @@ import database as db
 import statistics
 import leagueoflegends as leagueapi
 
+import os
+os.environ["PASSLIB_BUILTIN_BCRYPT"] = "enabled"
+from passlib.hash import bcrypt_sha256
+
 
 app = Flask(__name__)
 app.secret_key = 'b\xb2\xd9\x81\xaf\xea\xfe\xbb\xe3\x1e\xebt3\x06\x07\x9f\xc9\xd1`\xbdG\xf1\xf8;-'
@@ -43,12 +47,12 @@ def sign_up():
     if password != confirm_password:
       error = "Passwords do not match"
       return render_template('signup.html', error=error)
-    elif len(password) < 1:
+    elif not password:
       error = "You must enter a password"
       return render_template('signup.html', error=error)
 
     summoner_name = request.form['summonerName']
-    if len(summoner_name) < 1:
+    if not summoner_name:
       error = "You must enter a summoner name"
       return render_template('signup.html', error=error)
 
@@ -58,7 +62,8 @@ def sign_up():
       error = "The summoner does not exist or Riot failed to return their information"
       return render_template('signup.html', error=error)
 
-    db.create_user(username, password, summoner_name)
+    password_hash = bcrypt_sha256.encrypt(password, rounds=6)
+    db.create_user(username, password_hash, summoner_name)
 
     session["logged_in"] = False
     session["username"] = ""
@@ -68,14 +73,25 @@ def sign_up():
 
 
 @app.route('/Login', methods=['GET', 'POST'])
-def login():
+def log_in():
   if request.method == 'GET':
     return render_template('login.html')
   else:
     username = request.form['username']
     password = request.form['password']
-    check_pass = db.get_password(username)
-    if check_pass == password:
+
+    if not db.user_exists(username):
+      # Do a hash anyways so that the time takes roughly the same
+      dummy_hash = "$bcrypt-sha256$2a,6$qBvBk5OzHb.TCf0hksI13O$eRKjorGlqRmbrirj8SkuQkpByTIUFdq"
+      bcrypt_sha256.verify(password, dummy_hash)
+
+      print(username + " failed to log in")
+      error = "Username/Password is incorrect"
+      return render_template('login.html', error=error)
+
+    check_hash = db.get_password_hash(username)
+
+    if bcrypt_sha256.verify(password, check_hash):
       print(username + " successfully logged in")
       session["logged_in"] = True
       session["username"] = username
@@ -98,7 +114,7 @@ def create_league():
   else:
     group_name = request.form['groupName']
 
-    if len(group_name) < 1:
+    if not group_name:
       error = "You must enter a group name"
       return render_template('createleague.html', error=error)
     elif len(group_name) > 128:
