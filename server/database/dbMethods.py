@@ -1,11 +1,7 @@
-#Database methods for working with the DB
+# Database methods for working with the DB
 
 import sqlite3 as lite
-import leagueoflegends as leagueapi
 import json
-
-
-lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 
 
 def get_all_groups():
@@ -94,7 +90,7 @@ def add_tracked_matches(group_id, data):
     cur.execute("UPDATE T_DATA SET matches_tracked = ? WHERE Group_ID = ?", (str(updateString), str(group_id)))
 
 
-def create_user(account, password, lol_account):
+def user_exists(account):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
@@ -104,14 +100,31 @@ def create_user(account, password, lol_account):
 
     existCheck = cur.fetchone()
     if existCheck:
+      return True
+    else:
+      return False
+
+
+def create_user(account, password, lol_account):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    """cur.execute("SELECT 1 FROM T_ADMIN WHERE Account = ?", (account,))
+
+    existCheck = cur.fetchone()
+    if existCheck:
       raise Exception('User already exists in the database!')
     else:
-      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))
+      cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))"""
+
+    cur.execute("INSERT INTO T_ADMIN VALUES(?, ?, ?, ?)", (account, lol_account, password, ""))
 
     con.commit()
 
 
-def try_login(account, password):
+"""def try_login(account, password):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
@@ -122,7 +135,18 @@ def try_login(account, password):
     if result:
       return password == result[0]
     else:
-      return False
+      return False"""
+
+
+def get_password(account):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT password FROM T_ADMIN WHERE Account = ?", (account,))
+    result = cur.fetchone()[0]
+    return result
 
 
 def get_lol_account(account):
@@ -153,7 +177,7 @@ def get_groups_in(account):
     return groups
 
 
-def create_group(account, name, summoners):
+def create_group(account, name, summoners, summoner_ids):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
@@ -168,10 +192,11 @@ def create_group(account, name, summoners):
       pass
 
     stats = {}
+    i = 0
     for summoner in summoners:
       stats[summoner] = {}
 
-      stats[summoner]["summonerId"] = lol.get_summoner_id_from_name(summoner)
+      stats[summoner]["summonerId"] = summoner_ids[i]
       stats[summoner]["stats"] = {}
 
       stats[summoner]["stats"]["championsKilled"] = 0
@@ -183,6 +208,7 @@ def create_group(account, name, summoners):
       stats[summoner]["stats"]["qudraKills"] = 0
       stats[summoner]["stats"]["pentaKills"] = 0
       stats[summoner]["stats"]["totalGames"] = 0
+      i = i + 1
 
     cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?)", (str(db_state["group_id"]), json.dumps(stats), "", name))
     current_groups = get_groups_in(account)
