@@ -23,15 +23,14 @@ def get_tracked_match_ids(group_id):
 
   with con:
     cur = con.cursor()
-    cur.execute("SELECT matches_tracked FROM T_DATA WHERE Group_ID= ? ", (str(group_id),))
-    data = cur.fetchall()
-    retList = set([])
-    s = data[0][0]
+    cur.execute("SELECT matches_tracked FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
+    ret_set = set([])
+    s = cur.fetchone()[0]
     if s:
-      s = s.split(",")
+      s = s.split(" ")
       for num in s:
         num = num.strip()
-        retList.add(int(num))
+        ret_set.add(int(num))
 
     return retList
 
@@ -41,10 +40,10 @@ def get_group_data(group_id):
 
   with con:
     cur = con.cursor()
-    cur.execute("SELECT Stats FROM T_DATA WHERE Group_ID= ? ", (str(group_id),))
-    data = cur.fetchall()
+    cur.execute("SELECT Stats FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
+    data = cur.fetchone()
 
-    data = json.loads(data[0][0])
+    data = json.loads(data[0])
 
     return data
 
@@ -54,14 +53,21 @@ def get_group_name(group_id):
 
   with con:
     cur = con.cursor()
-    cur.execute("SELECT Name FROM T_DATA WHERE Group_ID= ? ", (str(group_id),))
-    data = cur.fetchone()
+    cur.execute("SELECT Name FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
 
-    return data[0]
+    return cur.fetchone()[0]
+
+def get_group_creator(group_id):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+    cur.execute("SELECT Creator FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
+
+    return cur.fetchone()[0]
 
 
 def update_group_data(group_id, data):
-
   con = lite.connect("myLoLFantasy.db")
 
   with con:
@@ -72,7 +78,7 @@ def update_group_data(group_id, data):
 def add_tracked_matches(group_id, data):
   con = lite.connect("myLoLFantasy.db")
 
-  updateString = ""
+  update_string = ""
 
   existing_matches = get_tracked_match_ids(group_id)
 
@@ -83,11 +89,11 @@ def add_tracked_matches(group_id, data):
       existing_matches.add(match)
 
     for match in existing_matches:
-      updateString = updateString + str(match) + ","
+      update_string = update_string + str(match) + " "
 
-    updateString = updateString[0:-1]  #remove comma at the end
+    update_string = update_string.strip()
 
-    cur.execute("UPDATE T_DATA SET matches_tracked = ? WHERE Group_ID = ?", (str(updateString), str(group_id)))
+    cur.execute("UPDATE T_DATA SET matches_tracked = ? WHERE Group_ID = ?", (str(update_string), str(group_id)))
 
 
 def user_exists(account):
@@ -186,9 +192,9 @@ def create_group(account, name, summoners, summoner_ids):
       stats[summoner]["stats"]["qudraKills"] = 0
       stats[summoner]["stats"]["pentaKills"] = 0
       stats[summoner]["stats"]["totalGames"] = 0
-      i = i + 1
+      i += 1
 
-    cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?)", (str(db_state["group_id"]), json.dumps(stats), "", name))
+    cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?, ?)", (str(db_state["group_id"]), account, json.dumps(stats), "", name))
     current_groups = get_groups_in(account)
     groups_text = str(db_state["group_id"]) + " "
     for group in current_groups:

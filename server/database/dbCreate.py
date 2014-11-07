@@ -12,28 +12,20 @@ def createFreshExampleDB():
       con = lite.connect("myLoLFantasy.db")
       cur = con.cursor()
 
-      # The games_tracked text fields is CSV format
+      # The games_tracked text fields is space separated
       # The groups_in text fields is space separated
       # Stats is in the form of a JSON string
       # All others are just normal strings
 
       cur.executescript("""
         CREATE TABLE T_ADMIN(Account TEXT, LoL_account TEXT, password TEXT, groups_in TEXT);
-        INSERT INTO T_ADMIN VALUES("test", "Wonkeee", "password", "");
-        CREATE TABLE T_DATA(Group_ID INT, Stats TEXT, matches_tracked TEXT, Name TEXT);""")
-        # INSERT INTO T_DATA VALUES(99, '{"Patrick":{"summonerId":22333494,"stats":{"tripleKills":0,"numDeaths":15,"totalGames":2,
-        #     "qudraKills":0,"championsKilled":11,"minionsKilled":26,"pentaKills":0,"assists":44,
-        #     "doubleKills":2}},"PulseFire Annie":{"summonerId":35379243,"stats":{"tripleKills":2,
-        #      "numDeaths":53,"totalGames":7,"qudraKills":0,"championsKilled":53,"minionsKilled":937,
-        #     "pentaKills":0,"assists":81,"doubleKills":8}}}', "12345, 12321", "BEST_NAME");
-        # """)
+        CREATE TABLE T_DATA(Group_ID INT, Creator TEXT, Stats TEXT, matches_tracked TEXT, Name TEXT);""")
 
       con.commit()
 
     except lite.Error as e:
       os.remove("myLoLFantasy.db")
-      print("ERROR creating database: %s" % e.args[0])
-      sys.exit()
+      print("ERROR creating database: " + e.args[0])
 
     finally:
       if con:

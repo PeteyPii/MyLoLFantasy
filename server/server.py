@@ -1,12 +1,12 @@
 from flask import *
-import user
 import database as db
 import statistics
 import leagueoflegends as leagueapi
+
+
 app = Flask(__name__)
-
-
 app.secret_key = 'b\xb2\xd9\x81\xaf\xea\xfe\xbb\xe3\x1e\xebt3\x06\x07\x9f\xc9\xd1`\xbdG\xf1\xf8;-'
+
 lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 
 
@@ -38,9 +38,9 @@ def sign_up():
       return render_template('signup.html', error=error)
 
     password = request.form['password']
-    confirmPassword = request.form['confirmPass']
+    confirm_password = request.form['confirmPass']
 
-    if password != confirmPassword:
+    if password != confirm_password:
       error = "Passwords do not match"
       return render_template('signup.html', error=error)
     elif len(password) < 1:
@@ -58,17 +58,16 @@ def sign_up():
       error = "The summoner does not exist or Riot failed to return their information"
       return render_template('signup.html', error=error)
 
-    newUser = user.User(username, password, summoner_name)
     db.create_user(username, password, summoner_name)
 
     session["logged_in"] = False
     session["username"] = ""
-    return render_template('login.html')
+    return redirect('Login')
   else:
     return render_template('signup.html', error=error)
 
 
-@app.route('/Login', methods =['GET', 'POST'])
+@app.route('/Login', methods=['GET', 'POST'])
 def login():
   if request.method == 'GET':
     return render_template('login.html')
@@ -130,7 +129,6 @@ def create_league():
         summoner_id = lol.get_summoner_id_from_name(player)
         summoner_ids.append(summoner_id)
       except Exception as e:
-        print(e)
         error = "The summoner " + player + " does not exist or Riot failed to return their information"
         return render_template('createleague.html', error=error)
 
@@ -157,7 +155,6 @@ def show_leagues():
     return redirect('Login')
   leagues = db.get_groups_in(session['username'])
   for league in leagues:
-    print(db.get_group_name(league))
     flash(str(league) + " " + db.get_group_name(league))
   return render_template('leagues.html')
 
@@ -168,6 +165,12 @@ def show_group(groupid):
   if loggedIn == False:
     flash("You must be logged in to view that!")
     return redirect('Login')
+
+  creator = db.get_group_creator(groupid)
+  if creator != session['username']:
+    error = "You are not the owner of this league so you may not view it"
+    return render_template('league.html', error=error)
+
   name = db.get_group_name(groupid)
   data = db.get_group_data(groupid)
   flash(name)
