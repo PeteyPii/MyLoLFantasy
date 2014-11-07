@@ -75,7 +75,12 @@ def sign_up():
 @app.route('/Login', methods=['GET', 'POST'])
 def log_in():
   if request.method == 'GET':
-    return render_template('login.html')
+    error = None
+    if session.get("mustLogIn", False):
+      error = "You must be logged in to view that!"
+      session["mustLogIn"] = False
+
+    return render_template('login.html', error=error)
   else:
     username = request.form['username']
     password = request.form['password']
@@ -106,7 +111,7 @@ def log_in():
 def create_league():
   loggedIn = login_status()
   if loggedIn == False:
-    flash("You must be logged in to view that!")
+    session["mustLogIn"] = True
     return redirect('Login')
 
   if request.method == 'GET':
@@ -167,8 +172,9 @@ def logout():
 def show_leagues():
   loggedIn = login_status()
   if loggedIn == False:
-    flash("You must be logged in to view that!")
+    session["mustLogIn"] = True
     return redirect('Login')
+
   leagues = db.get_groups_in(session['username'])
   for league in leagues:
     flash(str(league) + " " + db.get_group_name(league))
@@ -179,7 +185,7 @@ def show_leagues():
 def show_group(groupid):
   loggedIn = login_status()
   if loggedIn == False:
-    flash("You must be logged in to view that!")
+    session["mustLogIn"] = True
     return redirect('Login')
 
   creator = db.get_group_creator(groupid)

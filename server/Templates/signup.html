@@ -45,11 +45,11 @@
           <input type="text" class="form-control" id="SummonerID" name="summonerName" placeholder="Enter Summoner Name" value="{{request.form.summonerid }}" />
         </div>
         <input class="btn btn-primary btn-block" type="submit"></input>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
       </div>
     </form>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
   </section>
 
 </body>

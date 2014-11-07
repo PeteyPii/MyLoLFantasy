@@ -46,11 +46,11 @@
           <input type="text" class="form-control" id="InputUsername4" name="name4" placeholder="Summoner 4"  value="{{request.form.name4 }}" />
         </div>
         <input class="btn btn-primary btn-block" type="submit"></input>
-        {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
       </div>
     </form>
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
   </section>
 
 </body>
