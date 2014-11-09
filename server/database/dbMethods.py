@@ -32,7 +32,7 @@ def get_tracked_match_ids(group_id):
         num = num.strip()
         ret_set.add(int(num))
 
-    return retList
+    return ret_set
 
 
 def get_group_data(group_id):

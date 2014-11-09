@@ -85,25 +85,23 @@ def update_stats(group_id=None):
     all_groups = [group_id]
 
   for group_id in all_groups:
-    if group_id == 112:
-      already_tracked_games = db.get_tracked_match_ids(group_id)
-      group_data = db.get_group_data(group_id)
-      name_ids = {}
-      for player in group_data:
-        name_ids[player] = group_data[player]["summonerId"]
+    already_tracked_games = db.get_tracked_match_ids(group_id)
+    group_data = db.get_group_data(group_id)
+    name_ids = {}
+    for player in group_data:
+      name_ids[player] = group_data[player]["summonerId"]
 
-      ids = set([])
-      for player in name_ids:
-        ids.add(name_ids[player])
+    ids = set([])
+    for player in name_ids:
+      ids.add(name_ids[player])
 
-      common_matches = get_common_games_in_history(ids)
-      stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
-      for player in stats:
-        for stat in stats[player]:
-          group_data[player]["stats"][stat] += stats[player][stat]
-
-      db.update_group_data(group_id, group_data)
-      db.add_tracked_matches(group_id, common_matches)
+    common_matches = get_common_games_in_history(ids)
+    stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
+    for player in stats:
+      for stat in stats[player]:
+        group_data[player]["stats"][stat] += stats[player][stat]
+    db.update_group_data(group_id, group_data)
+    db.add_tracked_matches(group_id, common_matches)
 
   return
 
