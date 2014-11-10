@@ -10,15 +10,23 @@ lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 def evaluate_points(stats):
   total = 0
 
-  total += stats["championsKilled"]   * 2
-  total += stats["numDeaths"]         * -1
-  total += stats["assists"]           * 1
-  total += stats["minionsKilled"]     * 0.01
-  total += stats["doubleKills"]       * 3
-  total += stats["tripleKills"]       * 5
-  total += stats["qudraKills"]        * 10
-  total += stats["pentaKills"]        * 25
-  total += stats["totalGames"]        * 0
+  total += stats["championsKilled"]               * 2
+  total += stats["numDeaths"]                     * -2
+  total += stats["assists"]                       * 1.5
+  total += stats["minionsKilled"]                 * 0.01
+  total += stats["doubleKills"]                   * 1
+  total += stats["tripleKills"]                   * 2
+  total += stats["qudraKills"]                    * 5
+  total += stats["pentaKills"]                    * 12
+  total += stats["goldEarned"]                    * 0
+  total += stats["totalDamageDealtToChampions"]   * 0
+  total += stats["totalHeal"]                     * 0
+  total += stats["level"]                         * 0
+  total += stats["turretsKilled"]                 * 3
+  total += stats["wardKilled"]                    * 0
+  total += stats["wardPlaced"]                    * 0
+  total += stats["win"]                           * 0
+  total += stats["totalGames"]                    * 0
 
   return total
 
@@ -56,6 +64,14 @@ def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids):
     playerStats[player]["tripleKills"] = 0
     playerStats[player]["qudraKills"] = 0
     playerStats[player]["pentaKills"] = 0
+    playerStats[player]["goldEarned"] = 0
+    playerStats[player]["totalDamageDealtToChampions"] = 0
+    playerStats[player]["totalHeal"] = 0
+    playerStats[player]["level"] = 0
+    playerStats[player]["turretsKilled"] = 0
+    playerStats[player]["wardKilled"] = 0
+    playerStats[player]["wardPlaced"] = 0
+    playerStats[player]["win"] = 0
     playerStats[player]["totalGames"] = 0
 
   for player in summoner_ids_names:
@@ -73,6 +89,14 @@ def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids):
         playerStats[player]["tripleKills"] += stats.get("tripleKills", 0)
         playerStats[player]["qudraKills"] += stats.get("qudraKills", 0)
         playerStats[player]["pentaKills"] += stats.get("pentaKills", 0)
+        playerStats[player]["goldEarned"] = stats.get("goldEarned", 0)
+        playerStats[player]["totalDamageDealtToChampions"] += stats.get("totalDamageDealtToChampions", 0)
+        playerStats[player]["totalHeal"] += stats.get("totalHeal", 0)
+        playerStats[player]["level"] += stats.get("level", 0)
+        playerStats[player]["turretsKilled"] += stats.get("turretsKilled", 0)
+        playerStats[player]["wardKilled"] += stats.get("wardKilled", 0)
+        playerStats[player]["wardPlaced"] += stats.get("wardPlaced", 0)
+        playerStats[player]["win"] += stats.get("win", False)
         playerStats[player]["totalGames"] += 1
 
   return playerStats

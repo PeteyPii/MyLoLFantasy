@@ -191,7 +191,16 @@ def create_group(account, name, summoners, summoner_ids):
       stats[summoner]["stats"]["tripleKills"] = 0
       stats[summoner]["stats"]["qudraKills"] = 0
       stats[summoner]["stats"]["pentaKills"] = 0
+      stats[summoner]["stats"]["goldEarned"] = 0
+      stats[summoner]["stats"]["totalDamageDealtToChampions"] = 0
+      stats[summoner]["stats"]["totalHeal"] = 0
+      stats[summoner]["stats"]["level"] = 0
+      stats[summoner]["stats"]["turretsKilled"] = 0
+      stats[summoner]["stats"]["wardKilled"] = 0
+      stats[summoner]["stats"]["wardPlaced"] = 0
+      stats[summoner]["stats"]["win"] = 0
       stats[summoner]["stats"]["totalGames"] = 0
+
       i += 1
 
     cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?, ?)", (str(db_state["group_id"]), account, json.dumps(stats), "", name))
