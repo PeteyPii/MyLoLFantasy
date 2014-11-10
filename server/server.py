@@ -29,7 +29,7 @@ def login_status():
     return False
 
 
-@app.route('/Signup', methods=['GET', 'POST'])
+@app.route('/SignUp', methods=['GET', 'POST'])
 def sign_up():
   error = None
   if request.method == 'POST':
@@ -67,12 +67,12 @@ def sign_up():
 
     session["logged_in"] = False
     session["username"] = ""
-    return redirect('Login')
+    return redirect('LogIn')
   else:
     return render_template('signup.html', error=error)
 
 
-@app.route('/Login', methods=['GET', 'POST'])
+@app.route('/LogIn', methods=['GET', 'POST'])
 def log_in():
   if request.method == 'GET':
     error = None
@@ -112,7 +112,7 @@ def create_league():
   loggedIn = login_status()
   if loggedIn == False:
     session["mustLogIn"] = True
-    return redirect('Login')
+    return redirect('LogIn')
 
   if request.method == 'GET':
     return render_template('createleague.html')
@@ -162,7 +162,7 @@ def load_home():
  return render_template('home.html')
 
 
-@app.route('/Logout')
+@app.route('/LogOut')
 def logout():
   session.pop('logged_in', None)
   return redirect(url_for('home'))
@@ -173,7 +173,7 @@ def show_leagues():
   loggedIn = login_status()
   if loggedIn == False:
     session["mustLogIn"] = True
-    return redirect('Login')
+    return redirect('LogIn')
 
   leagues = db.get_groups_in(session['username'])
   for league in leagues:
@@ -186,7 +186,7 @@ def show_group(groupid):
   loggedIn = login_status()
   if loggedIn == False:
     session["mustLogIn"] = True
-    return redirect('Login')
+    return redirect('LogIn')
 
   creator = db.get_group_creator(groupid)
   if creator != session['username']:
