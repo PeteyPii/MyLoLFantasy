@@ -1,12 +1,10 @@
-import databaseMethods as db
+import dbMethods as db
+import os
 
 
 if __name__ == "__main__":
-  #db.create_user("Patty", "password", "BasicBananas")
-  db.create_group("Patty", "GROUP_NAME", ["BasicBananas", "Wonkeee"])
-  db.create_group("Patty", "GROUP_NAME_2", ["BasicBananas", "Pulsefire Annie"])
-  groups = db.get_groups_in("Patty")
-  # print(groups)
-  # for group in groups:
-  #   print(db.get_group_name(group))
-  #   print(db.get_group_data(group))
+  os.chdir("..")
+  # data = db.get_group_data(100)
+  # data["BasicBananas"]["stats"]["minionsKilled"] += 333
+  # db.update_group_data(100, data)
+

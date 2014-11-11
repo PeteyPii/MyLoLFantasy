@@ -1,6 +1,7 @@
 import leagueoflegends as leagueapi
-import time
 import database as db
+import time
+import decimal
 import traceback
 
 
@@ -8,25 +9,25 @@ lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
 
 
 def evaluate_points(stats):
-  total = 0
+  total = decimal.Decimal(0)
 
-  total += stats["championsKilled"]               * 2
-  total += stats["numDeaths"]                     * -2
-  total += stats["assists"]                       * 1.5
-  total += stats["minionsKilled"]                 * 0.01
-  total += stats["doubleKills"]                   * 1
-  total += stats["tripleKills"]                   * 2
-  total += stats["qudraKills"]                    * 5
-  total += stats["pentaKills"]                    * 12
-  total += stats["goldEarned"]                    * 0
-  total += stats["totalDamageDealtToChampions"]   * 0
-  total += stats["totalHeal"]                     * 0
-  total += stats["level"]                         * 0
-  total += stats["turretsKilled"]                 * 3
-  total += stats["wardKilled"]                    * 0
-  total += stats["wardPlaced"]                    * 0
-  total += stats["win"]                           * 0
-  total += stats["totalGames"]                    * 0
+  total += stats["championsKilled"]               * decimal.Decimal("2")
+  total += stats["numDeaths"]                     * decimal.Decimal("-2")
+  total += stats["assists"]                       * decimal.Decimal("1.5")
+  total += stats["minionsKilled"]                 * decimal.Decimal("0.01")
+  total += stats["doubleKills"]                   * decimal.Decimal("1")
+  total += stats["tripleKills"]                   * decimal.Decimal("2")
+  total += stats["qudraKills"]                    * decimal.Decimal("5")
+  total += stats["pentaKills"]                    * decimal.Decimal("12")
+  total += stats["goldEarned"]                    * decimal.Decimal("0")
+  total += stats["totalDamageDealtToChampions"]   * decimal.Decimal("0")
+  total += stats["totalHeal"]                     * decimal.Decimal("0")
+  total += stats["level"]                         * decimal.Decimal("0")
+  total += stats["turretsKilled"]                 * decimal.Decimal("3")
+  total += stats["wardKilled"]                    * decimal.Decimal("0")
+  total += stats["wardPlaced"]                    * decimal.Decimal("0")
+  total += stats["win"]                           * decimal.Decimal("0")
+  total += stats["totalGames"]                    * decimal.Decimal("0")
 
   return total
 
