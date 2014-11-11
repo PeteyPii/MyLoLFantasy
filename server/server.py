@@ -2,6 +2,7 @@ from flask import *
 import database as db
 import statistics
 import leagueoflegends as leagueapi
+import time
 
 import os
 os.environ["PASSLIB_BUILTIN_BCRYPT"] = "enabled"
@@ -153,7 +154,7 @@ def create_league():
         error = "The summoner " + player + " does not exist or Riot failed to return their information"
         return render_template('createleague.html', error=error)
 
-    db.create_group(session['username'], group_name, players, summoner_ids)
+    db.create_group(session['username'], group_name, players, summoner_ids, int(time.time()))
     return redirect('Leagues')
 
 

@@ -57,6 +57,7 @@ def get_group_name(group_id):
 
     return cur.fetchone()[0]
 
+
 def get_group_creator(group_id):
   con = lite.connect("myLoLFantasy.db")
 
@@ -65,6 +66,16 @@ def get_group_creator(group_id):
     cur.execute("SELECT Creator FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
 
     return cur.fetchone()[0]
+
+
+def get_group_creation_time(group_id):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+    cur.execute("SELECT CreationTime FROM T_DATA WHERE Group_ID = ?", (str(group_id),))
+
+    return int(cur.fetchone()[0])
 
 
 def update_group_data(group_id, data):
@@ -161,7 +172,7 @@ def get_groups_in(account):
     return groups
 
 
-def create_group(account, name, summoners, summoner_ids):
+def create_group(account, name, summoners, summoner_ids, creation_time):
   con = lite.connect("myLoLFantasy.db")
 
   with con:
@@ -176,6 +187,7 @@ def create_group(account, name, summoners, summoner_ids):
       pass
 
     stats = {}
+
     i = 0
     for summoner in summoners:
       stats[summoner] = {}
@@ -203,7 +215,7 @@ def create_group(account, name, summoners, summoner_ids):
 
       i += 1
 
-    cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?, ?)", (str(db_state["group_id"]), account, json.dumps(stats), "", name))
+    cur.execute("INSERT INTO T_DATA VALUES(?, ?, ?, ?, ?, ?)", (str(db_state["group_id"]), account, str(creation_time), json.dumps(stats), "", name))
     current_groups = get_groups_in(account)
     groups_text = str(db_state["group_id"]) + " "
     for group in current_groups:

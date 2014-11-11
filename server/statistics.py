@@ -36,70 +36,71 @@ def get_common_games_in_history(summoner_ids):
   if len(summoner_ids) < 1:
     raise InputError
 
-  firstGames = lol.get_summoner_games(next(iter(summoner_ids)))
-  commonGames = []
-  for game in firstGames:
+  first_games = lol.get_summoner_games(next(iter(summoner_ids)))
+  common_games = []
+  for game in first_games:
     common = 0
     for player in game["fellowPlayers"]:
       if player["summonerId"] in summoner_ids:
         common += 1
 
     if common == len(summoner_ids) - 1:
-      commonGames.append(game["gameId"])
+      common_games.append(game["gameId"])
 
-  return commonGames
+  return common_games
 
 
-def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids):
+def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids, min_start_time):
 
-  playerStats = {}
+  player_stats = {}
   for player in summoner_ids_names:
-    playerStats[player] = {}
+    player_stats[player] = {}
 
-    playerStats[player]["championsKilled"] = 0
-    playerStats[player]["numDeaths"] = 0
-    playerStats[player]["assists"] = 0
-    playerStats[player]["minionsKilled"] = 0
-    playerStats[player]["doubleKills"] = 0
-    playerStats[player]["tripleKills"] = 0
-    playerStats[player]["qudraKills"] = 0
-    playerStats[player]["pentaKills"] = 0
-    playerStats[player]["goldEarned"] = 0
-    playerStats[player]["totalDamageDealtToChampions"] = 0
-    playerStats[player]["totalHeal"] = 0
-    playerStats[player]["level"] = 0
-    playerStats[player]["turretsKilled"] = 0
-    playerStats[player]["wardKilled"] = 0
-    playerStats[player]["wardPlaced"] = 0
-    playerStats[player]["win"] = 0
-    playerStats[player]["totalGames"] = 0
+    player_stats[player]["championsKilled"] = 0
+    player_stats[player]["numDeaths"] = 0
+    player_stats[player]["assists"] = 0
+    player_stats[player]["minionsKilled"] = 0
+    player_stats[player]["doubleKills"] = 0
+    player_stats[player]["tripleKills"] = 0
+    player_stats[player]["qudraKills"] = 0
+    player_stats[player]["pentaKills"] = 0
+    player_stats[player]["goldEarned"] = 0
+    player_stats[player]["totalDamageDealtToChampions"] = 0
+    player_stats[player]["totalHeal"] = 0
+    player_stats[player]["level"] = 0
+    player_stats[player]["turretsKilled"] = 0
+    player_stats[player]["wardKilled"] = 0
+    player_stats[player]["wardPlaced"] = 0
+    player_stats[player]["win"] = 0
+    player_stats[player]["totalGames"] = 0
 
   for player in summoner_ids_names:
     lastTenGames = lol.get_summoner_games(summoner_ids_names[player])
     for game in lastTenGames:
-      gameId = game["gameId"]
-      if gameId in match_ids and gameId not in excluded_game_ids:
-        stats = game["stats"]
+      game_id = game["gameId"]
+      if game_id in match_ids and game_id not in excluded_game_ids:
+        if "createDate" not in game or game["createDate"] / 1000 >= min_start_time:
+          stats = game["stats"]
 
-        playerStats[player]["championsKilled"] += stats.get("championsKilled", 0)
-        playerStats[player]["numDeaths"] += stats.get("numDeaths", 0)
-        playerStats[player]["assists"] += stats.get("assists", 0)
-        playerStats[player]["minionsKilled"] += stats.get("minionsKilled", 0)
-        playerStats[player]["doubleKills"] += stats.get("doubleKills", 0)
-        playerStats[player]["tripleKills"] += stats.get("tripleKills", 0)
-        playerStats[player]["qudraKills"] += stats.get("qudraKills", 0)
-        playerStats[player]["pentaKills"] += stats.get("pentaKills", 0)
-        playerStats[player]["goldEarned"] = stats.get("goldEarned", 0)
-        playerStats[player]["totalDamageDealtToChampions"] += stats.get("totalDamageDealtToChampions", 0)
-        playerStats[player]["totalHeal"] += stats.get("totalHeal", 0)
-        playerStats[player]["level"] += stats.get("level", 0)
-        playerStats[player]["turretsKilled"] += stats.get("turretsKilled", 0)
-        playerStats[player]["wardKilled"] += stats.get("wardKilled", 0)
-        playerStats[player]["wardPlaced"] += stats.get("wardPlaced", 0)
-        playerStats[player]["win"] += stats.get("win", False)
-        playerStats[player]["totalGames"] += 1
+          player_stats[player]["championsKilled"] += stats.get("championsKilled", 0)
+          player_stats[player]["numDeaths"] += stats.get("numDeaths", 0)
+          player_stats[player]["assists"] += stats.get("assists", 0)
+          player_stats[player]["minionsKilled"] += stats.get("minionsKilled", 0)
+          player_stats[player]["doubleKills"] += stats.get("doubleKills", 0)
+          player_stats[player]["tripleKills"] += stats.get("tripleKills", 0)
+          player_stats[player]["qudraKills"] += stats.get("qudraKills", 0)
+          player_stats[player]["pentaKills"] += stats.get("pentaKills", 0)
+          player_stats[player]["goldEarned"] = stats.get("goldEarned", 0)
+          player_stats[player]["totalDamageDealtToChampions"] += stats.get("totalDamageDealtToChampions", 0)
+          player_stats[player]["totalHeal"] += stats.get("totalHeal", 0)
+          player_stats[player]["level"] += stats.get("level", 0)
+          player_stats[player]["turretsKilled"] += stats.get("turretsKilled", 0)
+          player_stats[player]["wardKilled"] += stats.get("wardKilled", 0)
+          player_stats[player]["wardPlaced"] += stats.get("wardPlaced", 0)
+          player_stats[player]["win"] += stats.get("win", False)
+          player_stats[player]["totalGames"] += 1
 
-  return playerStats
+  return player_stats
 
 
 def update_stats(group_id=None):
@@ -110,21 +111,22 @@ def update_stats(group_id=None):
 
   for group_id in all_groups:
     already_tracked_games = db.get_tracked_match_ids(group_id)
-    group_data = db.get_group_data(group_id)
+    group_stats = db.get_group_data(group_id)
+    create_time = db.get_group_creation_time(group_id)
     name_ids = {}
-    for player in group_data:
-      name_ids[player] = group_data[player]["summonerId"]
+    for player in group_stats:
+      name_ids[player] = group_stats[player]["summonerId"]
 
     ids = set([])
     for player in name_ids:
       ids.add(name_ids[player])
 
     common_matches = get_common_games_in_history(ids)
-    stats = get_stats_of_games(name_ids, common_matches, already_tracked_games)
+    stats = get_stats_of_games(name_ids, common_matches, already_tracked_games, create_time)
     for player in stats:
       for stat in stats[player]:
-        group_data[player]["stats"][stat] += stats[player][stat]
-    db.update_group_data(group_id, group_data)
+        group_stats[player]["stats"][stat] += stats[player][stat]
+    db.update_group_data(group_id, group_stats)
     db.add_tracked_matches(group_id, common_matches)
 
   return
@@ -145,8 +147,4 @@ def auto_refresh_stats():
 
 
 if __name__ == "__main__":
-
-  # print(db.get_tracked_match_ids(333))
-  # print(db.get_group_data(333))
-
   auto_refresh_stats()
