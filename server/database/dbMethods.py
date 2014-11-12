@@ -210,6 +210,7 @@ def create_group(account, name, summoners, summoner_ids, creation_time):
       stats[summoner]["stats"]["turretsKilled"] = 0
       stats[summoner]["stats"]["wardKilled"] = 0
       stats[summoner]["stats"]["wardPlaced"] = 0
+      stats[summoner]["stats"]["totalDamageTaken"] = 0
       stats[summoner]["stats"]["win"] = 0
       stats[summoner]["stats"]["totalGames"] = 0
 
