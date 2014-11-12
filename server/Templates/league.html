@@ -1,17 +1,17 @@
 <HTML>
 
-      <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Font Awesome social icons -->
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap theme -->
+  <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
+  <!-- Font Awesome social icons -->
+  <link href="/static/css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="/static/css/theme.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="/static/css/theme.css" rel="stylesheet">
 
 
-<!-- Include this in every HTML file, as it is our navigation bar -->
+  <!-- Include this in every HTML file, as it is our navigation bar -->
   <body>
     <nav class="navbar navbar-default">
       <div class="container">
@@ -20,52 +20,87 @@
             <li><a href="Home">Home</a></li>
             <li><a href="LogIn">Log In</a></li>
             <li><a href="SignUp">Sign Up</a></li>
-            <li><a href="CreateLeague"> Create a League </a> </li>
+            <li><a href="CreateLeague">Create a League</a> </li>
             <li><a href="Leagues">View Leagues</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <section class="container" role="main">
-      <div>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <h1>
-              {{ messages[0] }}
-            </h1>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>
-                    Summoner
-                  </th>
-                  <th>
-                    Points
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-              {% for message in messages[1:] %}
-                <tr>
-                  <td>
-                    {{ message.rpartition(' ')[0]}}
-                  </td>
-                  <td>
-                    {{ message.rpartition(' ')[2]}}
-                  </td>
-                </tr>
-              {% endfor %}
-              </tbody>
-            {% endif %}
-          {% endwith %}
-        </table>
+    <div class="container theme-showcase" role="main">
+      {% if name and stats and numGames %}
+      <div class="row">
+        <div class="col-xs-6">
+          <h1 class="pull-left">{{ name }}</h1>
+        </div>
+        <div class="col-xs-6">
+          <h2 class="pull-right trim-style"> {{ numGames }} game{% if numGames == 1 %}{% else %}s{% endif %}</h2>
+        </div>
       </div>
-      {% if error %}
-      <p class="error"><strong>Error:</strong> {{ error }}</p>
-      {% endif %}
-    </section>
+      <div class="row">
+        <div class="col-xs-12">
+          <table class="table" id="simple-table">
+            <thead>
+              <tr>
+                <th>Summoner</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for player in stats %}
+              <tr>
+                <th>{{ player }}</th>
+                <th>{{ stats[player]["points"] }}</th>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <table class="table no-table" id="detailed-table">
+            <thead>
+              <tr>
+                <th>Summoner</th>
+                <th>Kills</th>
+                <th>Assists</th>
+                <th>Deaths</th>
+                <th>CS</th>
+                <th>Turrets</th>
+                <th>Doubles</th>
+                <th>Triples</th>
+                <th>Quadras</th>
+                <th>Pentas</th>
+                <th>Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for player in stats %}
+              <tr>
+                <th>{{ player }}</th>
+                <th>{{ stats[player]["stats"]["championsKilled"] }}</th>
+                <th>{{ stats[player]["stats"]["assists"] }}</th>
+                <th>{{ stats[player]["stats"]["numDeaths"] }}</th>
+                <th>{{ stats[player]["stats"]["minionsKilled"] }}</th>
+                <th>{{ stats[player]["stats"]["turretsKilled"] }}</th>
+                <th>{{ stats[player]["stats"]["doubleKills"] }}</th>
+                <th>{{ stats[player]["stats"]["tripleKills"] }}</th>
+                <th>{{ stats[player]["stats"]["qudraKills"] }}</th>
+                <th>{{ stats[player]["stats"]["pentaKills"] }}</th>
+                <th>{{ stats[player]["points"] }}</th>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <button type="button" class="btn btn-primary pull-right" data-toggle="button" aria-pressed="false" autocomplete="off" id="btn-toggle-details">Detailed View</button>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p class="error"><strong>Error:</strong> Could not load data</p>
+    {% endif %}
+    {% if error %}
+    <p class="error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="/static/js/bootstrap.min.js"></script>
+  <script src="/static/js/league.js"></script>
 </HTML>

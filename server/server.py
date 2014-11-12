@@ -196,10 +196,9 @@ def show_group(groupid):
 
   name = db.get_group_name(groupid)
   data = db.get_group_data(groupid)
-  flash(name)
   for summoner in data:
-    flash(summoner + " " + str(statistics.evaluate_points(data[summoner]["stats"])))
-  return render_template('league.html')
+    data[summoner]["points"] = str(statistics.evaluate_points(data[summoner]["stats"]))
+  return render_template('league.html', name=name, stats=data, numGames=data[next(iter(data))]["stats"]["totalGames"])
 
 
 if __name__ == '__main__':

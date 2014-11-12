@@ -150,3 +150,11 @@
 .no-margin {
   margin: 0px;
 }
+
+.trim-style {
+  color: #777;
+}
+
+.no-table {
+  display: none;
+}
