@@ -56,7 +56,7 @@ This should create an empty settings file for you called 'settings.json'. In thi
 import os
 num = os.urandom(24)
 key = []
-for b in num
+for b in num:
   key.append(b)
 print(key)
 ```
