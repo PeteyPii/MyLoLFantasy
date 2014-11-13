@@ -3,16 +3,16 @@ import database as db
 import statistics
 import leagueoflegends as leagueapi
 import time
-
+import json
 import os
+
 os.environ["PASSLIB_BUILTIN_BCRYPT"] = "enabled"
 from passlib.hash import bcrypt_sha256
 
 
 app = Flask(__name__)
-app.secret_key = 'b\xb2\xd9\x81\xaf\xea\xfe\xbb\xe3\x1e\xebt3\x06\x07\x9f\xc9\xd1`\xbdG\xf1\xf8;-'
 
-lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
+lol = None
 
 
 @app.route('/')
@@ -202,4 +202,23 @@ def show_group(groupid):
 
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  valid_settings = False
+  if os.path.isfile("settings.json"):
+    with open("settings.json", "r") as fr:
+      settings = json.load(fr)
+      if ("lol-api-key" in settings and "session-key" in settings) and (settings["lol-api-key"] and settings["session-key"]):
+        valid_settings = True
+      else:
+        print("You need to configure the server correctly. 'lol-api-key' and 'session-key' need to be set.")
+  else:
+    with open("settings.json", "w") as fw:
+      settings = {}
+      settings["lol-api-key"] = None
+      settings["session-key"] = None
+      json.dump(settings, fw)
+      print("You need to configure the server before you can run it. See 'settings.json'.")
+
+  if valid_settings:
+    lol = leagueapi.LeagueOfLegends(settings["lol-api-key"])
+    app.secret_key = bytes(settings["session-key"])
+    app.run(debug=True)

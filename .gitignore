@@ -4,3 +4,4 @@ __pycache__
 Thumbs.db
 *.db
 dbState.json
+settings.json
