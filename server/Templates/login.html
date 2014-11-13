@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
-<head>
-      <!-- Bootstrap core CSS -->
+  <head>
+    <title>Log In</title>
+
+    <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
@@ -9,43 +12,45 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/theme.css" rel="stylesheet">
-</head>
-<body>
+  </head>
 
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="Home">Home</a></li>
-          <li class="active"><a href="#">Log In</a></li>
-          <li><a href="SignUp">Sign Up</a></li>
-          <li><a href="CreateLeague"> Create a League </a> </li>
-          <li><a href="Leagues">View Leagues</a></li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
-
-  <section class="container" role="main">
-    <form method="post" class="form-mfl" role="form" action="">
-      <div class="well" style="display: inline-block; padding: 40px;">
-        <h2 class="form-signin-heading">Please Sign In</h2>
-        <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
-        <br>
-        <input type="password" class="form-control" name="password" placeholder="Password" required>
-        <!-- <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me </input>
-          </label>
-        </div> -->
-        <input class="btn btn-primary btn-block" type="submit"></input>
+  <body>
+    <!-- Include this in every HTML file, as it is our navigation bar -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="Home">Home</a></li>
+            <li class="active"><a href="#">Log In</a></li>
+            <li><a href="SignUp">Sign Up</a></li>
+            <li><a href="CreateLeague"> Create a League </a> </li>
+            <li><a href="Leagues">View Leagues</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-    </form>
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}</p>
-    {% endif %}
-  </section>
-</body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
+    </nav>
+
+    <section class="container" role="main">
+      <form method="post" class="form-mfl" role="form" action="">
+        <div class="well" style="display: inline-block; padding: 40px;">
+          <h2 class="form-signin-heading">Please Sign In</h2>
+          <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+          <br>
+          <input type="password" class="form-control" name="password" placeholder="Password" required>
+          <!-- <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me </input>
+            </label>
+          </div> -->
+          <input class="btn btn-primary btn-block" type="submit"></input>
+        </div>
+      </form>
+      {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
 </html>

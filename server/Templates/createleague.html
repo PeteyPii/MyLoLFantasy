@@ -1,6 +1,9 @@
+<!DOCTYPE html>
 <html>
-<head>
-      <!-- Bootstrap core CSS -->
+  <head>
+    <title>Create a League</title>
+
+    <!-- Bootstrap core CSS -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
     <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
@@ -9,51 +12,48 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/theme.css" rel="stylesheet">
-</head>
-<body>
+  </head>
 
-  <nav class="navbar navbar-default">
-    <div class="container">
-      <div class="navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="Home">Home</a></li>
-          <li><a href="LogIn">Log In</a></li>
-          <li><a href="SignUp">Sign Up</a></li>
-          <li class="active"><a href="#"> Create a League </a> </li>
-          <li><a href="Leagues">View Leagues</a></li>
-        </ul>
-      </div><!--/.nav-collapse -->
-    </div>
-  </nav>
-
-  <section class="container" role="main">
-    <form method="post" action="" class="form-mfl">
-      <div class="well" style="display: inline-block; padding: 30px 50px 30px 50px;">
-        <h1>Create New League</h1>
-        <div class="form-group">
-          <label for="InputGroup">Group Name</label>
-          <input type="text" class="form-control" id="InputGroup" name="groupName" placeholder="Enter Group Name" value="{{
-          request.form.groupName }}" />
-        </div>
-        <div class="form-group">
-          <!-- <label for="InputUsername1">First player:</label> -->
-          <input type="text" class="form-control" id="InputUsername1" name="name1" placeholder="Summoner 1"  value="{{request.form.name1 }}" />
-          <!-- <label for="InputUsername2">Second player:</label> -->
-          <input type="text" class="form-control" id="InputUsername2" name="name2" placeholder="Summoner 2"  value="{{request.form.name2 }}" />
-          <!-- <label for="InputUsername3">Third player:</label> -->
-          <input type="text" class="form-control" id="InputUsername3" name="name3" placeholder="Summoner 3"  value="{{request.form.name3 }}" />
-          <!-- <label for="InputUsername4">Fourth player:</label> -->
-          <input type="text" class="form-control" id="InputUsername4" name="name4" placeholder="Summoner 4"  value="{{request.form.name4 }}" />
-        </div>
-        <input class="btn btn-primary btn-block" type="submit"></input>
+  <body>
+    <!-- Include this in every HTML file, as it is our navigation bar -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="Home">Home</a></li>
+            <li><a href="LogIn">Log In</a></li>
+            <li><a href="SignUp">Sign Up</a></li>
+            <li class="active"><a href="#"> Create a League </a> </li>
+            <li><a href="Leagues">View Leagues</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
       </div>
-    </form>
-    {% if error %}
-    <p class="error"><strong>Error:</strong> {{ error }}</p>
-    {% endif %}
-  </section>
+    </nav>
 
-</body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="/static/js/bootstrap.min.js"></script>
+    <section class="container" role="main">
+      <form method="post" action="" class="form-mfl">
+        <div class="well" style="display: inline-block; padding: 30px 50px 30px 50px;">
+          <h1>Create New League</h1>
+          <div class="form-group">
+            <label for="InputGroup">Group Name</label>
+            <input type="text" class="form-control" id="InputGroup" name="groupName" placeholder="Enter Group Name" value="{{
+            request.form.groupName }}" />
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="InputUsername1" name="name1" placeholder="Summoner 1"  value="{{request.form.name1 }}" />
+            <input type="text" class="form-control" id="InputUsername2" name="name2" placeholder="Summoner 2"  value="{{request.form.name2 }}" />
+            <input type="text" class="form-control" id="InputUsername3" name="name3" placeholder="Summoner 3"  value="{{request.form.name3 }}" />
+            <input type="text" class="form-control" id="InputUsername4" name="name4" placeholder="Summoner 4"  value="{{request.form.name4 }}" />
+          </div>
+          <input class="btn btn-primary btn-block" type="submit"></input>
+        </div>
+      </form>
+      {% if error %}
+      <p class="error"><strong>Error:</strong> {{ error }}</p>
+      {% endif %}
+    </section>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+  </body>
 </html>
