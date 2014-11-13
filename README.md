@@ -50,7 +50,7 @@ Now, go up a directory and run:
 python server.py
 ```
 
-This should create an empty settings file for you called 'settings.json'. In this file you need to give to configure a LoL API key to use which should be stored as a string. E.g. "lol-api-key" : "01234567-0123-0123-0123-0123456789ab". Then you also need to create a secret session key. You need a random 24 byte sequence which you can get by running this in a python shell:
+This should create an empty settings file for you called 'settings.json'. In this file you need to configure a LoL API key to use which should be stored as a string. E.g. "lol-api-key" : "01234567-0123-0123-0123-0123456789ab". Then you also need to create a secret session key. You need a random 24 byte sequence which you can get by running this in a python shell:
 
 ```
 import os
@@ -61,6 +61,6 @@ for b in num:
 print(key)
 ```
 
-Finally, put your secret key in settings.json like so: "session-key" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3].
+Put your secret key in settings.json like so: "session-key" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3].
 
 Your server should now be online and you should be able to view it at localhost:5000!
