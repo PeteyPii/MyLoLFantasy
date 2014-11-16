@@ -72,6 +72,7 @@ def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids, min_sta
     player_stats[player]["turretsKilled"] = 0
     player_stats[player]["wardKilled"] = 0
     player_stats[player]["wardPlaced"] = 0
+    player_stats[player]["totalDamageTaken"] = 0
     player_stats[player]["win"] = 0
     player_stats[player]["totalGames"] = 0
 
