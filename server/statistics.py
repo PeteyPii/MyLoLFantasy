@@ -26,6 +26,7 @@ def evaluate_points(stats):
   total += stats["turretsKilled"]                 * decimal.Decimal("3")
   total += stats["wardKilled"]                    * decimal.Decimal("0")
   total += stats["wardPlaced"]                    * decimal.Decimal("0")
+  total += stats["totalDamageTaken"]              * decimal.Decimal("0")
   total += stats["win"]                           * decimal.Decimal("0")
   total += stats["totalGames"]                    * decimal.Decimal("0")
 
