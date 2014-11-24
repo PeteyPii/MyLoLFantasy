@@ -4,7 +4,7 @@ import os
 import json
 
 
-def createFreshExampleDB():
+def create_fresh_db():
   with open("myLoLFantasy.db", "w") as db:
 
     #Create the tables we want
@@ -31,10 +31,19 @@ def createFreshExampleDB():
       if con:
         con.close()
 
+  return
+
+
+def initialize_database():
+  create_fresh_db()
+  with open("dbState.json", "w") as fw:
+    db_state = {"group_id": 100}
+    json.dump(db_state, fw)
+
+  return
+
 
 if __name__ == "__main__":
   os.chdir("..")
-  createFreshExampleDB()
-  with open("dbState.json", "w") as fw:
-    dbState = {"group_id": 100}
-    json.dump(dbState, fw)
+  initialize_database()
+
