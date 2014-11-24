@@ -24,8 +24,9 @@ def create_patricks_login():
     db.create_user(username, password_hash, summoner_name)
   else:
     print("Passwords do not match, try again")
+    return False
 
-  return
+  return True
 
 def create_patricks_leagues():
   if os.path.isfile("settings.json"):
@@ -45,26 +46,39 @@ def create_patricks_leagues():
         simon = settings["simon"]
         il_hae = settings["il hae"]
 
-        leagues = {}
-        leagues["Solo"] = []
-        leagues["Balaji"] = [balaji]
-        leagues["Il Hae"] = [il_hae]
-        leagues["The Trio"] = [balaji, il_hae]
-        leagues["Add Alex"] = [balaji, il_hae, alex]
-        leagues["Add Neil"] = [balaji, il_hae, neil]
-        leagues["Add Simon"] = [balaji, il_hae, simon]
-        leagues["Add Alex + Neil"] = [balaji, il_hae, alex, neil]
-        leagues["Add Alex + Simon"] = [balaji, il_hae, alex, simon]
-        leagues["Add Neil + Simon"] = [balaji, il_hae, neil, simon]
-        leagues["3v3"] = [balaji, il_hae, alex, neil, simon]
-        leagues["Balaji + Alex"] = [balaji, alex]
-        leagues["Balaji + Simon"] = [balaji, simon]
-        leagues["Balaji + Neil"] = [balaji, neil]
-        leagues["Arch Nemeses"] = ["MrJuneJune", "Voyboyy"]
+        my_leagues = {}
+        my_leagues["Solo"] = []
+        my_leagues["Balaji"] = [balaji]
+        my_leagues["Il Hae"] = [il_hae]
+        my_leagues["The Trio"] = [balaji, il_hae]
+        my_leagues["Add Alex"] = [balaji, il_hae, alex]
+        my_leagues["Add Neil"] = [balaji, il_hae, neil]
+        my_leagues["Add Simon"] = [balaji, il_hae, simon]
+        my_leagues["Add Alex + Neil"] = [balaji, il_hae, alex, neil]
+        my_leagues["Add Alex + Simon"] = [balaji, il_hae, alex, simon]
+        my_leagues["Add Neil + Simon"] = [balaji, il_hae, neil, simon]
+        my_leagues["3v3"] = [balaji, il_hae, alex, neil, simon]
+        my_leagues["Balaji + Alex"] = [balaji, alex]
+        my_leagues["Balaji + Simon"] = [balaji, simon]
+        my_leagues["Balaji + Neil"] = [balaji, neil]
 
-        for group_name in leagues:
+        for group_name in my_leagues:
           players = ["BasicBananas"]
-          for player in leagues[group_name]:
+          for player in my_leagues[group_name]:
+            players.append(player)
+
+          summoner_ids = []
+          for player in players:
+            summoner_ids.append(lol_api.get_summoner_id_from_name(player))
+
+          db.create_group("BasicBananas", group_name, players, summoner_ids, int(time.time()))
+
+        spectator_leagues = {}
+        spectator_leagues["Arch Nemeses"] = ["MrJuneJune", "Voyboyy"]
+
+        for group_name in spectator_leagues:
+          players = []
+          for player in spectator_leagues[group_name]:
             players.append(player)
 
           summoner_ids = []
@@ -98,5 +112,5 @@ if __name__ == "__main__":
     lol_api = leagueapi.LeagueOfLegends(settings["lol-api-key"])
 
     db.initialize_database()
-    create_patricks_login()
-    create_patricks_leagues()
+    if create_patricks_login():
+      create_patricks_leagues()
