@@ -3,9 +3,8 @@ import database as db
 import time
 import decimal
 import traceback
-
-
-lol = leagueapi.LeagueOfLegends("7c01554d-8bb6-4bcf-9857-386c552a74fa")
+import os
+import json
 
 
 def evaluate_points(stats):
@@ -33,18 +32,20 @@ def evaluate_points(stats):
   return total
 
 
-def get_common_games_in_history(summoner_ids):
-
+def get_common_games_in_history(lol_api, summoner_ids):
   if len(summoner_ids) < 1:
     raise InputError
 
-  first_games = lol.get_summoner_games(next(iter(summoner_ids)))
+  first_games = lol_api.get_summoner_games(next(iter(summoner_ids)))
   common_games = []
   for game in first_games:
     common = 0
-    for player in game["fellowPlayers"]:
-      if player["summonerId"] in summoner_ids:
-        common += 1
+
+    # We have to check if there are any fellow players because of custom bot games
+    if "fellowPlayers" in game:
+      for player in game["fellowPlayers"]:
+        if player["summonerId"] in summoner_ids:
+          common += 1
 
     if common == len(summoner_ids) - 1:
       common_games.append(game["gameId"])
@@ -52,8 +53,7 @@ def get_common_games_in_history(summoner_ids):
   return common_games
 
 
-def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids, min_start_time):
-
+def get_stats_of_games(lol_api, summoner_ids_names, match_ids, excluded_game_ids, min_start_time):
   player_stats = {}
   for player in summoner_ids_names:
     player_stats[player] = {}
@@ -78,7 +78,7 @@ def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids, min_sta
     player_stats[player]["totalGames"] = 0
 
   for player in summoner_ids_names:
-    lastTenGames = lol.get_summoner_games(summoner_ids_names[player])
+    lastTenGames = lol_api.get_summoner_games(summoner_ids_names[player])
     for game in lastTenGames:
       game_id = game["gameId"]
       if game_id in match_ids and game_id not in excluded_game_ids:
@@ -107,7 +107,7 @@ def get_stats_of_games(summoner_ids_names, match_ids, excluded_game_ids, min_sta
   return player_stats
 
 
-def update_stats(group_id=None):
+def update_stats(lol_api, group_id=None):
   if group_id == None:
     all_groups = db.get_all_groups()
   else:
@@ -125,30 +125,70 @@ def update_stats(group_id=None):
     for player in name_ids:
       ids.add(name_ids[player])
 
-    common_matches = get_common_games_in_history(ids)
-    stats = get_stats_of_games(name_ids, common_matches, already_tracked_games, create_time)
+    common_matches = get_common_games_in_history(lol_api, ids)
+    stats = get_stats_of_games(lol_api, name_ids, common_matches, already_tracked_games, create_time)
     for player in stats:
       for stat in stats[player]:
         group_stats[player]["stats"][stat] += stats[player][stat]
-    db.update_group_data(group_id, group_stats)
     db.add_tracked_matches(group_id, common_matches)
+    db.update_group_data(group_id, group_stats)
 
   return
 
 
-def auto_refresh_stats():
+def auto_refresh_stats(lol_api, period):
   while True:
+    start_time = time.time()
     try:
-      update_stats()
-      print("Updated stats on:  " + time.asctime(time.gmtime()))
+      print("Updating stats. Avoid ending execution until stats are fully updated")
+      update_stats(lol_api)
+      print("Updated stats on: " + time.asctime(time.gmtime()))
     except Exception as e:
-      # print(e)
       print(traceback.format_exc())
 
-    time.sleep(30)
+    wait_time = period - (time.time() - start_time)
+
+    if wait_time > 0:
+      time.sleep(wait_time)
 
   return
 
 
 if __name__ == "__main__":
-  auto_refresh_stats()
+  valid_settings = False
+  if os.path.isfile("settings.json"):
+    with open("settings.json", "r") as fr:
+      settings = json.load(fr)
+
+      if "lol-api-key" not in settings or not settings["lol-api-key"]:
+        print("LoL API key is not configured correctly. Set 'lol-api-key' to your key, including the dashes")
+      elif "refresh-period" not in settings:
+        print("Stat refresh period is not configured correctly. Set 'refresh-period' to a period in seconds for how often to refresh statistics")
+      else:
+        good_refresh_period = False
+        try:
+          x = float(settings["refresh-period"])
+          if x < 0:
+            print("Refresh period should be non-negative")
+          else:
+            good_refresh_period = True
+        except Exception as e:
+          print("Refresh period is not a number")
+
+        if good_refresh_period:
+          valid_settings = True
+
+  else:
+    with open("settings.json", "w") as fw:
+      settings = {}
+      settings["lol-api-key"] = None
+      settings["refresh-period"] = 3600
+      json.dump(settings, fw)
+      print("You need to configure the server before you can run it. See the file: 'settings.json'.")
+
+  if valid_settings:
+    lol_api = leagueapi.LeagueOfLegends(settings["lol-api-key"])
+    try:
+      auto_refresh_stats(lol_api, settings["refresh-period"])
+    except KeyboardInterrupt:
+      print("Stopping stat refresher")

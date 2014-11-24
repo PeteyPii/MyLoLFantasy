@@ -13,7 +13,7 @@ from passlib.hash import bcrypt_sha256
 
 app = Flask(__name__)
 
-lol = None
+lol_api = None
 
 
 @app.route('/')
@@ -59,7 +59,7 @@ def sign_up():
       return render_template('signup.html', error=error)
 
     try:
-      summoner_id = lol.get_summoner_id_from_name(summoner_name)
+      summoner_id = lol_api.get_summoner_id_from_name(summoner_name)
     except Exception as e:
       error = "The summoner does not exist or Riot failed to return their information"
       return render_template('signup.html', error=error)
@@ -99,7 +99,7 @@ def log_in():
     check_hash = db.get_password_hash(username)
 
     if bcrypt_sha256.verify(password, check_hash):
-      print(username + " successfully logged in")
+      print(" * " + username + " successfully logged in")
       session["logged_in"] = True
       session["username"] = username
       return redirect('Leagues')
@@ -149,7 +149,7 @@ def create_league():
     summoner_ids = []
     for player in players:
       try:
-        summoner_id = lol.get_summoner_id_from_name(player)
+        summoner_id = lol_api.get_summoner_id_from_name(player)
         summoner_ids.append(summoner_id)
       except Exception as e:
         error = "The summoner " + player + " does not exist or Riot failed to return their information"
@@ -207,14 +207,15 @@ def shutdown_server():
   if func is None:
     raise RuntimeError('Not running with the Werkzeug Server')
   func()
+  return
 
 
 def refresh_stats_periodically(period, stop_signal):
   while True:
-    print(" * Updating stats. Avoid stopping the server until completion", flush=True)
+    print(" * Updating stats. Avoid stopping the server until completion")
     start_time = time.time()
-    statistics.update_stats()
-    print(" * Updated stats on:  " + time.asctime(time.gmtime()), flush=True)
+    statistics.update_stats(lol_api)
+    print(" * Updated stats on:  " + time.asctime(time.gmtime()))
     wait_time = period - (time.time() - start_time)
 
     if stop_signal.is_set():
@@ -234,7 +235,7 @@ if __name__ == '__main__':
       if "lol-api-key" not in settings or not settings["lol-api-key"]:
         print("LoL API key is not configured correctly. Set 'lol-api-key' to your key, including the dashes")
       elif "session-key" not in settings or len(settings["session-key"]) != 24:
-        print("Secret session key is not configured correctly. Set 'session-key' to a secret 24-item list of integers with values 0-255")
+        print("Secret session key is not configured correctly. Set 'session-key' to a secret 24-item list of integers with values between 0-255")
       elif "refresh-period" not in settings:
         print("Stat refresh period is not configured correctly. Set 'refresh-period' to a period in seconds for how often to refresh statistics")
       else:
@@ -261,7 +262,7 @@ if __name__ == '__main__':
       print("You need to configure the server before you can run it. See the file: 'settings.json'.")
 
   if valid_settings:
-    lol = leagueapi.LeagueOfLegends(settings["lol-api-key"])
+    lol_api = leagueapi.LeagueOfLegends(settings["lol-api-key"])
     app.secret_key = bytes(settings["session-key"])
 
     stop_signal = threading.Event()
@@ -269,8 +270,8 @@ if __name__ == '__main__':
     stats_thread.start()
 
     app.run(debug=True, use_reloader=False)
-    print(" * Stopping server gracefully. Please wait..", flush=True)
+    print(" * Stopping server gracefully. Please wait..")
     stop_signal.set()
     stats_thread.join()
-    print(" * Stat refresher stopped", flush=True)
-    print(" * Server shut down successfully!", flush=True)
+    print(" * Stat refresher stopped")
+    print(" * Server shut down successfully!")
