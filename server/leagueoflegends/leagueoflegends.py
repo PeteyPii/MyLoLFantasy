@@ -28,10 +28,13 @@ class LeagueOfLegends:
     api_version = '1.4'
     api_region = 'na'
     api_url = API_BASE_URL + '/' + api_region + '/' + 'v' + api_version + '/'
+    max_calls_per_ten_seconds = 8
 
     def __init__(self, api_key):
         self.api_key = api_key
-        self.request_times = [0, 0, 0, 0]
+        self.request_times = []
+        for i in range(self.max_calls_per_ten_seconds):
+            self.request_times.append(0)
 
     def __webrequest(self, url):
         # print('Making request to: ' + url)
@@ -41,10 +44,10 @@ class LeagueOfLegends:
             if now - self.request_times[0] < 10:
                 time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
 
-            self.request_times[0] = self.request_times[1]
-            self.request_times[1] = self.request_times[2]
-            self.request_times[2] = self.request_times[3]
-            self.request_times[3] = time.time()
+            for i in range(self.max_calls_per_ten_seconds - 1):
+                self.request_times[i] = self.request_times[i + 1]
+
+            self.request_times[-1] = time.time()
 
             opener = urllib.request.build_opener(NotModifiedHandler())
             req = urllib.request.Request(url)
