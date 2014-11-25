@@ -215,6 +215,7 @@ def refresh_stats_periodically(period, stop_signal):
     print(" * Updating stats. Avoid stopping the server until completion")
     start_time = time.time()
     statistics.update_stats(lol_api)
+    lol_api.reset_short_cache()
     print(" * Updated stats on:  " + time.asctime(time.gmtime()))
     wait_time = period - (time.time() - start_time)
 

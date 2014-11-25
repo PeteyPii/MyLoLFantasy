@@ -13,6 +13,8 @@ class LeagueOfLegends:
   api_region = 'na'
   api_url = api_base_url + '/' + api_region + '/' + 'v' + api_version + '/'
   max_calls_per_ten_seconds = 8
+  short_cache = {}
+  long_cache = {}
 
   def __init__(self, api_key):
     self.api_key = api_key
@@ -20,27 +22,39 @@ class LeagueOfLegends:
     for i in range(self.max_calls_per_ten_seconds):
       self.request_times.append(0)
 
-  def __webrequest(self, url):
+  # 1 == short cache
+  # 2 == long cache
+  def __webrequest(self, url, cache=None):
     try:
-      # if we've made too calls in the last 10 seconds wait until we can make another request
-      now = time.time()
-      if now - self.request_times[0] < 10:
-        time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
+      if url in self.short_cache:
+        return self.short_cache[url]
+      elif url in self.long_cache:
+        return self.long_cache[url]
+      else:
+        # If we've made too calls in the last 10 seconds wait until we can make another request
+        now = time.time()
+        if now - self.request_times[0] < 10:
+          time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
 
-      for i in range(self.max_calls_per_ten_seconds - 1):
-        self.request_times[i] = self.request_times[i + 1]
+        for i in range(self.max_calls_per_ten_seconds - 1):
+          self.request_times[i] = self.request_times[i + 1]
 
-      self.request_times[-1] = time.time()
+        self.request_times[-1] = time.time()
 
-      opener = urllib.request.build_opener(NotModifiedHandler())
-      req = urllib.request.Request(url)
+        opener = urllib.request.build_opener(NotModifiedHandler())
+        req = urllib.request.Request(url)
 
-      url_handle = opener.open(req)
+        url_handle = opener.open(req)
 
-      headers = url_handle.info()
-      response = url_handle.read()
+        response = url_handle.read()
 
-      return response
+        if response is not None:
+          if cache == 1: # short cache
+            self.short_cache[url] = response
+          elif cache == 2: # long cache
+            self.long_cache[url] = response
+
+          return response
 
     except urllib.error.HTTPError as e:
       # You should surround your code with try/catch that looks for a HTTPError
@@ -65,7 +79,7 @@ class LeagueOfLegends:
     if summoner_name is not None:
       self.set_api_version('1.4')
       url = self.api_url + 'summoner/by-name/{}?api_key={}'.format(summoner_name.replace(' ', '%20'), self.api_key)
-      response = json.loads(self.__webrequest(url).decode())
+      response = json.loads(self.__webrequest(url, 2).decode())
       return response
 
   def get_summoner_id_from_name(self, summoner_name):
@@ -76,8 +90,14 @@ class LeagueOfLegends:
     if summoner_id is not None:
       self.set_api_version('1.3')
       url = self.api_url + 'game/by-summoner/{}/recent?api_key={}'.format(summoner_id, self.api_key)
-      response = json.loads(self.__webrequest(url).decode())
+      response = json.loads(self.__webrequest(url, 1).decode())
       return response['games']
+
+  def reset_short_cache(self):
+    self.short_cache = {}
+
+  def reset_long_cache(self):
+    self.long_cache = {}
 
 
 class RiotError(Exception):
