@@ -97,11 +97,13 @@
           <button type="button" class="btn btn-primary pull-right" data-toggle="button" aria-pressed="false" autocomplete="off" id="btn-toggle-details">Detailed View</button>
         </div>
       </div>
-      {% else %}
+      {% elif not error %}
       <p class="error"><strong>Error:</strong> Could not load data</p>
+      <button href="Leagues" class="btn btn-primary">Go back to my Leagues</button>
       {% endif %}
       {% if error %}
       <p class="error"><strong>Error:</strong> {{ error }}</p>
+      <a href="Leagues" class="btn btn-primary text-center"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true">Go back to my Leagues</a>
       {% endif %}
     </div>
 

@@ -183,20 +183,24 @@ def show_leagues():
   return render_template('leagues.html')
 
 
-@app.route('/League_<int:groupid>')
-def show_group(groupid):
+@app.route('/League_<int:group_id>')
+def show_group(group_id):
   loggedIn = login_status()
   if loggedIn == False:
     session["mustLogIn"] = True
     return redirect('LogIn')
 
-  creator = db.get_group_creator(groupid)
+  if not db.group_exists(group_id):
+    error = "This group does not exist"
+    return render_template('league.html', error=error)
+
+  creator = db.get_group_creator(group_id)
   if creator != session['username']:
     error = "You are not the owner of this league so you may not view it"
     return render_template('league.html', error=error)
 
-  name = db.get_group_name(groupid)
-  data = db.get_group_data(groupid)
+  name = db.get_group_name(group_id)
+  data = db.get_group_data(group_id)
   for summoner in data:
     data[summoner]["points"] = str(statistics.evaluate_points(data[summoner]["stats"]))
   return render_template('league.html', name=name, stats=data, numGames=data[next(iter(data))]["stats"]["totalGames"])

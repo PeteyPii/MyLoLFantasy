@@ -4,6 +4,21 @@ import sqlite3 as lite
 import json
 
 
+def group_exists(group_id):
+  con = lite.connect("myLoLFantasy.db")
+
+  with con:
+    cur = con.cursor()
+
+    cur.execute("SELECT 1 FROM T_DATA WHERE Group_ID = ?", (group_id,))
+
+    existCheck = cur.fetchone()
+    if existCheck:
+      return True
+    else:
+      return False
+
+
 def get_all_groups():
   con = lite.connect("myLoLFantasy.db")
 
