@@ -1,9 +1,8 @@
 import urllib.request
 import urllib.error
 import json
-import unicodedata
-import re
 import time
+import threading
 
 
 class LeagueOfLegends:
@@ -15,6 +14,7 @@ class LeagueOfLegends:
   max_calls_per_ten_seconds = 8
   short_cache = {}
   long_cache = {}
+  mutex = threading.Lock()
 
   def __init__(self, api_key):
     self.api_key = api_key
@@ -31,30 +31,31 @@ class LeagueOfLegends:
       elif url in self.long_cache:
         return self.long_cache[url]
       else:
-        # If we've made too calls in the last 10 seconds wait until we can make another request
-        now = time.time()
-        if now - self.request_times[0] < 10:
-          time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
+        with self.mutex:
+          # If we've made too calls in the last 10 seconds wait until we can make another request
+          now = time.time()
+          if now - self.request_times[0] < 10:
+            time.sleep(min(10 - (now - self.request_times[0]), 10)) # limit waiting to 10 seconds in case system clock changes
 
-        for i in range(self.max_calls_per_ten_seconds - 1):
-          self.request_times[i] = self.request_times[i + 1]
+          for i in range(self.max_calls_per_ten_seconds - 1):
+            self.request_times[i] = self.request_times[i + 1]
 
-        self.request_times[-1] = time.time()
+          self.request_times[-1] = time.time()
 
-        opener = urllib.request.build_opener(NotModifiedHandler())
-        req = urllib.request.Request(url)
+          opener = urllib.request.build_opener(NotModifiedHandler())
+          req = urllib.request.Request(url)
 
-        url_handle = opener.open(req)
+          url_handle = opener.open(req)
 
-        response = url_handle.read()
+          response = url_handle.read()
 
-        if response is not None:
-          if cache == 1: # short cache
-            self.short_cache[url] = response
-          elif cache == 2: # long cache
-            self.long_cache[url] = response
+          if response is not None:
+            if cache == 1: # short cache
+              self.short_cache[url] = response
+            elif cache == 2: # long cache
+              self.long_cache[url] = response
 
-          return response
+            return response
 
     except urllib.error.HTTPError as e:
       # You should surround your code with try/catch that looks for a HTTPError
