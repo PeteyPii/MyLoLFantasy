@@ -111,6 +111,14 @@ if __name__ == "__main__":
   if valid_settings:
     lol_api = leagueapi.LeagueOfLegends(settings["lol-api-key"])
 
-    db.initialize_database()
-    if create_patricks_login():
-      create_patricks_leagues()
+    try:
+      db.initialize_database()
+      if create_patricks_login():
+        create_patricks_leagues()
+
+    except leagueapi.RiotError as e:
+      print("A Riot error occurred: " + repr(e))
+      print("Try again")
+    except Exception as e:
+      print("An unknown error occurred: " + repr(e))
+      print("Try again")

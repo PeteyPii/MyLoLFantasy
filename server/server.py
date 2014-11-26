@@ -214,9 +214,15 @@ def refresh_stats_periodically(period, stop_signal):
   while True:
     print(" * Updating stats. Avoid stopping the server until completion")
     start_time = time.time()
-    statistics.update_stats(lol_api)
+    try:
+      statistics.update_stats(lol_api)
+      print(" * Updated stats on:  " + time.asctime(time.gmtime()))
+    except leagueapi.RiotError as e:
+      print(" * Failed to update all stats due to Riot Error: " + repr(e))
+    except Exception as e:
+      print(" * Failed to update all stats due to unknown error: " + repr(e))
+
     lol_api.reset_short_cache()
-    print(" * Updated stats on:  " + time.asctime(time.gmtime()))
     wait_time = period - (time.time() - start_time)
 
     if stop_signal.is_set():
@@ -267,7 +273,7 @@ if __name__ == '__main__':
     app.secret_key = bytes(settings["session-key"])
 
     stop_signal = threading.Event()
-    stats_thread = threading.Thread(target=refresh_stats_periodically, args=(settings["refresh-period"], stop_signal), daemon=True)
+    stats_thread = threading.Thread(target=refresh_stats_periodically, args=(settings["refresh-period"], stop_signal), daemon=True, name="Stat-Refresher")
     stats_thread.start()
 
     app.run(debug=True, use_reloader=False)

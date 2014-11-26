@@ -144,7 +144,7 @@ def auto_refresh_stats(lol_api, period):
       update_stats(lol_api)
       print("Updated stats on: " + time.asctime(time.gmtime()))
     except Exception as e:
-      print(traceback.format_exc())
+      print(traceback.format_exc()) # Let's get some information about this exception
 
     wait_time = period - (time.time() - start_time)
 
