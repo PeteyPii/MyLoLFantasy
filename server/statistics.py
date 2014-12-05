@@ -34,7 +34,7 @@ def evaluate_points(stats):
 
 def get_common_games_in_history(lol_api, summoner_ids):
   if len(summoner_ids) < 1:
-    raise InputError
+    raise InputError(summoner_ids, "Number of Summoner IDs must be at least one")
 
   first_games = lol_api.get_summoner_games(next(iter(summoner_ids)))
   common_games = []
