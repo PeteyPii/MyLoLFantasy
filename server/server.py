@@ -26,7 +26,7 @@ def home():
     flash("You must be logged in to view that page", "login_error")
     session["mustLogIn"] = False
 
-  return render_template('home.html')
+  return render_template("home.html")
 
 
 @app.route("/Home")
@@ -34,12 +34,12 @@ def load_home():
   return redirect("/")
 
 
-@app.route('/SignUp', methods=['POST'])
+@app.route("/SignUp", methods=["POST"])
 def sign_up():
-  username = request.form['username']
-  password = request.form['password']
-  confirm_password = request.form['confirmPass']
-  summoner_name = request.form['summonerName']
+  username = request.form["username"]
+  password = request.form["password"]
+  confirm_password = request.form["confirmPass"]
+  summoner_name = request.form["summonerName"]
 
   # Make sure the client checked the right stuff
   if not username or not password or not confirm_password or not summoner_name:
@@ -55,6 +55,7 @@ def sign_up():
     flash("Username is taken", "signup_error")
     flash(username, "signup_username")
     flash(summoner_name, "signup_summoner")
+
     # The caller should just refresh the page they're on
     return ""
 
@@ -65,6 +66,7 @@ def sign_up():
     flash("The summoner does not exist or Riot failed to return their information", "signup_error")
     flash(username, "signup_username")
     flash(summoner_name, "signup_summoner")
+
     # The caller should just refresh the page they're on
     return ""
 
@@ -73,14 +75,15 @@ def sign_up():
 
   session["loggedIn"] = True
   session["username"] = username
+
   # The caller should go to this URL
   return "Leagues"
 
 
-@app.route('/LogIn', methods=['POST'])
+@app.route("/LogIn", methods=["POST"])
 def log_in():
-  username = request.form['username']
-  password = request.form['password']
+  username = request.form["username"]
+  password = request.form["password"]
 
   # Make sure the client checked the right stuff
   if not username or not password:
@@ -93,6 +96,7 @@ def log_in():
       print(" * " + username + " successfully logged in")
       session["loggedIn"] = True
       session["username"] = username
+
       # The caller should go to this URL
       return "Leagues"
 
@@ -108,46 +112,46 @@ def log_in():
   return ""
 
 
-@app.route('/LogOut')
+@app.route("/LogOut")
 def logout():
-  session.pop('loggedIn', None)
+  session.pop("loggedIn", None)
   return redirect("/")
 
 
-@app.route('/CreateLeague', methods=['GET','POST'])
+@app.route("/CreateLeague", methods=["GET","POST"])
 def create_league():
   logged_in = login_status()
   if logged_in == False:
     session["mustLogIn"] = True
     return redirect("/")
 
-  if request.method == 'GET':
-    return render_template('createleague.html')
+  if request.method == "GET":
+    return render_template("createleague.html")
   else:
-    group_name = request.form['groupName']
+    group_name = request.form["groupName"]
 
     if not group_name:
       error = "You must enter a group name"
-      return render_template('createleague.html', error=error)
+      return render_template("createleague.html", error=error)
     elif len(group_name) > 128:
       error = "The group name cannot be longer than 128 characters long"
-      return render_template('createleague.html', error=error)
+      return render_template("createleague.html", error=error)
 
-    players = [db.get_lol_account(session['username'])]
+    players = [db.get_lol_account(session["username"])]
 
-    player1 = request.form['name1']
+    player1 = request.form["name1"]
     if player1:
       players.append(player1)
 
-    player2 = request.form['name2']
+    player2 = request.form["name2"]
     if player2:
       players.append(player2)
 
-    player3 = request.form['name3']
+    player3 = request.form["name3"]
     if player3:
       players.append(player3)
 
-    player4 = request.form['name4']
+    player4 = request.form["name4"]
     if player4:
       players.append(player4)
 
@@ -158,26 +162,26 @@ def create_league():
         summoner_ids.append(summoner_id)
       except Exception as e:
         error = "The summoner " + player + " does not exist or Riot failed to return their information"
-        return render_template('createleague.html', error=error)
+        return render_template("createleague.html", error=error)
 
-    db.create_group(session['username'], group_name, players, summoner_ids, int(time.time()))
-    return redirect('Leagues')
+    db.create_group(session["username"], group_name, players, summoner_ids, int(time.time()))
+    return redirect("Leagues")
 
 
-@app.route('/Leagues')
+@app.route("/Leagues")
 def show_leagues():
   logged_in = login_status()
   if logged_in == False:
     session["mustLogIn"] = True
     return redirect("/")
 
-  leagues = db.get_groups_in(session['username'])
+  leagues = db.get_groups_in(session["username"])
   for league in leagues:
     flash(str(league) + " " + db.get_group_name(league))
-  return render_template('leagues.html')
+  return render_template("leagues.html")
 
 
-@app.route('/League_<int:group_id>')
+@app.route("/League_<int:group_id>")
 def show_group(group_id):
   logged_in = login_status()
   if logged_in == False:
@@ -186,24 +190,24 @@ def show_group(group_id):
 
   if not db.group_exists(group_id):
     error = "This group does not exist"
-    return render_template('league.html', error=error)
+    return render_template("league.html", error=error)
 
   creator = db.get_group_creator(group_id)
-  if creator != session['username']:
+  if creator != session["username"]:
     error = "You are not the owner of this league so you may not view it"
-    return render_template('league.html', error=error)
+    return render_template("league.html", error=error)
 
   name = db.get_group_name(group_id)
   data = db.get_group_data(group_id)
   for summoner in data:
     data[summoner]["points"] = str(statistics.evaluate_points(data[summoner]["stats"]))
-  return render_template('league.html', name=name, stats=data, numGames=data[next(iter(data))]["stats"]["totalGames"])
+  return render_template("league.html", name=name, stats=data, numGames=data[next(iter(data))]["stats"]["totalGames"])
 
 
 def shutdown_server():
-  func = request.environ.get('werkzeug.server.shutdown')
+  func = request.environ.get("werkzeug.server.shutdown")
   if func is None:
-    raise RuntimeError('Not running with the Werkzeug Server')
+    raise RuntimeError("Not running with the Werkzeug Server")
   func()
   return
 
@@ -231,7 +235,7 @@ def refresh_stats_periodically(period, stop_signal):
         return
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
   valid_settings = False
   if os.path.isfile("settings.json"):
     with open("settings.json", "r") as fr:
