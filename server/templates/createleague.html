@@ -1,61 +1,26 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>Create a League</title>
+{% extends "base.html" %}
 
-    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+{% block title %}Create a League{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Font Awesome social icons -->
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
+{% block content %}
+<div class="container theme-showcase" role="main">
+  <div class="well">
+    <form method="post" action="" role="form">
+      <h1>Create New League</h1>
+      <input type="text" class="form-control" name="groupName" placeholder="Group Name" />
+      <input type="text" class="form-control" name="name1" placeholder="Summoner 1" />
+      <input type="text" class="form-control" name="name2" placeholder="Summoner 2" />
+      <input type="text" class="form-control" name="name3" placeholder="Summoner 3" />
+      <input type="text" class="form-control" name="name4" placeholder="Summoner 4" />
+      <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+  </div>
+  {% if error %}
+  <p class="server-error"><strong>Error: </strong>{{ error }}</p>
+  {% endif %}
+</div>
+{% endblock %}
 
-    <!-- Custom styles for this template -->
-    <link href="/static/css/theme.css" rel="stylesheet">
-  </head>
-
-  <body>
-    <!-- Include this in every HTML file, as it is our navigation bar -->
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="Home">Home</a></li>
-            <li><a href="LogIn">Log In</a></li>
-            <li><a href="SignUp">Sign Up</a></li>
-            <li class="active"><a href="#"> Create a League </a> </li>
-            <li><a href="Leagues">View Leagues</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <section class="container" role="main">
-      <form method="post" action="" class="form-mfl">
-        <div class="well" style="display: inline-block; padding: 30px 50px 30px 50px;">
-          <h1>Create New League</h1>
-          <div class="form-group">
-            <label for="InputGroup">Group Name</label>
-            <input type="text" class="form-control" id="InputGroup" name="groupName" placeholder="Enter Group Name" value="{{
-            request.form.groupName }}" />
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" id="InputUsername1" name="name1" placeholder="Summoner 1"  value="{{request.form.name1 }}" />
-            <input type="text" class="form-control" id="InputUsername2" name="name2" placeholder="Summoner 2"  value="{{request.form.name2 }}" />
-            <input type="text" class="form-control" id="InputUsername3" name="name3" placeholder="Summoner 3"  value="{{request.form.name3 }}" />
-            <input type="text" class="form-control" id="InputUsername4" name="name4" placeholder="Summoner 4"  value="{{request.form.name4 }}" />
-          </div>
-          <input class="btn btn-primary btn-block" type="submit"></input>
-        </div>
-      </form>
-      {% if error %}
-      <p class="error"><strong>Error:</strong> {{ error }}</p>
-      {% endif %}
-    </section>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+{% block scripts %}
+<script src="/static/js/createleague.js"></script>
+{% endblock %}

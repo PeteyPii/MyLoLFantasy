@@ -1,160 +1,65 @@
-/* Space out content a bit */
-
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-  padding-right: 15px;
-  padding-left: 15px;
+/* Right side of NavBar */
+#login, #logout, #signup {
+  margin-top: 7px;
+  width: 80px;
 }
-
-/* Custom page header */
-.header {
-  border-bottom: 1px solid #e5e5e5;
+#signup {
+  margin-left: 15px;
 }
-/* Make the masthead heading the same height as the navigation */
-.header h3 {
-  padding-bottom: 19px;
-  margin-top: 0;
-  margin-bottom: 0;
-  line-height: 40px;
-}
-
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
+#identification:hover {
   color: #777;
-  border-top: 1px solid #e5e5e5;
 }
 
-/* Customize container */
-@media (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
-.container-narrow > hr {
-  margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-  text-align: left;
-  padding-left: 40%;
-  position: relative;
-  top: 35%;
-  border-bottom: 1px solid #e5e5e5;
-}
-.jumbotron .btn {
-  padding: 14px 24px;
-  font-size: 21px;
-}
-
-/* Supporting marketing content */
-.marketing {
-  margin: 40px 0;
-}
-.marketing p + h4 {
-  margin-top: 28px;
-}
-
-.form-group {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  /* Remove the padding we set earlier */
-  .header,
-  .marketing,
-  .footer {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
-}
-
-.form .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
-}
-.form .form-control:focus {
-  z-index: 2;
-}
-.form input[type="password"] {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-.form-signin-heading {
-  margin-bottom: 25px;
-}
-.form-mfl {
-  /*max-width: 330px;*/
+/* Log In and Sign Up modal dialogs */
+.modal {
   text-align: center;
-  padding: 15px;
   margin: 0 auto;
 }
-.form-mfl .btn {
-  max-width: 120px;
+.modal-content {
+  padding-bottom: 20px;
+}
+.modal .btn {
+  width: 33%;
   margin: auto;
-  margin-top: 20px;
 }
-.form-mfl .form-mfl-heading,
-.form-mfl .checkbox {
-  margin-bottom: 10px;
+.modal input {
+  width: 80%;
+  margin: auto;
 }
-.form-mfl .checkbox {
-  font-weight: normal;
+.modal h2 {
+  margin-bottom: 20px;
 }
-.form-mfl .form-control {
-  position: relative;
-  height: auto;
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  padding: 10px;
-  font-size: 16px;
+.modal button:focus {
+  outline: none;
 }
-.form-mfl .form-control:focus {
-  z-index: 2;
+#login-close, #signup-close {
+  position: absolute;
+  top: 9px;
+  right: 12px;
 }
-.form-mfl input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+.login-error, .signup-error {
+  color: #F44;
+  margin-top: 10px;
 }
-.form-mfl input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.login-error p, .signup-error p {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+#signup-password {
+  margin-bottom: 5px;
 }
 
-.error {
+/* Misc. helper classes */
+.server-error {
   margin-top: 10px;
   text-align: center;
 }
-
 .no-margin {
   margin: 0px;
 }
-
 .trim-style {
   color: #777;
 }
-
 .no-table {
   display: none;
 }

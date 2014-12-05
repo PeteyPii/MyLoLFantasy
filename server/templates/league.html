@@ -1,114 +1,84 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>League - {{ name }}</title>
+{% extends "base.html" %}
 
-    <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+{% block title %}League - {{ name }}{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="/static/css/bootstrap-theme.min.css" rel="stylesheet">
-    <!-- Font Awesome social icons -->
-    <link href="/static/css/font-awesome.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/static/css/theme.css" rel="stylesheet">
-  </head>
-
-  <body>
-    <!-- Include this in every HTML file, as it is our navigation bar -->
-    <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="Home">Home</a></li>
-            <li><a href="LogIn">Log In</a></li>
-            <li><a href="SignUp">Sign Up</a></li>
-            <li><a href="CreateLeague">Create a League</a></li>
-            <li><a href="Leagues">View Leagues</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-      {% if name and stats %}
-      <div class="row">
-        <div class="col-xs-6">
-          <h1 class="pull-left">{{ name }}</h1>
-        </div>
-        <div class="col-xs-6">
-          <h2 class="pull-right trim-style"> {{ numGames }} game{% if numGames == 1 %}{% else %}s{% endif %}</h2>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <table class="table" id="simple-table">
-            <thead>
-              <tr>
-                <th>Summoner</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for player in stats %}
-              <tr>
-                <th>{{ player }}</th>
-                <th>{{ stats[player]["points"] }}</th>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          <table class="table no-table" id="detailed-table">
-            <thead>
-              <tr>
-                <th>Summoner</th>
-                <th>Kills</th>
-                <th>Assists</th>
-                <th>Deaths</th>
-                <th>CS</th>
-                <th>Turrets</th>
-                <th>Doubles</th>
-                <th>Triples</th>
-                <th>Quadras</th>
-                <th>Pentas</th>
-                <th>Points</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for player in stats %}
-              <tr>
-                <th>{{ player }}</th>
-                <th>{{ stats[player]["stats"]["championsKilled"] }}</th>
-                <th>{{ stats[player]["stats"]["assists"] }}</th>
-                <th>{{ stats[player]["stats"]["numDeaths"] }}</th>
-                <th>{{ stats[player]["stats"]["minionsKilled"] }}</th>
-                <th>{{ stats[player]["stats"]["turretsKilled"] }}</th>
-                <th>{{ stats[player]["stats"]["doubleKills"] }}</th>
-                <th>{{ stats[player]["stats"]["tripleKills"] }}</th>
-                <th>{{ stats[player]["stats"]["qudraKills"] }}</th>
-                <th>{{ stats[player]["stats"]["pentaKills"] }}</th>
-                <th>{{ stats[player]["points"] }}</th>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-          <button type="button" class="btn btn-primary pull-right" data-toggle="button" aria-pressed="false" autocomplete="off" id="btn-toggle-details">Detailed View</button>
-        </div>
-      </div>
-      {% elif not error %}
-      <p class="error"><strong>Error:</strong> Could not load data</p>
-      <button href="Leagues" class="btn btn-primary">Go back to my Leagues</button>
-      {% endif %}
-      {% if error %}
-      <p class="error"><strong>Error:</strong> {{ error }}</p>
-      <a href="Leagues" class="btn btn-primary text-center"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true">Go back to my Leagues</a>
-      {% endif %}
+{% block content %}
+<div class="container theme-showcase" role="main">
+  {% if name and stats %}
+  <div class="row">
+    <div class="col-xs-6">
+      <h1 class="pull-left">{{ name }}</h1>
     </div>
+    <div class="col-xs-6">
+      <h2 class="pull-right trim-style">{{ numGames }} game{% if numGames != 1 %}s{% endif %}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <table class="table" id="simple-table">
+        <thead>
+          <tr>
+            <th>Summoner</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for player in stats %}
+          <tr>
+            <th>{{ player }}</th>
+            <th>{{ stats[player]["points"] }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <table class="table no-table" id="detailed-table">
+        <thead>
+          <tr>
+            <th>Summoner</th>
+            <th>Kills</th>
+            <th>Assists</th>
+            <th>Deaths</th>
+            <th>CS</th>
+            <th>Turrets</th>
+            <th>Doubles</th>
+            <th>Triples</th>
+            <th>Quadras</th>
+            <th>Pentas</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for player in stats %}
+          <tr>
+            <th>{{ player }}</th>
+            <th>{{ stats[player]["stats"]["championsKilled"] }}</th>
+            <th>{{ stats[player]["stats"]["assists"] }}</th>
+            <th>{{ stats[player]["stats"]["numDeaths"] }}</th>
+            <th>{{ stats[player]["stats"]["minionsKilled"] }}</th>
+            <th>{{ stats[player]["stats"]["turretsKilled"] }}</th>
+            <th>{{ stats[player]["stats"]["doubleKills"] }}</th>
+            <th>{{ stats[player]["stats"]["tripleKills"] }}</th>
+            <th>{{ stats[player]["stats"]["qudraKills"] }}</th>
+            <th>{{ stats[player]["stats"]["pentaKills"] }}</th>
+            <th>{{ stats[player]["points"] }}</th>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button type="button" class="btn btn-primary pull-right" data-toggle="button" aria-pressed="false" autocomplete="off" id="btn-toggle-details">Detailed View</button>
+    </div>
+  </div>
+  {% elif not error %}
+  <p class="server-error"><strong>Error: </strong>Could not load data</p>
+  <button href="Leagues" class="btn btn-primary">Go back to my Leagues</button>
+  {% endif %}
+  {% if error %}
+  <p class="server-error"><strong>Error:</strong> {{ error }}</p>
+  <a href="Leagues" class="btn btn-primary text-center"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true">Go back to my Leagues</a>
+  {% endif %}
+</div>
+{% endblock %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/league.js"></script>
-  </body>
-</html>
+{% block scripts %}
+<script src="/static/js/league.js"></script>
+{% endblock %}
