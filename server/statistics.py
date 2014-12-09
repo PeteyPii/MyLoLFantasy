@@ -16,7 +16,7 @@ def evaluate_points(stats):
   total += stats["minionsKilled"]                 * decimal.Decimal("0.01")
   total += stats["doubleKills"]                   * decimal.Decimal("1")
   total += stats["tripleKills"]                   * decimal.Decimal("2")
-  total += stats["qudraKills"]                    * decimal.Decimal("5")
+  total += stats["quadraKills"]                   * decimal.Decimal("5")
   total += stats["pentaKills"]                    * decimal.Decimal("12")
   total += stats["goldEarned"]                    * decimal.Decimal("0")
   total += stats["totalDamageDealtToChampions"]   * decimal.Decimal("0")
@@ -64,7 +64,7 @@ def get_stats_of_games(lol_api, summoner_ids_names, match_ids, excluded_game_ids
     player_stats[player]["minionsKilled"] = 0
     player_stats[player]["doubleKills"] = 0
     player_stats[player]["tripleKills"] = 0
-    player_stats[player]["qudraKills"] = 0
+    player_stats[player]["quadraKills"] = 0
     player_stats[player]["pentaKills"] = 0
     player_stats[player]["goldEarned"] = 0
     player_stats[player]["totalDamageDealtToChampions"] = 0
@@ -91,7 +91,7 @@ def get_stats_of_games(lol_api, summoner_ids_names, match_ids, excluded_game_ids
           player_stats[player]["minionsKilled"] += stats.get("minionsKilled", 0) + stats.get("neutralMinionsKilled", 0)
           player_stats[player]["doubleKills"] += stats.get("doubleKills", 0)
           player_stats[player]["tripleKills"] += stats.get("tripleKills", 0)
-          player_stats[player]["qudraKills"] += stats.get("qudraKills", 0)
+          player_stats[player]["quadraKills"] += stats.get("quadraKills", 0)
           player_stats[player]["pentaKills"] += stats.get("pentaKills", 0)
           player_stats[player]["goldEarned"] += stats.get("goldEarned", 0)
           player_stats[player]["totalDamageDealtToChampions"] += stats.get("totalDamageDealtToChampions", 0)

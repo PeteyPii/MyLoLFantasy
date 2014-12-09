@@ -216,7 +216,7 @@ def create_group(account, name, summoners, summoner_ids, creation_time):
       stats[summoner]["stats"]["minionsKilled"] = 0
       stats[summoner]["stats"]["doubleKills"] = 0
       stats[summoner]["stats"]["tripleKills"] = 0
-      stats[summoner]["stats"]["qudraKills"] = 0
+      stats[summoner]["stats"]["quadraKills"] = 0
       stats[summoner]["stats"]["pentaKills"] = 0
       stats[summoner]["stats"]["goldEarned"] = 0
       stats[summoner]["stats"]["totalDamageDealtToChampions"] = 0
