@@ -61,6 +61,7 @@ $(document).ready(function() {
     jQuery.each($("#signup-form input"), function(i, input) {
       values[input.name] = input.value;
     });
+    values["agree"] = $("#signup-agree").is(":checked");
 
     var isError = false;
     var error = "";
@@ -100,6 +101,11 @@ $(document).ready(function() {
         $(".signup-password-different").addClass("has-error");
         $("#signup-password").focus();
         error = "Passwords do not match";
+        isError = true;
+      } else if (values["agree"] != true) {
+        $(".signup-no-agree").addClass("has-error");
+        $("#signup-agree").focus();
+        error = "You must accept the agreement to sign up";
         isError = true;
       }
     }

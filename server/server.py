@@ -36,10 +36,11 @@ def load_home():
 
 @app.route("/SignUp", methods=["POST"])
 def sign_up():
-  username = request.form["username"]
-  password = request.form["password"]
-  confirm_password = request.form["confirmPass"]
-  summoner_name = request.form["summonerName"]
+  username = request.form.get("username", None)
+  password = request.form.get("password", None)
+  confirm_password = request.form.get("confirmPass", None)
+  summoner_name = request.form.get("summonerName", None)
+  accepted_agreement = request.form.get("agree", None)
 
   # Make sure the client checked the right stuff
   if not username or not password or not confirm_password or not summoner_name:
@@ -49,6 +50,9 @@ def sign_up():
     abort(400)
 
   if len(username) > 128:
+    abort(400)
+
+  if accepted_agreement != "on":
     abort(400)
 
   if db.user_exists(username):
@@ -78,6 +82,11 @@ def sign_up():
 
   # The caller should go to this URL
   return "Leagues"
+
+
+@app.route("/EULA", methods=["GET"])
+def eula():
+  return render_template("eula.html")
 
 
 @app.route("/LogIn", methods=["POST"])
@@ -218,7 +227,7 @@ def refresh_stats_periodically(period, stop_signal):
     start_time = time.time()
     try:
       statistics.update_stats(lol_api)
-      print(" * Updated stats on:  " + time.asctime(time.gmtime()))
+      print(" * Updated stats on: " + time.asctime())
     except leagueapi.RiotError as e:
       print(" * Failed to update all stats due to Riot Error: " + repr(e))
     except Exception as e:

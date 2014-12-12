@@ -22,9 +22,12 @@
   width: 33%;
   margin: auto;
 }
-.modal input {
+.modal input[type="text"], .modal input[type="password"] {
   width: 80%;
   margin: auto;
+}
+.modal label {
+  max-width: 80%;
 }
 .modal h2 {
   margin-bottom: 20px;
