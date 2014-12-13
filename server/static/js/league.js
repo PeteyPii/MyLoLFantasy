@@ -1,6 +1,8 @@
 $(document).ready(function() {
-  $("#btn-toggle-details").on("click", function() {
-    $("#simple-table").toggleClass("no-table");
-    $("#detailed-table").toggleClass("no-table");
+  $("#btn-show-details").on("click", function() {
+    window.location.href = window.location.pathname + "?detailed=true";
+  });
+  $("#btn-hide-details").on("click", function() {
+    window.location.href = window.location.pathname + "?detailed=false";
   });
 });

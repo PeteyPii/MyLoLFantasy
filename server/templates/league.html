@@ -15,6 +15,7 @@
   </div>
   <div class="row">
     <div class="col-xs-12">
+      {% if request.args.get("detailed", "false") == "false" %}
       <table class="table" id="simple-table">
         <thead>
           <tr>
@@ -31,7 +32,9 @@
           {% endfor %}
         </tbody>
       </table>
-      <table class="table no-table" id="detailed-table">
+      <button id="btn-show-details" type="button" class="btn btn-primary pull-right">Detailed View</button>
+      {% else %}
+      <table class="table" id="detailed-table">
         <thead>
           <tr>
             <th>Summoner</th>
@@ -65,16 +68,17 @@
           {% endfor %}
         </tbody>
       </table>
-      <button type="button" class="btn btn-primary pull-right" data-toggle="button" aria-pressed="false" autocomplete="off" id="btn-toggle-details">Detailed View</button>
+      <button id="btn-hide-details" type="button" class="btn btn-primary pull-right">Simple View</button>
+      {% endif %}
     </div>
   </div>
   {% elif not error %}
   <p class="server-error"><strong>Error: </strong>Could not load data</p>
-  <button href="Leagues" class="btn btn-primary">Go back to my Leagues</button>
+  <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
   {% endif %}
   {% if error %}
   <p class="server-error"><strong>Error:</strong> {{ error }}</p>
-  <a href="Leagues" class="btn btn-primary text-center"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true">Go back to my Leagues</a>
+  <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
   {% endif %}
 </div>
 {% endblock %}
