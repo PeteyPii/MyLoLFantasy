@@ -66,3 +66,7 @@
 .no-table {
   display: none;
 }
+.constrict-well {
+  display: inline-block;
+  padding: 40px;
+}

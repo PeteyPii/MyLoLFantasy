@@ -213,6 +213,11 @@ def show_group(group_id):
   return render_template("league.html", name=name, stats=data, numGames=data[next(iter(data))]["stats"]["totalGames"])
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+  return render_template("404.html"), 404
+
+
 def shutdown_server():
   func = request.environ.get("werkzeug.server.shutdown")
   if func is None:
