@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}League - {{ name }}{% endblock %}
+{% block title %}League - {{ name if name else "Unknown" }}{% endblock %}
 
 {% block content %}
 <div class="container theme-showcase" role="main">
