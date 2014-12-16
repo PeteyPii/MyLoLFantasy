@@ -49,9 +49,9 @@
     <div id="login-popup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
-          <button type="button" class="close" data-dismiss="modal"><span id="login-close" class="fa fa-close"></span></button>
+          <button type="button" class="close" data-dismiss="modal"><span class="fa fa-close modal-close"></span></button>
           <form id="login-form" method="post" role="form" action="">
-            <h2 id="login-title">Log In</h2>
+            <h2>Log In</h2>
             <div class="login-bad login-no-username">
               <input id="login-username" class="form-control has-error" type="text" name="username" placeholder="Username"
               {% with username = get_flashed_messages(category_filter=["login_username"]) %}
@@ -85,9 +85,9 @@
     <div id="signup-popup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-sm">
         <div class="modal-content">
-          <button type="button" class="close" data-dismiss="modal"><span id="signup-close" class="fa fa-close"></span></button>
+          <button type="button" class="close" data-dismiss="modal"><span class="fa fa-close modal-close"></span></button>
           <form id="signup-form" method="post" role="form" action="">
-            <h2 id="login-title">Sign Up</h2>
+            <h2>Sign Up</h2>
             <div class="signup-no-username signup-username-taken signup-long-username">
               <input id="signup-username" class="form-control" type="text" name="username" placeholder="Username"
               {% with username = get_flashed_messages(category_filter=["signup_username"]) %}

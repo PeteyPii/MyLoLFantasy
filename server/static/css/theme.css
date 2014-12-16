@@ -26,6 +26,10 @@
   width: 80%;
   margin: auto;
 }
+.modal p {
+  max-width: 80%;
+  margin: auto;
+}
 .modal label {
   max-width: 80%;
 }
@@ -35,7 +39,7 @@
 .modal button:focus {
   outline: none;
 }
-#login-close, #signup-close {
+.modal-close {
   position: absolute;
   top: 9px;
   right: 12px;
@@ -50,6 +54,14 @@
 }
 #signup-password {
   margin-bottom: 5px;
+}
+
+/* Tables */
+.table-leagues .column-leagues {
+  width: 97%;
+}
+.table-leagues .column-remove {
+  width: 3%;
 }
 
 /* Misc. helper classes */

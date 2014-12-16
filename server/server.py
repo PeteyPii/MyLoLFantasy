@@ -113,7 +113,7 @@ def log_in():
   dummy_hash = "$bcrypt-sha256$2a,6$qBvBk5OzHb.TCf0hksI13O$eRKjorGlqRmbrirj8SkuQkpByTIUFdq"
   bcrypt_sha256.verify(password, dummy_hash)
 
-  print(username + " failed to log in")
+  print(" * " + username + " failed to log in")
   flash("Username or password is incorrect", "login_error")
   flash(username, "login_username");
 
@@ -121,9 +121,10 @@ def log_in():
   return ""
 
 
-@app.route("/LogOut")
+@app.route("/LogOut", methods=["GET"])
 def logout():
   session.pop("loggedIn", None)
+  print("* " + session["username"] + " logged out")
   return redirect("/")
 
 
@@ -177,20 +178,37 @@ def create_league():
     return redirect("Leagues")
 
 
-@app.route("/Leagues")
+@app.route("/Leagues", methods=["GET","POST"])
 def show_leagues():
   logged_in = login_status()
   if logged_in == False:
     session["mustLogIn"] = True
     return redirect("/")
 
-  leagues = db.get_groups_in(session["username"])
-  for league in leagues:
-    flash(str(league) + " " + db.get_group_name(league))
-  return render_template("leagues.html")
+  error = None
+  if request.method == "POST":
+    if "delete" in request.form:
+      try:
+        group_id = int(request.form["delete"])
+        if not db.group_exists(group_id):
+          error = "That group does not exist"
+        elif db.get_group_creator(group_id) != session["username"]:
+          error = "You are not allowed to delete that group"
+        else:
+          print("* Deleting group with ID#" + str(group_id))
+          db.delete_group(group_id, session["username"])
+      except ValueError:
+        abort(400)
+
+  leagues = []
+  league_ids = db.get_groups_in(session["username"])
+  for league_id in league_ids:
+    leagues.append((league_id, db.get_group_name(league_id)))
+
+  return render_template("leagues.html", leagues=leagues, error=error)
 
 
-@app.route("/League_<int:group_id>")
+@app.route("/League_<int:group_id>", methods=["GET"])
 def show_group(group_id):
   logged_in = login_status()
   if logged_in == False:
@@ -269,7 +287,7 @@ if __name__ == "__main__":
             print("Refresh period should be non-negative")
           else:
             good_refresh_period = True
-        except Exception as e:
+        except ValueError:
           print("Refresh period is not a number")
 
         if good_refresh_period:

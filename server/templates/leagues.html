@@ -5,28 +5,59 @@
 {% block content %}
 <div class="container theme-showcase" role="main">
   <div>
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <table class="table">
+    {% if leagues %}
+    <table class="table table-leagues">
       <thead>
-        <tr><th>Leagues</th></tr>
+        <tr>
+          <th class="column-leagues"><h1>Leagues</h1></th>
+          <!-- <th>Edit</th> -->
+          <th class="column-delete"></th>
+        </tr>
       </thead>
       <tbody>
-        {% for message in messages %}
-        <tr><td><a href="/League_{{ message.partition(' ')[0] }}">{{ message.partition(' ')[2] }}</a></td></tr>
+        {% for league in leagues %}
+        <tr>
+          <td>
+            <a href="/League_{{ league[0] }}">{{ league[1] }}</a>
+          </td>
+          <!-- <td>
+            <form method="post">
+              <a type="submit"><span class="fa fa-edit"></span><a>
+            </form>
+          </td> -->
+          <td class="text-center">
+            <form method="post" groupname="{{ league[1] }}">
+              <input type="hidden" name="delete" value="{{ league[0] }}" />
+              <a href="#" class="leagues-delete" title="Delete League"><span class="fa fa-close"></span><a>
+            </form>
+          </td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
     <h3>Leagues</h3>
     <hr>
-    <div class="well"><p class="no-margin">You have no leagues! Create one <a href="CreateLeague">here</a>.</p></div>
+    <div class="well"><p class="no-margin">You have no Leagues! Create one <a href="CreateLeague">here</a>.</p></div>
     {% endif %}
-    {% endwith %}
+
+    {% if error %}
+    <p class="server-error"><strong>Error:</strong> {{ error }}</p>
+    {% endif %}
   </div>
-  {% if error %}
-  <p class="server-error"><strong>Error: </strong>{{ error }}</p>
-  {% endif %}
+</div>
+
+<div id="confirmation-popup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <button type="button" class="close" data-dismiss="modal"><span class="fa fa-close modal-close"></span></button>
+      <h2>Are you sure?</h2>
+      <p id="confirmation-message"></p>
+      <br>
+      <button id="confirmation-yes" class="btn btn-primary">Yes</button>
+      <button id="confirmation-no" class="btn btn-primary">No</button>
+    </div>
+  </div>
 </div>
 {% endblock %}
 

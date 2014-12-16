@@ -32,6 +32,7 @@
           {% endfor %}
         </tbody>
       </table>
+      <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
       <button id="btn-show-details" type="button" class="btn btn-primary pull-right">Detailed View</button>
       {% else %}
       <table class="table" id="detailed-table">
@@ -68,6 +69,7 @@
           {% endfor %}
         </tbody>
       </table>
+      <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
       <button id="btn-hide-details" type="button" class="btn btn-primary pull-right">Simple View</button>
       {% endif %}
     </div>
@@ -76,8 +78,9 @@
   <p class="server-error"><strong>Error: </strong>Could not load data</p>
   <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
   {% endif %}
+
   {% if error %}
-  <p class="server-error"><strong>Error:</strong> {{ error }}</p>
+  <p class="server-error"><strong>Error: </strong>{{ error }}</p>
   <a href="Leagues" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Go back to my Leagues</a>
   {% endif %}
 </div>
