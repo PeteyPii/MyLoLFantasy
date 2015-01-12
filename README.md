@@ -64,3 +64,38 @@ print(key)
 Put your secret key in settings.json like so: "session-key" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3].
 
 Your server should now be online and you should be able to view it at localhost:5000!
+
+
+Contributing
+------------
+
+First make sure you are on the development branch:
+
+```
+git checkout development
+```
+
+Then create a branch to work on. Name it nicely with a description and issue number like so:
+
+```
+git branch features/I29_use_git_branches
+git checkout features/I29_use_git_branches
+```
+
+If there's no issue number to go with your change or there are multiple, just include the description. If you're fixing a bug use the naming convention "fixes" instead of "features". Afterwards, change whatever you wanted to change and commit your work with a meaningful message (don't forget to double-check your work before doing so):
+
+```
+git status    # Make sure you are on the right branch
+git diff      # and that your changes are okay
+git add .
+git commit -m "I29: Added git branches and described workflow in README"
+git push
+```
+
+You should get an error about the upstream not being set, solve this by typing what git tells you to. If you know what you're doing feel free to do this in the previous step.
+
+```
+git push --set-upstream origin features/I29_use_git_branches
+```
+
+You can either continue working if you're not satisfied with your changes by making more commits and pushing them or you can ask for a pull request on GitHub. We'll review your changes there and then if we like them we'll merge your changes in and delete the branch you created.
