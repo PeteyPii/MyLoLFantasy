@@ -7,13 +7,11 @@ Play fantasy League of Legends with your friends by earning points yourself. Pla
 Tools
 -----
 
-Backend:
 - Flask
 - SQLite
 - passlib
 - League of Legends API
-
-Frontend:
+- Sass
 - Twitter Bootstrap
 - Font Awesome
 
@@ -21,9 +19,9 @@ Frontend:
 Getting Up and Running
 ----------------------
 
-Prerequisite: Make sure you are running Python 3. We use Python 3.4 but it should work on other Python 3 versions as well.
+Prerequisite: Make sure you are running Python 3. We use Python 3.4 but it should work on other Python 3 versions as well. You'll also need Sass (and by extension of this, Ruby).
 
-First install some dependencies:
+To start, install some dependencies:
 
 ```
 pip install Flask
@@ -38,7 +36,7 @@ pip install py-bcrypt
 pip install bcryptor
 ```
 
-Next, clone the repository, go to the server/database directory and run:
+Next, clone the repository, then go to the server/database directory and run:
 
 ```
 python dbCreate.py
@@ -63,7 +61,27 @@ print(key)
 
 Put your secret key in settings.json like so: "session-key" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3].
 
-Your server should now be online and you should be able to view it at localhost:5000!
+We use Sass so you will need to compile the website's style sheets. From the current (server) directory you can run:
+
+```
+sass static/scss/theme.scss:static/css/theme.scss
+```
+
+for a one-time compile whenever you want or you can do:
+
+```
+sass --watch static/scss:static/css
+```
+
+for automatic recompiling whenever the Sass files change.
+
+Once you run:
+
+```
+python server.py
+```
+
+Your server should be online and you should be able to view it at localhost:5000!
 
 
 Contributing

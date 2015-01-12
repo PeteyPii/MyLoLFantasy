@@ -1,7 +1,15 @@
-*.sublime-workspace
-*.pyc
-__pycache__
-Thumbs.db
+*.css
+*.css.map
 *.db
+*.pyc
+*.sublime-workspace
+.sass-cache
+__pycache__
 dbState.json
 settings.json
+Thumbs.db
+
+# Still include 3rd party library stuff
+!bootstrap-theme.min.css
+!bootstrap.min.css
+!font-awesome.min.css
