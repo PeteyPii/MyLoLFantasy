@@ -71,15 +71,8 @@ def delete_group(group_id, account):
 
     cur.execute("DELETE FROM T_DATA WHERE Group_ID = ?", (group_id,))
 
-    # print(group_id)
-    # print({group_id})
-
     account_groups = get_groups_in(account)
-    # print(account_groups - {group_id})
-    # print(account_groups, flush=True)
     account_groups = account_groups - {group_id}
-
-    # print(account_groups, flush=True)
 
     groups_text = "".join([str(group) + " " for group in account_groups])
     groups_text = groups_text.strip()

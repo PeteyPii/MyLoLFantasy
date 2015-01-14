@@ -45,21 +45,10 @@ python dbCreate.py
 Now, go up a directory and run:
 
 ```
-python server.py
+python settings.py
 ```
 
-This should create an empty settings file for you called 'settings.json'. In this file you need to configure a LoL API key to use which should be stored as a string. E.g. "lol-api-key" : "01234567-0123-0123-0123-0123456789ab". Then you also need to create a secret session key. You need a random 24 byte sequence which you can get by running this in a python shell:
-
-```
-import os
-num = os.urandom(24)
-key = []
-for b in num:
-  key.append(b)
-print(key)
-```
-
-Put your secret key in settings.json like so: "session-key" : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3].
+Follow the instructions during its execution and your settings should be set up okay.
 
 We use Sass so you will need to compile the website's style sheets. From the current (server) directory you can run:
 
