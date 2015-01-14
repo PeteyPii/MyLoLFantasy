@@ -6,6 +6,7 @@ import time
 import json
 import os
 import threading
+import settings
 
 os.environ["PASSLIB_BUILTIN_BCRYPT"] = "enabled"
 from passlib.hash import bcrypt_sha256
@@ -268,46 +269,14 @@ def refresh_stats_periodically(period, stop_signal):
 
 
 if __name__ == "__main__":
-  valid_settings = False
-  if os.path.isfile("settings.json"):
-    with open("settings.json", "r") as fr:
-      settings = json.load(fr)
-
-      if "lol-api-key" not in settings or not settings["lol-api-key"]:
-        print("LoL API key is not configured correctly. Set 'lol-api-key' to your key, including the dashes")
-      elif "session-key" not in settings or len(settings["session-key"]) != 24:
-        print("Secret session key is not configured correctly. Set 'session-key' to a secret 24-item list of integers with values between 0-255")
-      elif "refresh-period" not in settings:
-        print("Stat refresh period is not configured correctly. Set 'refresh-period' to a period in seconds for how often to refresh statistics")
-      else:
-        good_refresh_period = False
-        try:
-          x = float(settings["refresh-period"])
-          if x < 0:
-            print("Refresh period should be non-negative")
-          else:
-            good_refresh_period = True
-        except ValueError:
-          print("Refresh period is not a number")
-
-        if good_refresh_period:
-          valid_settings = True
-
-  else:
-    with open("settings.json", "w") as fw:
-      settings = {}
-      settings["lol-api-key"] = None
-      settings["session-key"] = None
-      settings["refresh-period"] = 3600
-      json.dump(settings, fw)
-      print("You need to configure the server before you can run it. See the file: 'settings.json'.")
+  config, valid_settings, settings_error = settings.get_settings()
 
   if valid_settings:
-    lol_api = leagueapi.LeagueOfLegends(settings["lol-api-key"])
-    app.secret_key = bytes(settings["session-key"])
+    lol_api = leagueapi.LeagueOfLegends(config["lol-api-key"])
+    app.secret_key = bytes(config["session-key"])
 
     stop_signal = threading.Event()
-    stats_thread = threading.Thread(target=refresh_stats_periodically, args=(settings["refresh-period"], stop_signal), daemon=True, name="Stat-Refresher")
+    stats_thread = threading.Thread(target=refresh_stats_periodically, args=(config["refresh-period"], stop_signal), daemon=True, name="Stat-Refresher")
     stats_thread.start()
 
     app.run(debug=True, use_reloader=False)
@@ -316,3 +285,5 @@ if __name__ == "__main__":
     stats_thread.join()
     print(" * Stat refresher stopped")
     print(" * Server shut down successfully!")
+  else:
+    print(settings_error)
