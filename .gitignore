@@ -3,11 +3,12 @@
 *.db
 *.pyc
 *.sublime-workspace
-.sass-cache
-__pycache__
+.sass-cache/
+__pycache__/
 dbState.json
 settings.json
 Thumbs.db
+node_modules/
 
 # Still include 3rd party library stuff
 !bootstrap-theme.min.css
