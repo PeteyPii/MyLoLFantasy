@@ -1,7 +1,11 @@
-var _ = require('lodash');
 var fs = require('fs');
 var url = require('url');
 var http = require('http');
+
+var _ = require('lodash');
+var Q = require('q');
+
+var db = require('./database.js');
 
 try {
   var settings = {}
@@ -25,7 +29,9 @@ try {
   var requiredSettings = [
     'lol_api_key',
     'refresh_period',
-    'port'
+    'port',
+    'keep_alive_timeout',
+    'postgre_url'
   ];
 
   // Check for existence of all required settings
@@ -45,6 +51,8 @@ try {
     throw 'Keep alive timeout needs to be a postive number';
   if (!_.isFinite(settings.port) || settings.port != (settings.port | 0) || settings.port >= 65536 || settings.port < 0)
     throw 'Port must be a non-negative integer below 65536';
+  if (!_.isString(settings.postgre_url))
+    throw "PostgreSQL URL must be string";
 
   var server = http.createServer(function(request, response) {
     var subHandlers = {

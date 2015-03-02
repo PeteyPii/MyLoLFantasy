@@ -3,7 +3,7 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".git", "__pycache__", ".sass-cache"],
+      "folder_exclude_patterns": [".git", "__pycache__", ".sass-cache", "node_modules"],
       "file_exclude_patterns": ["*.pyc", "*.sublime-workspace", "*.map"]
     }
   ],
