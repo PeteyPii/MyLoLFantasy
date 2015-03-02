@@ -5,24 +5,24 @@ var DB_VERSION = '\'1.0\'';
 
 var DB_VERSION_TABLE =
   'CREATE TABLE version (' +
-    'version text PRIMARY KEY' +
+    'version          text PRIMARY KEY' +
   ');';
 
 var DB_USERS_TABLE =
   'CREATE TABLE users (' +
-    'username TEXT PRIMARY KEY,' +
-    'summoner TEXT,' +
-    'password_has TEXT' +
+    'username         TEXT PRIMARY KEY,' +
+    'summoner         TEXT,' +
+    'password_hash    TEXT' +
   ');';
 
 var DB_GROUPS_TABLE =
   'CREATE TABLE groups (' +
-    'id SERIAL PRIMARY KEY,' +
-    'name TEXT,' +
-    'owner TEXT REFERENCES users (username) ON DELETE CASCADE,' +
-    'stats TEXT,' +
-    'creation_time TIMESTAMP,' +
-    'matches_tracked TEXT[]' +
+    'id               SERIAL PRIMARY KEY,' +
+    'name             TEXT,' +
+    'owner            TEXT REFERENCES users (username) ON DELETE CASCADE,' +
+    'stats            TEXT,' +
+    'creation_time    TIMESTAMP,' +
+    'matches_tracked  TEXT[]' +
   ');';
 
 var postgreConfig = {};
@@ -66,13 +66,27 @@ module.exports = {
       });
     }).then(function(client) {
 
-      // Recreate the version table
+      // Drop tables in correct order
       return Q.Promise(function(resolve, reject) {
-        client.query('DROP TABLE version', function(err, result) {
+        client.query('DROP TABLE groups;', function(err, result) {
           resolve(client);
         });
       });
     }).then(function(client) {
+      return Q.Promise(function(resolve, reject) {
+        client.query('DROP TABLE version;', function(err, result) {
+          resolve(client);
+        });
+      });
+    }).then(function(client) {
+      return Q.Promise(function(resolve, reject) {
+        client.query('DROP TABLE users;', function(err, result) {
+          resolve(client);
+        });
+      });
+    }).then(function(client) {
+
+      // Create and init version table
       return Q.Promise(function(resolve, reject) {
         client.query(DB_VERSION_TABLE, function(err, result) {
           if (err) {
@@ -94,13 +108,7 @@ module.exports = {
       });
     }).then(function(client) {
 
-      // Recreate the users table
-      return Q.Promise(function(resolve, reject) {
-        client.query('DROP TABLE users', function(err, result) {
-          resolve(client);
-        });
-      });
-    }).then(function(client) {
+      // Create users table
       return Q.Promise(function(resolve, reject) {
         client.query(DB_USERS_TABLE, function(err, result) {
           if (err) {
@@ -112,13 +120,7 @@ module.exports = {
       });
     }).then(function(client) {
 
-      // Recreate the groups table
-      return Q.Promise(function(resolve, reject) {
-        client.query('DROP TABLE groups', function(err, result) {
-          resolve(client);
-        });
-      });
-    }).then(function(client) {
+      // Create groups table
       return Q.Promise(function(resolve, reject) {
         client.query(DB_GROUPS_TABLE, function(err, result) {
           if (err) {
