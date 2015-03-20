@@ -1,8 +1,0 @@
-{
-  "name": "mlf-data",
-  "version": "1.0.0",
-  "description": "Data server for My LoL Fantasy",
-  "dependencies": {
-    "express": "4.12.2"
-  }
-}

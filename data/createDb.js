@@ -24,8 +24,10 @@ try {
     // in the default settings file.
   }
 
-  db.createDb(settings.postgre_url).then(function() {
-    db.closeDb();
+  db.createDb(settings.postgre_url).fail(function(err) {
+    console.log("Error: " + err);
+  }).fin(function() {
+    db.deinit();
   }).done();
 } catch (err) {
   console.log("Error: " + err);

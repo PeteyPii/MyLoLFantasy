@@ -1,0 +1,16 @@
+{
+  "name": "my-lol-fantasy",
+  "version": "0.0.1",
+  "description": "Data server for My LoL Fantasy",
+  "dependencies": {
+    "express": "4.12.2",
+    "lodash": "3.5.0",
+    "pg": "4.3.0",
+    "q": "1.2.0",
+    "request": "2.53.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeteyPii/MyLoLFantasy"
+  }
+}

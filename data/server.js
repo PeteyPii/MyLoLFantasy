@@ -4,11 +4,14 @@ var http = require('http');
 
 var _ = require('lodash');
 var Q = require('q');
+var express = require('express');
 
 var db = require('./database.js');
 
+var VERSION = '0.0.1';
+
 try {
-  var settings = {}
+  var settings = {};
 
   try {
     var data = fs.readFileSync('defaults.json');
@@ -54,39 +57,55 @@ try {
   if (!_.isString(settings.postgre_url))
     throw "PostgreSQL URL must be string";
 
-  var server = http.createServer(function(request, response) {
-    var subHandlers = {
-      '/': function(params) {
-        return 'base';
-      },
+  db.init(settings.postgre_url).then(function() {
+    var app = express();
+    var server;
 
-      '/groups': function(params) {
-        return 'groups'
-      },
+    app.locals.settings = settings;
+    app.locals.shutdown = function() {
+      server.close(function(err) {
+        if (err) {
+          throw err;
+          return;
+        }
 
-      '/shutdown': function(params) {
-        setTimeout(function() { server.close(function(err) {}); }, 1);
-        console.log('Server shutting down');
-        return 'Server will now shutdown';
-      },
+        console.log('Data server shutdown successfully');
+      });
+      console.log('Data server shutting down...');
     };
+    app.locals.db = db;
 
-    var parsedUrl = url.parse(request.url, true);
+    app.get('/', function(req, res) {
+      res.send('Server for the data tasks of MyLoLFantasy.');
+    });
 
-    if (!subHandlers[parsedUrl.pathname]) {
-      response.writeHead(404);
-      response.end();
-      return;
-    }
+    app.get('/version', function(req, res) {
+      res.send({version: VERSION});
+    });
 
-    response.writeHead(200, {'Content-Type': 'text/plain'});
-    response.end(subHandlers[parsedUrl.pathname](parsedUrl.query));
-  }).listen(settings.port);
-  server.addListener('connection', function(stream) {
-    stream.setTimeout(settings.keep_alive_timeout);
-  });
+    var adminHandler = require('./api/admin.js');
+    // var usersHandler = require('./api/users.js');
+    // var groupsHandler = require('./api/groups.js');
 
-  console.log('Server started running');
+    app.use('/admin', adminHandler);
+    // app.use('/users', usersHandler);
+    // app.use('/groups', groupsHandler);
+
+    server = http.createServer(app).listen(settings.port, '127.0.0.1', function() {
+      var host = server.address().address;
+      var port = server.address().port;
+
+      console.log('Data server listening at http://%s:%s', host, port);
+      console.log('Data server started up successfully');
+    });
+    server.addListener('connection', function(stream) {
+      stream.setTimeout(settings.keep_alive_timeout);
+    });
+  }).fail(function(err) {
+    console.log('Error: ' + err);
+  }).fin(function() {
+    db.deinit();
+  }).done();
 } catch (err) {
-  console.log("Error: " + err);
+  console.log('Error: ' + err);
 }
