@@ -1,5 +1,3 @@
 {
-  "refresh_period": 3600000,
-  "keep_alive_timeout": 5000,
-  "port": 7777
+  "refresh_period": 3600000
 }

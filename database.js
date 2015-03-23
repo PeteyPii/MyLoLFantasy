@@ -11,7 +11,7 @@ var DB_VERSION_TABLE =
 var DB_USERS_TABLE =
   'CREATE TABLE users (' +
     'username         TEXT PRIMARY KEY,' +
-    'summoner         TEXT NOT NULL,' +
+    'summoner_name    TEXT NOT NULL,' +
     'email            TEXT NOT NULL UNIQUE,' +
     'password_hash    TEXT NOT NULL' +
   ');';
@@ -149,6 +149,37 @@ var dbApi = {
   /*********/
 
   createUser: function() {
+  },
+
+  // Returns object with error field if user does not exist otherwise it returns
+  // an object with the username, summoner_name, email, and password_hash fields
+  getUser: function(username) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'get_user',
+        text: 'SELECT username, summoner_name, email, password_hash FROM users WHERE username = $1;',
+        values: [username]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams).then(function(result) {
+        if (!result.rows.length) {
+          return { error: 'User does not exist' };
+        } else {
+          return result.rows[0];
+        }
+      });
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
   },
 };
 
