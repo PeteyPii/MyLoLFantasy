@@ -1,0 +1,28 @@
+extends ./base.jade
+
+block title
+  title Leagues - My LoL Fantasy
+
+block content
+  div(class='container theme-showcase text-center' role='main')
+    div
+      if leagues.length
+        table(class='table table-leagues')
+          thead
+            tr
+              th.column-leagues
+                h1 Leagues
+              th.column-delete
+          tbody
+            each league in leagues
+              tr
+                td
+                  a(href= baseUrl + '/League_' + league.id)= leagues.name
+                td.text-center
+
+
+      h1 My LoL Fantasy
+      p LEAGUES PAGE
+
+block scripts
+  //- script(src= baseUrl + '/js/leagues.js')
