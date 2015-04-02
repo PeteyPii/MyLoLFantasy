@@ -8,7 +8,7 @@ $(document).ready(function() {
     e.preventDefault();
 
     // If there was an error before, toss it
-    $('.login-no-username, .login-no-password').removeClass('has-error');
+    $('#login-username-div, #login-password-div').removeClass('has-error');
 
     var values = {};
     jQuery.each($('#login-form input'), function(i, input) {
@@ -17,28 +17,41 @@ $(document).ready(function() {
 
     var error = '';
     if (!values['username'] && !values['password']) {
-      $('div:has(#login-username), div:has(#login-password)').addClass('has-error');
+      $('#login-username-div, #login-password-div').addClass('has-error');
       error = 'You must enter your username and password';
       $('#login-username').focus();
     } else if (!values['username']) {
-      $('div:has(#login-username)').addClass('has-error');
+      $('#login-username-div').addClass('has-error');
       error = 'You must enter your username';
       $('#login-username').focus();
     } else if (!values['password']) {
-      $('div:has(#login-password)').addClass('has-error');
+      $('#login-password-div').addClass('has-error');
       error = 'You must enter your password';
       $('#login-password').focus();
     }
 
     if (!error) {
-      data = $('#login-form').serialize();
-      var result = $.post('LogIn', data);
+      if (values.username.length > 128) {
+        $('#login-username-div').addClass('has-error');
+        $('#login-username').focus();
+        error = 'Your username cannot be more than 128 characters long';
+      }  else if (values.password.length > 1024) {
+        $('#login-password-div').addClass('has-error');
+        $('#login-password').focus();
+        error = 'Password is too long';
+      }
+    }
 
-      result.done(function(val) {
-        window.location.href = val ? val : window.location.pathname;
-      });
-      result.fail(function() {
-        alert('HTTP error from server');
+    if (!error) {
+      var data = $('#login-form').serialize();
+      var request = $.post(gBaseUrl + '/LogIn', data);
+
+      request.done(function(result) {
+        if (result.success) {
+          window.location.href = result.url;
+        } else {
+          window.location.reload();
+        }
       });
     } else {
       $('.login-error').empty();
@@ -55,55 +68,65 @@ $(document).ready(function() {
     e.preventDefault();
 
     // If there was an error before, toss it
-    $('.signup-no-summoner, .signup-no-confirm-password, .signup-no-password, .signup-no-username').removeClass('has-error');
+    $('#signup-username-div, #signup-password-div, #signup-confirm-password-div, #signup-summoner-div, #signup-email-div, #signup-agree-div').removeClass('has-error');
 
     var values = {};
     jQuery.each($('#signup-form input'), function(i, input) {
       values[input.name] = input.value;
     });
-    values['agree'] = $('#signup-agree').is(':checked');
+    values.agree = $('#signup-agree').is(':checked');
 
     var isError = false;
     var error = '';
     // These checks have a specific order so that the top-most unfilled input is focussed
-    if (!values['summonerName']) {
-      $('.signup-no-summoner').addClass('has-error');
+    if (!values.summonerName) {
+      $('#signup-summoner-div').addClass('has-error');
       $('#signup-summoner').focus();
       isError = true;
     }
-    if (!values['confirmPass']) {
-      $('.signup-no-confirm-password').addClass('has-error');
+    if (!values.confirmPassword) {
+      $('#signup-confirm-password-div').addClass('has-error');
       $('#signup-confirm-password').focus();
       isError = true;
     }
-    if (!values['password']) {
-      $('.signup-no-password').addClass('has-error');
+    if (!values.password) {
+      $('#signup-password-div').addClass('has-error');
       $('#signup-password').focus();
       isError = true;
     }
-    if (!values['username']) {
-      $('.signup-no-username').addClass('has-error');
+    if (!values.username) {
+      $('#signup-username-div').addClass('has-error');
       $('#signup-username').focus();
       isError = true;
     }
 
     if (isError) {
-      error = 'You must fill in all of the fields';
+      error = 'You must fill in all of the fields except for email';
     }
 
     if (!isError) {
-      if (values['username'].length > 128) {
-        $('.signup-long-username').addClass('has-error');
+      if (values.username.length > 128) {
+        $('#signup-username-div').addClass('has-error');
         $('#signup-username').focus();
         error = 'Your username cannot be more than 128 characters long';
         isError = true;
-      } else if (values['password'] != values['confirmPass']) {
-        $('.signup-password-different').addClass('has-error');
+      } else if (values.password != values.confirmPassword) {
+        $('#signup-password-div, #signup-confirm-password-div').addClass('has-error');
         $('#signup-password').focus();
         error = 'Passwords do not match';
         isError = true;
-      } else if (values['agree'] != true) {
-        $('.signup-no-agree').addClass('has-error');
+      } else if (values.password.length > 1024) {
+        $('#signup-password-div').addClass('has-error');
+        $('#signup-password').focus();
+        error = 'Password is too long';
+        isError = true;
+      } else if (values.email.length > 128) {
+        $('#signup-email-div').addClass('has-error');
+        $('#signup-email').focus();
+        error = 'Your email cannot be more than 128 characters long';
+        isError = true;
+      } else if (!values.agree) {
+        $('#signup-agree-div').addClass('has-error');
         $('#signup-agree').focus();
         error = 'You must accept the agreement to sign up';
         isError = true;
@@ -111,14 +134,15 @@ $(document).ready(function() {
     }
 
     if (!isError) {
-      data = $('#signup-form').serialize();
-      var result = $.post('SignUp', data);
+      var data = $('#signup-form').serialize();
+      var request = $.post(gBaseUrl + '/SignUp', data);
 
-      result.done(function(val) {
-        window.location.href = val ? val : window.location.pathname;
-      });
-      result.fail(function() {
-        alert('HTTP error from server');
+      request.done(function(result) {
+        if (result.success) {
+          window.location.href = result.url;
+        } else {
+          window.location.reload();
+        }
       });
     } else {
       $('.signup-error').empty();
@@ -128,17 +152,20 @@ $(document).ready(function() {
 
   /* Log Out click handler */
   $('#logout').click(function() {
-    window.location.href = 'LogOut';
+    var request = $.post(gBaseUrl + '/LogOut', {});
+    request.done(function(result) {
+      window.location.reload();
+    });
   });
 
   // If there's an error, we want to immediately show the dialog it was from
   if ($('.login-error p').length) {
-    // The fade class enables an animation which we don't want this single time
+    // The fade class enables an animation which we don't want this one time
     $('#login-popup').removeClass('fade');
     $('#login-popup').modal();
     $('#login-popup').addClass('fade');
   } else if ($('.signup-error p').length) {
-    // The fade class enables an animation which we don't want this single time
+    // The fade class enables an animation which we don't want this one time
     $('#signup-popup').removeClass('fade');
     $('#signup-popup').modal();
     $('#signup-popup').addClass('fade');

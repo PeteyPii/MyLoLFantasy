@@ -1,72 +1,98 @@
 var fs = require('fs');
-var http = require('http');
 
 var _ = require('lodash');
+var bodyParser = require('body-parser');
+var bcrypt = require('bcrypt');
 var express = require('express');
-var favicon = require('serve-favicon');
-var session = require('express-session');
 var flash = require('express-flash');
+var session = require('express-session');
 var passport = require('passport');
+var localStrat = require('passport-local');
+var Q = require('q');
+var favicon = require('serve-favicon');
 
-var db = require('./database.js');
+var dbApi = require('./database.js');
+var lolApi = require('./lol.js');
 
 var VERSION = '0.0.1';
-
-var promise = 'hello';
+var settings = {};
 
 try {
-  var settings = {};
-
-  try {
-    var data = fs.readFileSync('defaults.json');
-    settings = _.assign(settings, JSON.parse(data));
-  } catch (err) {
-    // We don't care if the file doesn't exist since the user might define everything
-    // in the user defined settings file.
-  }
-
-  try {
-    var data = fs.readFileSync('settings.json');
-    settings = _.assign(settings, JSON.parse(data));
-  } catch (err) {
-    // We don't care if the file doesn't exist since the user might define everything
-    // in the default settings file.
-  }
-
-  validateSettings(settings);
-
-  promise = db.init(settings.postgre_url).then(function() {
-    var app = express();
-
-    app.set('views', './views');
-    app.set('view engine', 'jade');
-
-    app.use(express.static('public'));
-    app.use(favicon('./public/img/favicon.ico'));
-    app.use(session({
-      secret: settings.secret_key,
-      resave: false,
-      saveUninitialized: true,
-    }));
-    app.use(flash());
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    app.use('/', require('./route.js'));
-
-    app.locals.settings = settings;
-    app.locals.db = db;
-
-    return app;
-
-  }).fail(function(err) {
-    console.log('Error: ' + err);
-  }).fin(function() {
-    db.deinit();
-  });
+  var data = fs.readFileSync('defaults.json');
+  settings = _.assign(settings, JSON.parse(data));
 } catch (err) {
-  console.log('Error: ' + err);
+  // We don't care if the file doesn't exist since the user might define everything
+  // in the user defined settings file.
 }
+
+try {
+  var data = fs.readFileSync('settings.json');
+  settings = _.assign(settings, JSON.parse(data));
+} catch (err) {
+  // We don't care if the file doesn't exist since the user might define everything
+  // in the default settings file.
+}
+
+validateSettings(settings);
+
+var db = new dbApi(settings.postgre_url);
+var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
+
+var promise = db.init().then(function() {
+  return lol.init();
+}).then(function() {
+  var app = express();
+
+  app.set('views', './views');
+  app.set('view engine', 'jade');
+
+  app.use(express.static('public'));
+  app.use(favicon('./public/img/favicon.ico'));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({
+    extended: true,
+  }));
+  app.use(session({
+    secret: settings.secret_key,
+    resave: false,
+    saveUninitialized: true,
+  }));
+  app.use(flash());
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  passport.use(new localStrat(function(username, password, done) {
+    db.getUser(username).done(function(user) {
+      if (user.error) {
+        return done(null, false);
+      } else {
+        Q.ninvoke(bcrypt, 'compare', password, user.password_hash).then(function(result) {
+          return done(null, !result ? false : {
+            username: user.username
+          });
+        });
+      }
+    });
+  }));
+
+  passport.serializeUser(function(user, done) {
+    done(null, user.username);
+  });
+
+  passport.deserializeUser(function(username, done) {
+    done(null, {
+      username: username
+    });
+  });
+
+  app.use('/', require('./route.js'));
+
+  app.locals.settings = settings;
+  app.locals.db = db;
+  app.locals.lol = lol;
+
+  return app;
+});
 
 module.exports = promise;
 
@@ -75,7 +101,10 @@ function validateSettings(settings) {
     'lol_api_key',
     'refresh_period',
     'postgre_url',
-    'secret_key'
+    'secret_key',
+    'lol_burst_requests',
+    'lol_burst_period',
+    'password_hash_rounds'
   ];
 
   for (var i = 0; i < requiredSettings.length; i++) {
@@ -93,4 +122,10 @@ function validateSettings(settings) {
     throw 'PostgreSQL URL must be a string';
   if (!_.isString(settings.secret_key))
     throw 'Secret key must be a string (and it should be very random!)';
+  if (!_.isFinite(settings.lol_burst_requests) || (settings.lol_burst_requests !== settings.lol_burst_requests | 0) || settings.lol_burst_requests <= 0)
+    throw 'Number of LoL burst requests should be a positive integer';
+  if (!_.isFinite(settings.lol_burst_period) || (settings.lol_burst_period !== settings.lol_burst_period | 0) || settings.lol_burst_period < 0)
+    throw 'LoL burst request period must be a a non-negative integer';
+  if (!_.isFinite(settings.password_hash_rounds) || (settings.password_hash_rounds !== settings.password_hash_rounds | 0) || settings.password_hash_rounds < 1)
+    throw 'Password hash rounds must be an integer greater than zero';
 }

@@ -1,5 +1,5 @@
-var Q = require('q');
 var pg = require('pg');
+var Q = require('q');
 
 var DB_VERSION = '1.0.0';
 
@@ -11,9 +11,10 @@ var DB_VERSION_TABLE =
 var DB_USERS_TABLE =
   'CREATE TABLE users (' +
     'username         TEXT PRIMARY KEY,' +
+    'password_hash    TEXT NOT NULL,' +
+    'email            TEXT NOT NULL,' +
     'summoner_name    TEXT NOT NULL,' +
-    'email            TEXT NOT NULL UNIQUE,' +
-    'password_hash    TEXT NOT NULL' +
+    'region           TEXT NOT NULL' +
   ');';
 
 var DB_GROUPS_TABLE =
@@ -27,13 +28,14 @@ var DB_GROUPS_TABLE =
   ');';
 
 // All methods return Q promises
-var dbApi = {
-  config: {},
-  init: function(connectionUrl) {
-    var self = this;
-    var clientDone;
+function dbApi(connectionUrl) {
+  var self = this;
 
-    self.config.connectionUrl = connectionUrl;
+  self.config = {};
+  self.config.connectionUrl = connectionUrl;
+
+  self.init = function() {
+    var clientDone;
 
     return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
@@ -44,7 +46,7 @@ var dbApi = {
       return Q.ninvoke(client, 'query', 'SELECT version FROM version;').then(function(result) {
         if (!result.rows.length) {
           throw 'Database version is faulty. Please recreate your database';
-        } else if (result.rows[0].version != DB_VERSION) {
+        } else if (result.rows[0].version !== DB_VERSION) {
           return self.updateDb();
         }
       });
@@ -53,27 +55,27 @@ var dbApi = {
         clientDone();
       }
     });
-  },
+  };
 
-  deinit: function() {
+  // Call this when doing graceful shutdowns so that the Node process can end
+  self.deinit = function() {
     return Q.Promise(function(resolve, reject) {
       pg.end();
       resolve();
     });
-  },
+  };
 
-  createDb: function(connectionUrl) {
+  self.createDb = function() {
     var clientDone;
 
-    this.config.connectionUrl = connectionUrl;
-
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
+      // console.log(client);
+
       return client;
     }).then(function(client) {
-
       // Drop tables in correct order. We silently ignore errors since if the table doesn't
       // exist we don't care.
       return Q.Promise(function(resolve, reject) {
@@ -82,49 +84,43 @@ var dbApi = {
         });
       }).then(function() {
         return Q.Promise(function(resolve, reject) {
-          client.query('DROP TABLE version;', function(err, result) {
-            resolve();
-          });
-        });
-      }).then(function() {
-        return Q.Promise(function(resolve, reject) {
           client.query('DROP TABLE users;', function(err, result) {
             resolve();
           });
         });
       }).then(function() {
-
-        // Create and init all the tables
-        return Q.ninvoke(client, 'query', DB_VERSION_TABLE);
-      }).then(function() {
-        return Q.ninvoke(client, 'query', 'INSERT INTO version (version) VALUES (\'' + DB_VERSION + '\');');
-      }).then(function() {
-        return Q.ninvoke(client, 'query', DB_USERS_TABLE);
-      }).then(function() {
-        return Q.ninvoke(client, 'query', DB_GROUPS_TABLE);
-      });
+        return Q.Promise(function(resolve, reject) {
+          client.query('DROP TABLE version;', function(err, result) {
+            resolve();
+          });
+        });
+      })
+      .then(function() { return Q.ninvoke(client, 'query', DB_VERSION_TABLE); })
+      .then(function() { return Q.ninvoke(client, 'query', 'INSERT INTO version (version) VALUES (\'' + DB_VERSION + '\');'); })
+      .then(function() { return Q.ninvoke(client, 'query', DB_USERS_TABLE); })
+      .then(function() { return Q.ninvoke(client, 'query', DB_GROUPS_TABLE); });
     }).fin(function() {
       if (clientDone) {
         clientDone();
       }
     });
-  },
+  };
 
-  updateDb: function(version) {
+  self.updateDb = function(version) {
     return Q.Promise(function(resolve, reject) {
       reject('Automatically updating the DB is not functional yet. Aborting...');
     });
-  },
+  };
 
   /***********/
   /* Version */
   /***********/
 
   // Returns DB version as a string
-  getVersion: function() {
+  self.getVersion = function() {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -142,18 +138,38 @@ var dbApi = {
         clientDone();
       }
     });
-  },
+  };
 
   /*********/
   /* Users */
   /*********/
 
-  createUser: function() {
-  },
+  self.createUser = function(username, passwordHash, email, summonerName, region) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'create_user',
+        text: 'INSERT INTO users (username, password_hash, email, summoner_name, region) VALUES ($1, $2, $3, $4, $5);',
+        values: [username, passwordHash, email, summonerName, region]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
 
   // Returns object with error field if user does not exist otherwise it returns
   // an object with the username, summoner_name, email, and password_hash fields
-  getUser: function(username) {
+  self.getUser = function(username) {
     var clientDone;
 
     return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
@@ -180,7 +196,7 @@ var dbApi = {
         clientDone();
       }
     });
-  },
-};
+  };
+}
 
 module.exports = dbApi;

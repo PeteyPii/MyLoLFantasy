@@ -3,7 +3,7 @@ var fs = require('fs');
 var _ = require('lodash');
 var Q = require('q');
 
-var db = require('./database.js');
+var dbApi = require('./database.js');
 
 try {
   var settings = {}
@@ -24,7 +24,9 @@ try {
     // in the default settings file.
   }
 
-  db.createDb(settings.postgre_url).fail(function(err) {
+  var db = new dbApi(settings.postgre_url);
+
+  db.createDb().fail(function(err) {
     console.log("Error: " + err);
   }).fin(function() {
     db.deinit();
