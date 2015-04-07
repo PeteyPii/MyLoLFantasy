@@ -4,25 +4,36 @@ block title
   title Leagues - My LoL Fantasy
 
 block content
-  div(class='container theme-showcase text-center' role='main')
-    div
-      if leagues.length
-        table(class='table table-leagues')
-          thead
-            tr
-              th.column-leagues
-                h1 Leagues
-              th.column-delete
-          tbody
-            each league in leagues
-              tr
-                td
-                  a(href= baseUrl + '/League_' + league.id)= leagues.name
-                td.text-center
+  div(class='container theme-showcase' role='main')
+    div.row
+      div.col-xs-12
+        if leagues.length
+          table(class='table table-leagues')
+            thead: tr
+                th.column-leagues: h1 Leagues
+                th.column-delete
+            tbody
+              each league in leagues
+                tr
+                  td: a(href= baseUrl + '/League_' + league.id)= league.name
+                  td.text-center: button(class='btn btn-link leagues-delete', type='button', title='Delete League', data-groupname= league.name, data-groupid= league.id): span(class='fa fa-close')
+        else
+          .text-center
+            h3 Leagues
+            hr
+            .well
+              p.no-margin You have no Leagues! Create on at the #[a(href= gBaseUrl + '/CreateLeague') Create a League page].
 
+  div#confirmation-popup(class='modal fade', tabindex='-1', role='dialog', aria-hidden='true')
+    div(class='modal-dialog modal-sm')
+      .modal-content
+        button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
+        h2 Are ou sure?
+        p#confirmation-message
+        br
+        button#confirmation-yes(class='btn btn-primary') Yes
+        button#confirmation-no(class='btn btn-primary') No
 
-      h1 My LoL Fantasy
-      p LEAGUES PAGE
 
 block scripts
-  //- script(src= baseUrl + '/js/leagues.js')
+  script(src= baseUrl + '/js/leagues.js')
