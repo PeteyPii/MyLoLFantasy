@@ -154,7 +154,11 @@ $(document).ready(function() {
   $('#logout').click(function() {
     var request = $.post(gBaseUrl + '/LogOut', {});
     request.done(function(result) {
-      window.location.reload();
+      if (result.success) {
+        window.location.href = result.url;
+      } else {
+        window.location.reload();
+      }
     });
   });
 

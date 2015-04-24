@@ -27,10 +27,18 @@ try {
   var db = new dbApi(settings.postgre_url);
 
   db.createDb().fail(function(err) {
-    console.log("Error: " + err);
+    if (err.stack) {
+      console.log(err.stack);
+    } else {
+      console.error('Error: ' + err)
+    }
   }).fin(function() {
     db.deinit();
   }).done();
 } catch (err) {
-  console.log("Error: " + err);
+  if (err.stack) {
+    console.log(err.stack);
+  } else {
+    console.error('Error: ' + err)
+  }
 }

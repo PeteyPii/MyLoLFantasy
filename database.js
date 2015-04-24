@@ -17,8 +17,8 @@ var DB_USERS_TABLE =
     'region           TEXT NOT NULL' +
   ');';
 
-var DB_GROUPS_TABLE =
-  'CREATE TABLE groups (' +
+var DB_LEAGUES_TABLE =
+  'CREATE TABLE leagues (' +
     'id               SERIAL PRIMARY KEY,' +
     'name             TEXT NOT NULL,' +
     'owner            TEXT NOT NULL REFERENCES users (username) ON DELETE CASCADE,' +
@@ -79,7 +79,7 @@ function dbApi(connectionUrl) {
       // Drop tables in correct order. We silently ignore errors since if the table doesn't
       // exist we don't care.
       return Q.Promise(function(resolve, reject) {
-        client.query('DROP TABLE groups;', function(err, result) {
+        client.query('DROP TABLE leagues;', function(err, result) {
           resolve();
         });
       }).then(function() {
@@ -98,7 +98,7 @@ function dbApi(connectionUrl) {
       .then(function() { return Q.ninvoke(client, 'query', DB_VERSION_TABLE); })
       .then(function() { return Q.ninvoke(client, 'query', 'INSERT INTO version (version) VALUES (\'' + DB_VERSION + '\');'); })
       .then(function() { return Q.ninvoke(client, 'query', DB_USERS_TABLE); })
-      .then(function() { return Q.ninvoke(client, 'query', DB_GROUPS_TABLE); });
+      .then(function() { return Q.ninvoke(client, 'query', DB_LEAGUES_TABLE); });
     }).fin(function() {
       if (clientDone) {
         clientDone();
@@ -190,6 +190,34 @@ function dbApi(connectionUrl) {
         } else {
           return result.rows[0];
         }
+      });
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Returns an array of league objects associated with the username. Returns an empty
+  // array if the user does not exist or if the user has no leagues. League objects
+  // contain the fields: name, owner, creation_time, and matches_tracked
+  self.getUsersLeagues = function(username) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'get_users_leagues',
+        text: 'SELECT name, owner, stats, creation_time, matches_tracked FROM leagues WHERE owner = $1;',
+        values: [username]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams).then(function(result) {
+        return result.rows;
       });
     }).fin(function() {
       if (clientDone) {

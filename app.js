@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 
 var _ = require('lodash');
 var bodyParser = require('body-parser');
@@ -6,6 +7,8 @@ var bcrypt = require('bcrypt');
 var express = require('express');
 var flash = require('express-flash');
 var session = require('express-session');
+var file = require('file');
+var less = require('less');
 var passport = require('passport');
 var localStrat = require('passport-local');
 var Q = require('q');
@@ -17,84 +20,94 @@ var lolApi = require('./lol.js');
 var VERSION = '0.0.1';
 var settings = {};
 
-try {
-  var data = fs.readFileSync('defaults.json');
-  settings = _.assign(settings, JSON.parse(data));
-} catch (err) {
-  // We don't care if the file doesn't exist since the user might define everything
-  // in the user defined settings file.
-}
+module.exports = {
+  createApp: function() {
+    settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
 
-try {
-  var data = fs.readFileSync('settings.json');
-  settings = _.assign(settings, JSON.parse(data));
-} catch (err) {
-  // We don't care if the file doesn't exist since the user might define everything
-  // in the default settings file.
-}
+    validateSettings(settings);
 
-validateSettings(settings);
+    var db = new dbApi(settings.postgre_url);
+    var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
 
-var db = new dbApi(settings.postgre_url);
-var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
+    var promise = db.init().then(function() {
+      return lol.init();
+    }).then(function() {
+      file.walkSync('less', function(dirPath, dirs, files) {
+        for (var i = 0; i < files.length; i++) {
+          var filePath = path.join(dirPath, files[i]);
+          less.render(fs.readFileSync(filePath).toString('utf8'), {
+            paths: ['less'],
+            filename: filePath,
+            compress: false
+          }, function(err, output) {
+            if (err) {
+              throw err;
+            }
 
-var promise = db.init().then(function() {
-  return lol.init();
-}).then(function() {
-  var app = express();
-
-  app.set('views', './views');
-  app.set('view engine', 'jade');
-
-  app.use(express.static('public'));
-  app.use(favicon('./public/img/favicon.ico'));
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: true,
-  }));
-  app.use(session({
-    secret: settings.secret_key,
-    resave: false,
-    saveUninitialized: true,
-  }));
-  app.use(flash());
-  app.use(passport.initialize());
-  app.use(passport.session());
-
-  passport.use(new localStrat(function(username, password, done) {
-    db.getUser(username).done(function(user) {
-      if (user.error) {
-        return done(null, false);
-      } else {
-        Q.ninvoke(bcrypt, 'compare', password, user.password_hash).then(function(result) {
-          return done(null, !result ? false : {
-            username: user.username
+            var outFileName = path.join('public/css',
+              dirPath.split(path.sep).slice(1).join(path.sep),
+              path.basename(files[i], '.less') + '.css');
+            fs.writeFileSync(outFileName, output.css);
           });
+        }
+      });
+    }).then(function() {
+      var app = express();
+
+      app.set('views', './views');
+      app.set('view engine', 'jade');
+
+      app.use(express.static('public'));
+      app.use(favicon('./public/img/favicon.ico'));
+      app.use(bodyParser.json());
+      app.use(bodyParser.urlencoded({
+        extended: true,
+      }));
+      app.use(session({
+        secret: settings.secret_key,
+        resave: false,
+        saveUninitialized: true,
+      }));
+      app.use(flash());
+      app.use(passport.initialize());
+      app.use(passport.session());
+
+      passport.use(new localStrat(function(username, password, done) {
+        db.getUser(username).done(function(user) {
+          if (user.error) {
+            return done(null, false);
+          } else {
+            Q.ninvoke(bcrypt, 'compare', password, user.password_hash).then(function(result) {
+              return done(null, !result ? false : {
+                username: user.username
+              });
+            });
+          }
         });
-      }
+      }));
+
+      passport.serializeUser(function(user, done) {
+        done(null, user.username);
+      });
+
+      passport.deserializeUser(function(username, done) {
+        done(null, {
+          username: username
+        });
+      });
+
+      app.use('/', require('./route.js'));
+
+      app.locals.settings = settings;
+      app.locals.db = db;
+      app.locals.lol = lol;
+
+      return app;
     });
-  }));
 
-  passport.serializeUser(function(user, done) {
-    done(null, user.username);
-  });
-
-  passport.deserializeUser(function(username, done) {
-    done(null, {
-      username: username
-    });
-  });
-
-  app.use('/', require('./route.js'));
-
-  app.locals.settings = settings;
-  app.locals.db = db;
-  app.locals.lol = lol;
-
-  return app;
-});
-
-module.exports = promise;
+    return promise;
+  }
+};
 
 function validateSettings(settings) {
   var requiredSettings = [

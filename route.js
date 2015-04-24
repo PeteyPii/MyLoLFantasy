@@ -5,6 +5,12 @@ var Q = require('q');
 
 var router = express.Router();
 
+router.use(function logRequests(req, res, next) {
+  console.log('MLF request at url:', req.url);
+
+  next();
+});
+
 router.use(function setRenderData(req, res, next) {
   res.locals.baseUrl = req.baseUrl;
   res.locals.isLoggedIn = !!req.user;
@@ -65,7 +71,7 @@ router.post('/SignUp', function(req, res) {
         success: false
       });
     } else {
-      return req.app.locals.lol.getSummonerId(summonerName).fail(function(err) {
+      req.app.locals.lol.getSummonerId(summonerName).fail(function(err) {
         if (err.statusCode) {
           req.flash('signupError', 'Riot server ' + statusCode + '\'ed');
           flashInputs();
@@ -144,7 +150,7 @@ router.post('/LogIn', function(req, res) {
           success: true,
           url: req.baseUrl + '/Leagues'
         });
-      });
+      }).done();
     }
   })(req, res);
 });
@@ -152,12 +158,27 @@ router.post('/LogIn', function(req, res) {
 router.post('/LogOut', function(req, res) {
   req.logout();
   res.send({
+    success: true,
     url: req.baseUrl + '/'
   });
 });
 
 router.get('/Leagues', function(req, res) {
-  res.render('leagues');
+  if (!req.user) {
+    redirectRequireLogin(req, res);
+    return;
+  }
+
+  req.app.locals.db.getUsersLeagues(req.user.username).then(function (leagues) {
+    res.locals.leagues = leagues;
+    res.render('leagues');
+  }).done();
 });
 
 module.exports = router;
+
+function redirectRequireLogin(req, res) {
+  req.flash('loginRequired', true);
+  req.flash('loginError', 'You must be logged in to view that!');
+  res.redirect(req.baseUrl + '/');
+}
