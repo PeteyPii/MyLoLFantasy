@@ -56,7 +56,7 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
       return data[summonerName.toLowerCase().replace(' ', '')].id;
     }, function(err) {
       if (err.status) {
-        if (err.status == 404) {
+        if (err.status === 404) {
           return -1;
         } else {
           throw err;
@@ -86,25 +86,25 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
 
           return Q.delay(Math.max(0, self.config.requestBurstPeriod - (time - oldestRequestTime)));
         }).then(function() {
-          return Q.ninvoke(request, 'get', url).then(function(values) {
-            var response = values[0];
-            var body = values[1];
+          return Q.ninvoke(request, 'get', url);
+        }).then(function(values) {
+          var response = values[0];
+          var body = values[1];
 
-            switch (response.statusCode) {
-              case 401:
-              case 404:
-              case 429:
-              case 503:
-                throw {
-                  status: response.statusCode
-                };
-            }
+          switch (response.statusCode) {
+            case 401:
+            case 404:
+            case 429:
+            case 503:
+              throw {
+                status: response.statusCode
+              };
+          }
 
-            // At the cost of a bit of performace we cache the result synchronously so that if the stats
-            // API calls things rapidly, the cache is fresh and will be used
-            return Q.ninvoke(self.redisClient, 'hset', cachePermanently ? PERM_DATA_KEY : TEMP_DATA_KEY, url, body).then(function() {
-              return JSON.parse(body);
-            });
+          // At the cost of a bit of performance we cache the result synchronously so that if the stats
+          // API calls things rapidly, the cache is fresh and will be used
+          return Q.ninvoke(self.redisClient, 'hset', cachePermanently ? PERM_DATA_KEY : TEMP_DATA_KEY, url, body).then(function() {
+            return JSON.parse(body);
           });
         });
       }

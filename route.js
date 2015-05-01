@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var express = require('express');
 var passport = require('passport');
@@ -33,12 +34,15 @@ router.post('/SignUp', function(req, res) {
   var confirmPassword = req.body.confirmPassword;
   var email = req.body.email;
   var summonerName = req.body.summonerName;
-  var acceptedAgreement = req.body.agree;
+  var region = 'na';
+  var acceptedAgreement = req.body.agree === 'true';
 
   try {
+    if (!_.isString(username) || !_.isString(password) || !_.isString(confirmPassword) || !_.isString(email) || !_.isString(summonerName))
+      throw true;
     if (!username || !password || !confirmPassword || !summonerName || !acceptedAgreement)
       throw true;
-    if (password != confirmPassword)
+    if (password !== confirmPassword)
       throw true;
     if (username.length > 128 || password.length > 1024 || email.length > 128)
       throw true;
@@ -50,7 +54,45 @@ router.post('/SignUp', function(req, res) {
     return;
   }
 
-  function flashInputs() {
+  var error = '';
+
+  req.app.locals.db.getUser(username).then(function(user) {
+    if (user) {
+      error = 'Username is taken';
+      req.flash('signupNameTaken', true);
+      throw error;
+    } else {
+      return req.app.locals.lol.getSummonerId(region, summonerName).fail(function(err) {
+        if (err.status) {
+          error = 'Riot server ' + err.status + '\'ed';
+        }
+
+        throw err;
+      });
+    }
+  }).then(function(id) {
+    if (id === -1) {
+      error = 'Summoner does not exist';
+      req.flash('signupSummonerNotExists', true);
+      throw error;
+    }
+
+    return Q.ninvoke(bcrypt, 'hash', password, req.app.locals.settings.password_hash_rounds);
+  }).then(function(hash) {
+    return req.app.locals.db.createUser(username, hash, email, summonerName, region);
+  }).then(function() {
+    var user = {
+      username: username
+    };
+
+    return Q.ninvoke(req, 'login', user);
+  }).then(function() {
+    res.send({
+      success: true,
+      url: req.baseUrl + '/Leagues'
+    });
+  }).fail(function(reason) {
+    req.flash('signupError', error || 'Unknown error...');
     if (username) {
       req.flash('signupUsername', username);
     }
@@ -60,54 +102,12 @@ router.post('/SignUp', function(req, res) {
     if (email) {
       req.flash('signupEmail', email);
     }
-  }
 
-  req.app.locals.db.getUser(username).then(function(user) {
-    if (!user.error) {
-      req.flash('signupError', 'Username is taken');
-      req.flash('signupNameTaken', true);
-      flashInputs();
-      res.send({
-        success: false
-      });
-    } else {
-      req.app.locals.lol.getSummonerId(summonerName).fail(function(err) {
-        if (err.statusCode) {
-          req.flash('signupError', 'Riot server ' + statusCode + '\'ed');
-          flashInputs();
-          res.send({
-            success: false
-          });
-        } else {
-          throw err;
-        }
-      }).done(function(id) {
-        if (id === -1) {
-          req.flash('signupError', 'Summoner does not exist');
-          req.flash('signupSummonerNotExists', true);
-          flashInputs();
-          res.send({
-            success: false
-          });
-        } else {
-          return Q.ninvoke(bcrypt, 'hash', password, req.app.locals.settings.password_hash_rounds).then(function(hash) {
-            return req.app.locals.db.createUser(username, hash, email, summonerName, 'na');
-          }).then(function() {
-            var user = {
-              username: username
-            };
-
-            return Q.ninvoke(req, 'login', user);
-          }).then(function() {
-            res.send({
-              success: true,
-              url: req.baseUrl + '/Leagues'
-            });
-          });
-        }
-      });
-    }
+    res.send({
+      success: false
+    });
   }).done();
+
 });
 
 router.post('/LogIn', function(req, res) {
@@ -137,7 +137,7 @@ router.post('/LogIn', function(req, res) {
     }
 
     if (!user) {
-      req.flash('loginError', 'Invalid log in credentials');
+      req.flash('loginError', 'Invalid login credentials');
       req.flash('loginMismatch', true);
       flashInputs();
 
@@ -145,12 +145,12 @@ router.post('/LogIn', function(req, res) {
         success: false
       });
     } else {
-      Q.ninvoke(req, 'login', user).then(function() {
+      Q.ninvoke(req, 'login', user).done(function() {
         res.send({
           success: true,
           url: req.baseUrl + '/Leagues'
         });
-      }).done();
+      });
     }
   })(req, res);
 });
@@ -169,9 +169,123 @@ router.get('/Leagues', function(req, res) {
     return;
   }
 
-  req.app.locals.db.getUsersLeagues(req.user.username).then(function (leagues) {
+  req.app.locals.db.getUsersLeagues(req.user.username).done(function(leagues) {
     res.locals.leagues = leagues;
     res.render('leagues');
+  });
+});
+
+router.get('/CreateLeague', function(req, res) {
+  if (!req.user) {
+    redirectRequireLogin(req, res);
+    return;
+  }
+
+  res.render('create_league');
+});
+
+router.post('/CreateLeague', function(req, res) {
+  var leagueName = req.body.leagueName;
+  var summonerNames = req.body.summonerNames || [];
+  var spectatorLeague = req.body.spectatorLeague === 'true';
+
+  try {
+    if (!req.user)
+      throw true;
+    if (!_.isString(leagueName) || !_.isArray(summonerNames))
+      throw true;
+    if (!leagueName)
+      throw true;
+    if (_.some(summonerNames, function(summonerName) { return !summonerName; }))
+      throw true;
+
+    var totalParticipants = summonerNames.length;
+    if (!spectatorLeague) {
+      totalParticipants++;
+    }
+
+    if (totalParticipants <= 0 || totalParticipants > 12)
+      throw true;
+  } catch(err) {
+    res.status(400);
+    res.send('Bad request');
+    return;
+  }
+
+  var error = '';
+
+  if (!spectatorLeague) {
+    summonerNames.push(req.user.summonerName);
+  }
+
+  var namePromises = summonerNames.map(function(summonerName) {
+    return req.app.locals.lol.getSummonerId(req.user.region, summonerName);
+  });
+
+  Q.all(namePromises).fail(function(err) {
+    if (err.status) {
+      error = 'Riot server ' + err.status + '\'ed';
+    }
+
+    throw err;
+  }).then(function(summonerIds) {
+    if (_.some(summonerIds, function(summonerId) { return summonerId === -1; })) {
+      error = 'At least one of the participating summoners does not exist';
+      req.flash('createLeagueInvalidSummoner', true);
+      throw error;
+    }
+
+    var leagueData = {};
+    for (var i = 0; i < summonerNames.length; i++) {
+      leagueData[summonerNames[i]] = {};
+      leagueData[summonerNames[i]].summonerId = summonerIds[i];
+      leagueData[summonerNames[i]].stats = {};
+
+      var stats = leagueData[summonerNames[i]].stats;
+      stats.championKills            = 0;
+      stats.numDeaths                = 0;
+      stats.assists                  = 0;
+      stats.minionKills              = 0;
+      stats.doubleKills              = 0;
+      stats.tripleKills              = 0;
+      stats.quadraKills              = 0;
+      stats.pentaKills               = 0;
+      stats.goldEarned               = 0;
+      stats.damageDealtToChampions   = 0;
+      stats.healed                   = 0;
+      stats.levels                   = 0;
+      stats.turretsKilled            = 0;
+      stats.wardKills                = 0;
+      stats.wardsPlaced              = 0;
+      stats.damageTaken              = 0;
+      stats.totalWins                = 0;
+      stats.totalGames               = 0;
+    }
+
+    return req.app.locals.db.createLeague(leagueName, req.user.username, leagueData);
+  }).then(function() {
+    req.flash('createLeagueSuccess', 'Successfully created league!');
+    res.send({
+      success: true,
+      url: req.baseUrl + '/Leagues'
+    });
+  }).fail(function(reason) {
+    req.flash('createLeagueError', error || 'Unknown error...');
+    if (leagueName) {
+      req.flash('createLeagueName', leagueName);
+    }
+
+    if (!spectatorLeague) {
+      summonerNames.pop();
+    }
+
+    if (summonerNames.length) {
+      req.flash('createLeagueSummoners', summonerNames);
+    }
+
+    res.send({
+      success: false
+    });
   }).done();
 });
 

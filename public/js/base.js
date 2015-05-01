@@ -4,38 +4,38 @@ $(document).ready(function() {
     $('#login-username').focus();
   });
 
-  $('#login-form').on('submit', function(e) {
+  $('#login-form').submit(function(e) {
     e.preventDefault();
 
     // If there was an error before, toss it
     $('#login-username-div, #login-password-div').removeClass('has-error');
 
-    var values = {};
-    jQuery.each($('#login-form input'), function(i, input) {
-      values[input.name] = input.value;
+    var postValues = {};
+    $.each($('#login-form input'), function(i, input) {
+      postValues[input.name] = input.value;
     });
 
     var error = '';
-    if (!values['username'] && !values['password']) {
+    if (!postValues.username && !postValues.password) {
       $('#login-username-div, #login-password-div').addClass('has-error');
       error = 'You must enter your username and password';
       $('#login-username').focus();
-    } else if (!values['username']) {
+    } else if (!postValues.username) {
       $('#login-username-div').addClass('has-error');
       error = 'You must enter your username';
       $('#login-username').focus();
-    } else if (!values['password']) {
+    } else if (!postValues.password) {
       $('#login-password-div').addClass('has-error');
       error = 'You must enter your password';
       $('#login-password').focus();
     }
 
     if (!error) {
-      if (values.username.length > 128) {
+      if (postValues.username.length > 128) {
         $('#login-username-div').addClass('has-error');
         $('#login-username').focus();
         error = 'Your username cannot be more than 128 characters long';
-      }  else if (values.password.length > 1024) {
+      }  else if (postValues.password.length > 1024) {
         $('#login-password-div').addClass('has-error');
         $('#login-password').focus();
         error = 'Password is too long';
@@ -43,8 +43,7 @@ $(document).ready(function() {
     }
 
     if (!error) {
-      var data = $('#login-form').serialize();
-      var request = $.post(gBaseUrl + '/LogIn', data);
+      var request = $.post(gBaseUrl + '/LogIn', postValues);
 
       request.done(function(result) {
         if (result.success) {
@@ -64,37 +63,37 @@ $(document).ready(function() {
     $('#signup-username').focus();
   });
 
-  $('#signup-form').on('submit', function(e) {
+  $('#signup-form').submit(function(e) {
     e.preventDefault();
 
     // If there was an error before, toss it
     $('#signup-username-div, #signup-password-div, #signup-confirm-password-div, #signup-summoner-div, #signup-email-div, #signup-agree-div').removeClass('has-error');
 
-    var values = {};
-    jQuery.each($('#signup-form input'), function(i, input) {
-      values[input.name] = input.value;
+    var postValues = {};
+    $.each($('#signup-form input'), function(i, input) {
+      postValues[input.name] = input.value;
     });
-    values.agree = $('#signup-agree').is(':checked');
+    postValues.agree = $('#signup-agree').is(':checked');
 
     var isError = false;
     var error = '';
     // These checks have a specific order so that the top-most unfilled input is focussed
-    if (!values.summonerName) {
+    if (!postValues.summonerName) {
       $('#signup-summoner-div').addClass('has-error');
       $('#signup-summoner').focus();
       isError = true;
     }
-    if (!values.confirmPassword) {
+    if (!postValues.confirmPassword) {
       $('#signup-confirm-password-div').addClass('has-error');
       $('#signup-confirm-password').focus();
       isError = true;
     }
-    if (!values.password) {
+    if (!postValues.password) {
       $('#signup-password-div').addClass('has-error');
       $('#signup-password').focus();
       isError = true;
     }
-    if (!values.username) {
+    if (!postValues.username) {
       $('#signup-username-div').addClass('has-error');
       $('#signup-username').focus();
       isError = true;
@@ -105,27 +104,27 @@ $(document).ready(function() {
     }
 
     if (!isError) {
-      if (values.username.length > 128) {
+      if (postValues.username.length > 128) {
         $('#signup-username-div').addClass('has-error');
         $('#signup-username').focus();
         error = 'Your username cannot be more than 128 characters long';
         isError = true;
-      } else if (values.password != values.confirmPassword) {
+      } else if (postValues.password != postValues.confirmPassword) {
         $('#signup-password-div, #signup-confirm-password-div').addClass('has-error');
         $('#signup-password').focus();
         error = 'Passwords do not match';
         isError = true;
-      } else if (values.password.length > 1024) {
+      } else if (postValues.password.length > 1024) {
         $('#signup-password-div').addClass('has-error');
         $('#signup-password').focus();
         error = 'Password is too long';
         isError = true;
-      } else if (values.email.length > 128) {
+      } else if (postValues.email.length > 128) {
         $('#signup-email-div').addClass('has-error');
         $('#signup-email').focus();
         error = 'Your email cannot be more than 128 characters long';
         isError = true;
-      } else if (!values.agree) {
+      } else if (!postValues.agree) {
         $('#signup-agree-div').addClass('has-error');
         $('#signup-agree').focus();
         error = 'You must accept the agreement to sign up';
@@ -134,8 +133,7 @@ $(document).ready(function() {
     }
 
     if (!isError) {
-      var data = $('#signup-form').serialize();
-      var request = $.post(gBaseUrl + '/SignUp', data);
+      var request = $.post(gBaseUrl + '/SignUp', postValues);
 
       request.done(function(result) {
         if (result.success) {

@@ -22,7 +22,7 @@ var DB_LEAGUES_TABLE =
     'id               SERIAL PRIMARY KEY,' +
     'name             TEXT NOT NULL,' +
     'owner            TEXT NOT NULL REFERENCES users (username) ON DELETE CASCADE,' +
-    'stats            TEXT NOT NULL,' +
+    'data             TEXT NOT NULL,' +
     'creation_time    TIMESTAMP NOT NULL,' +
     'matches_tracked  TEXT[] NOT NULL' +
   ');';
@@ -126,13 +126,19 @@ function dbApi(connectionUrl) {
 
       return client;
     }).then(function(client) {
-      return Q.ninvoke(client, 'query', 'SELECT version FROM version;').then(function(result) {
-        if (!result.rows.length) {
-          throw 'getVersion failed';
-        }
+      var queryParams = {
+        name: 'get_version',
+        text: 'SELECT version FROM version',
+        values: []
+      };
 
-        return result.rows[0].version;
-      });
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function(result) {
+      if (!result.rows.length) {
+        throw 'getVersion failed';
+      }
+
+      return result.rows[0].version;
     }).fin(function() {
       if (clientDone) {
         clientDone();
@@ -144,6 +150,7 @@ function dbApi(connectionUrl) {
   /* Users */
   /*********/
 
+  // Creates a user with the given fields as arguments. Doesn't return anything important
   self.createUser = function(username, passwordHash, email, summonerName, region) {
     var clientDone;
 
@@ -167,8 +174,8 @@ function dbApi(connectionUrl) {
     });
   };
 
-  // Returns object with error field if user does not exist otherwise it returns
-  // an object with the username, summoner_name, email, and password_hash fields
+  // Returns false if user does not exist otherwise it returns an object
+  // with the username, summoner_name, email, and password_hash fields
   self.getUser = function(username) {
     var clientDone;
 
@@ -180,17 +187,17 @@ function dbApi(connectionUrl) {
     }).then(function(client) {
       var queryParams = {
         name: 'get_user',
-        text: 'SELECT username, summoner_name, email, password_hash FROM users WHERE username = $1;',
+        text: 'SELECT username, summoner_name, email, password_hash, region FROM users WHERE username = $1;',
         values: [username]
       };
 
-      return Q.ninvoke(client, 'query', queryParams).then(function(result) {
-        if (!result.rows.length) {
-          return { error: 'User does not exist' };
-        } else {
-          return result.rows[0];
-        }
-      });
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function(result) {
+      if (!result.rows.length) {
+        return false;
+      } else {
+        return result.rows[0];
+      }
     }).fin(function() {
       if (clientDone) {
         clientDone();
@@ -198,9 +205,13 @@ function dbApi(connectionUrl) {
     });
   };
 
+  /***********/
+  /* Leagues */
+  /***********/
+
   // Returns an array of league objects associated with the username. Returns an empty
   // array if the user does not exist or if the user has no leagues. League objects
-  // contain the fields: name, owner, creation_time, and matches_tracked
+  // contain the fields: id, name, owner, data, and creation_time
   self.getUsersLeagues = function(username) {
     var clientDone;
 
@@ -212,13 +223,72 @@ function dbApi(connectionUrl) {
     }).then(function(client) {
       var queryParams = {
         name: 'get_users_leagues',
-        text: 'SELECT name, owner, stats, creation_time, matches_tracked FROM leagues WHERE owner = $1;',
+        text: 'SELECT id, name, owner, data, creation_time FROM leagues WHERE owner = $1;',
         values: [username]
       };
 
-      return Q.ninvoke(client, 'query', queryParams).then(function(result) {
-        return result.rows;
-      });
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function(result) {
+      return result.rows;
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Creates a League with the given fields as arguments. Uses the postgreSQL now() function to
+  // get the current time and sets no matches tracked initially. Doesn't return anything important
+  self.createLeague = function(name, owner, data) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'create_league',
+        text: 'INSERT INTO leagues (name, owner, data, creation_time, matches_tracked) VALUES ($1, $2, $3, now(), $4);',
+        values: [name, owner, JSON.stringify(data), []]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Returns false if a League with the given ID does not exist otherwise it returns an
+  // object with the fields: id, name, owner, data, creation_time, and matches_tracked
+  self.getLeague = function(id) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'get_league',
+        text: 'SELECT id, name, owner, data, creation_time, matches_tracked FROM leagues WHERE id = $1;',
+        values: [id]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function(result) {
+      if (!result.rows.length) {
+        return false;
+      } else {
+        var league = result.rows[0];
+        league.data = JSON.parse(league.data);
+
+        return league;
+      }
     }).fin(function() {
       if (clientDone) {
         clientDone();

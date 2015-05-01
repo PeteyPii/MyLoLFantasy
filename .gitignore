@@ -1,5 +1,5 @@
 *.css
-*.css.map
+*.map
 *.log
 *.sublime-workspace
 node_modules/

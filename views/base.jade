@@ -39,10 +39,10 @@ html(lang='en')
           button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
           form#login-form(method='post', role='form', action='')
             h2 Log In
-            div#login-username-div(class= 'has-error' && (messages.loginMismatch || messages.loginRequired))
+            div#login-username-div(class= (messages.loginMismatch || messages.loginRequired) && 'has-error')
               input#login-username.form-control(type='text', name='username', placeholder='Username', value= messages.loginUsername ? messages.loginUsername : false)
             br
-            div#login-password-div(class= 'has-error' && (messages.loginMismatch || messages.loginRequired))
+            div#login-password-div(class= (messages.loginMismatch || messages.loginRequired) && 'has-error')
               input#login-password.form-control(type='password', name='password', placeholder='Password')
             br
             button#login-submit(class='btn btn-primary', type='submit') Submit
@@ -56,7 +56,7 @@ html(lang='en')
           button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
           form#signup-form(method='post', role='form', action='')
             h2 Sign Up
-            div#signup-username-div(class= 'has-error' && messages.signupNameTaken)
+            div#signup-username-div(class= messages.signupNameTaken && 'has-error')
               input#signup-username.form-control(type='text', name='username', placeholder='Username', value= messages.signupUsername ? messages.signupUsername : false)
             br
             div#signup-password-div
@@ -67,7 +67,7 @@ html(lang='en')
             div#signup-email-div
               input#signup-email.form-control(type='text', name='email', placeholder='Email (Optional)', value= messages.signupEmail ? messages.signupEmail : false)
             br
-            div#signup-summoner-div(class= 'has-error' && messages.signupSummonerNotExists)
+            div#signup-summoner-div(class= messages.signupSummonerNotExists && 'has-error')
               input#signup-summoner.form-control(type='text', name='summonerName', placeholder='Summoner Name', value= messages.signupSummonerName ? messages.signupSummonerName : false)
             .checkbox
               input#signup-agree(type='checkbox', checked=true, name='agree')

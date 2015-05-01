@@ -74,12 +74,14 @@ module.exports = {
 
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
-          if (user.error) {
+          if (!user) {
             return done(null, false);
           } else {
             Q.ninvoke(bcrypt, 'compare', password, user.password_hash).then(function(result) {
               return done(null, !result ? false : {
-                username: user.username
+                username: user.username,
+                region: user.region,
+                summonerName: user.summoner_name
               });
             });
           }
@@ -91,8 +93,16 @@ module.exports = {
       });
 
       passport.deserializeUser(function(username, done) {
-        done(null, {
-          username: username
+        db.getUser(username).done(function(user) {
+          if (!user) {
+            done(null, false);
+          } else {
+            done(null, {
+              username: username,
+              region: user.region,
+              summonerName: user.summoner_name
+            });
+          }
         });
       });
 
