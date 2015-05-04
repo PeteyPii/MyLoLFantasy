@@ -55,13 +55,19 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
     return self.smartRequest(url, true).then(function(data) {
       return data[summonerName.toLowerCase().replace(' ', '')].id;
     }, function(err) {
-      if (err.status) {
-        if (err.status === 404) {
-          return -1;
-        } else {
-          throw err;
-        }
+      if (err.status && err.status === 404) {
+        return -1;
+      } else {
+        throw err;
       }
+    });
+  };
+
+  self.getSummonersRecentGames = function(region, summonerId) {
+    var url = buildUrl(region, 1.3, 'game/by-summoner', summonerId + '/recent', self.config.apiKey);
+
+    return self.smartRequest(url, false).then(function(data) {
+      return data.games;
     });
   };
 
@@ -75,7 +81,7 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
       if (data) {
         return JSON.parse(data);
       } else {
-        var time = new Date().getTime();
+        var time = (new Date()).getTime();
 
         var multiRequestTime = self.redisClient.multi();
         multiRequestTime.lpop(REQUEST_LIST_KEY);
@@ -92,6 +98,7 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
           var body = values[1];
 
           switch (response.statusCode) {
+            case 400:
             case 401:
             case 404:
             case 429:

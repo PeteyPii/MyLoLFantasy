@@ -22,12 +22,13 @@ var DB_LEAGUES_TABLE =
     'id               SERIAL PRIMARY KEY,' +
     'name             TEXT NOT NULL,' +
     'owner            TEXT NOT NULL REFERENCES users (username) ON DELETE CASCADE,' +
+    'region           TEXT NOT NULL,' +
     'data             TEXT NOT NULL,' +
     'creation_time    TIMESTAMP NOT NULL,' +
     'matches_tracked  TEXT[] NOT NULL' +
   ');';
 
-// All methods return Q promises
+// All methods return Q promises unless otherwise noted
 function dbApi(connectionUrl) {
   var self = this;
 
@@ -71,8 +72,6 @@ function dbApi(connectionUrl) {
     return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
-
-      // console.log(client);
 
       return client;
     }).then(function(client) {
@@ -150,7 +149,7 @@ function dbApi(connectionUrl) {
   /* Users */
   /*********/
 
-  // Creates a user with the given fields as arguments. Doesn't return anything important
+  // Creates a user with the given fields as arguments. Doesn't return anything
   self.createUser = function(username, passwordHash, email, summonerName, region) {
     var clientDone;
 
@@ -167,6 +166,8 @@ function dbApi(connectionUrl) {
       };
 
       return Q.ninvoke(client, 'query', queryParams);
+    }).then(function() {
+      // Absorb previous return and return nothing instead
     }).fin(function() {
       if (clientDone) {
         clientDone();
@@ -209,9 +210,73 @@ function dbApi(connectionUrl) {
   /* Leagues */
   /***********/
 
+  // Creates a League with the given fields as arguments. Uses the postgreSQL now() function to
+  // get the current time and sets no matches tracked initially. Doesn't return anything. Data
+  // should passed in as an object
+  self.createLeague = function(name, owner, region, data) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'create_league',
+        text: 'INSERT INTO leagues (name, owner, region, data, creation_time, matches_tracked) VALUES ($1, $2, $3, $4, now(), $5);',
+        values: [name, owner, region, JSON.stringify(data), []]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function() {
+      // Absorb previous return and return nothing instead
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Query database for all Leagues that exist and execute leagueCallback(league) for each one
+  // and then finishedCallback() when all the rows have been received. Doesn't return anything.
+  // League objects contain the fields: id, name, owner, region, data, creation_time, and
+  // matches_tracked
+  self.getAllLeagues = function(leagueCallback, finishedCallback) {
+    var clientDone;
+
+    Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'get_all_leagues',
+        text: 'SELECT id, name, owner, region, data, creation_time, matches_tracked FROM leagues;',
+        values: []
+      };
+
+      var query = client.query(queryParams);
+
+      query.on('row', function(league) {
+        league.data = JSON.parse(league.data);
+        leagueCallback(league);
+      });
+
+      query.on('end', finishedCallback);
+    }).then(function() {
+      // Absorb previous return and return nothing instead
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    }).done;
+  };
+
   // Returns an array of league objects associated with the username. Returns an empty
   // array if the user does not exist or if the user has no leagues. League objects
-  // contain the fields: id, name, owner, data, and creation_time
+  // contain the fields: id, name, owner, data, matches_tracked, and creation_time
   self.getUsersLeagues = function(username) {
     var clientDone;
 
@@ -223,38 +288,18 @@ function dbApi(connectionUrl) {
     }).then(function(client) {
       var queryParams = {
         name: 'get_users_leagues',
-        text: 'SELECT id, name, owner, data, creation_time FROM leagues WHERE owner = $1;',
+        text: 'SELECT id, name, owner, region, data, creation_time, matches_tracked FROM leagues WHERE owner = $1;',
         values: [username]
       };
 
       return Q.ninvoke(client, 'query', queryParams);
     }).then(function(result) {
-      return result.rows;
-    }).fin(function() {
-      if (clientDone) {
-        clientDone();
+      var leagues = result.rows;
+      for (var i = 0; i < leagues.length; i++) {
+        leagues[i].data = JSON.parse(leagues[i].data);
       }
-    });
-  };
 
-  // Creates a League with the given fields as arguments. Uses the postgreSQL now() function to
-  // get the current time and sets no matches tracked initially. Doesn't return anything important
-  self.createLeague = function(name, owner, data) {
-    var clientDone;
-
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
-      var client = values[0];
-      clientDone = values[1];
-
-      return client;
-    }).then(function(client) {
-      var queryParams = {
-        name: 'create_league',
-        text: 'INSERT INTO leagues (name, owner, data, creation_time, matches_tracked) VALUES ($1, $2, $3, now(), $4);',
-        values: [name, owner, JSON.stringify(data), []]
-      };
-
-      return Q.ninvoke(client, 'query', queryParams);
+      return leagues;
     }).fin(function() {
       if (clientDone) {
         clientDone();
@@ -275,7 +320,7 @@ function dbApi(connectionUrl) {
     }).then(function(client) {
       var queryParams = {
         name: 'get_league',
-        text: 'SELECT id, name, owner, data, creation_time, matches_tracked FROM leagues WHERE id = $1;',
+        text: 'SELECT id, name, owner, region, data, creation_time, matches_tracked FROM leagues WHERE id = $1;',
         values: [id]
       };
 
@@ -289,6 +334,34 @@ function dbApi(connectionUrl) {
 
         return league;
       }
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Update League with passed in id to have the passed in data and trackedMatches. The values
+  // given overwrite any previous values. Data should be passed in as an object and trackedMatches
+  // should be passed in as an array of gameIds. Returns nothing
+  self.updateLeague = function(id, data, trackedMatches) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'update_league',
+        text: 'UPDATE leagues SET data = $2, matches_tracked = $3 WHERE id = $1;',
+        values: [id, JSON.stringify(data), trackedMatches]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function() {
+      // Absorb previous return and return nothing instead
     }).fin(function() {
       if (clientDone) {
         clientDone();

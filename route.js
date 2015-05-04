@@ -243,7 +243,7 @@ router.post('/CreateLeague', function(req, res) {
 
       var stats = leagueData[summonerNames[i]].stats;
       stats.championKills            = 0;
-      stats.numDeaths                = 0;
+      stats.deaths                   = 0;
       stats.assists                  = 0;
       stats.minionKills              = 0;
       stats.doubleKills              = 0;
@@ -254,15 +254,15 @@ router.post('/CreateLeague', function(req, res) {
       stats.damageDealtToChampions   = 0;
       stats.healed                   = 0;
       stats.levels                   = 0;
-      stats.turretsKilled            = 0;
+      stats.turretKills              = 0;
       stats.wardKills                = 0;
-      stats.wardsPlaced              = 0;
+      stats.wardPlaces               = 0;
       stats.damageTaken              = 0;
       stats.totalWins                = 0;
       stats.totalGames               = 0;
     }
 
-    return req.app.locals.db.createLeague(leagueName, req.user.username, leagueData);
+    return req.app.locals.db.createLeague(leagueName, req.user.username, req.user.region, leagueData);
   }).then(function() {
     req.flash('createLeagueSuccess', 'Successfully created league!');
     res.send({

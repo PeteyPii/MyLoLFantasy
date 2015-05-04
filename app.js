@@ -16,12 +16,13 @@ var favicon = require('serve-favicon');
 
 var dbApi = require('./database.js');
 var lolApi = require('./lol.js');
+var statsApi = require('./statistics.js');
 
 var VERSION = '0.0.1';
 var settings = {};
 
 module.exports = {
-  createApp: function() {
+  createApp: function(gatherStats) {
     settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
 
     validateSettings(settings);
@@ -111,6 +112,27 @@ module.exports = {
       app.locals.settings = settings;
       app.locals.db = db;
       app.locals.lol = lol;
+
+      if (gatherStats) {
+        var stats = new statsApi(db, lol);
+        var lastUpdateTime = 0;
+
+        function updateLeagues() {
+          lastUpdateTime = (new Date()).getTime();
+          stats.updateAllLeagues().fail(function(err) {
+            if (err.stack) {
+              console.error('Error while updating all Leagues');
+              console.error(err.stack);
+            } else {
+              console.error('Error updating all Leagues: ' + err);
+            }
+          }).done(function() {
+            setTimeout(updateLeagues, Math.max(0, settings.refresh_period - ((new Date()).getTime() - lastUpdateTime)));
+          });
+        }
+
+        updateLeagues();
+      }
 
       return app;
     });

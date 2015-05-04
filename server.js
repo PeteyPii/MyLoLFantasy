@@ -8,7 +8,7 @@ var app = express();
 mlf = require('./app.js');
 
 try {
-  mlf.createApp().then(function(mlfApp) {
+  mlf.createApp(true).then(function(mlfApp) {
     app.get('/', function(req, res) {
       res.redirect('/MLF');
     });
