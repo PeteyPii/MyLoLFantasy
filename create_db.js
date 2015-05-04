@@ -6,13 +6,14 @@ var Q = require('q');
 var dbApi = require('./database.js');
 
 try {
+  var settings = {};
   settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
 
   var db = new dbApi(settings.postgre_url);
 
   db.createDb().fail(function(err) {
     if (err.stack) {
-      console.log(err.stack);
+      console.error(err.stack);
     } else {
       console.error('Error: ' + err)
     }
@@ -21,7 +22,7 @@ try {
   }).done();
 } catch (err) {
   if (err.stack) {
-    console.log(err.stack);
+    console.error(err.stack);
   } else {
     console.error('Error: ' + err)
   }
