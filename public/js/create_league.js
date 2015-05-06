@@ -7,11 +7,14 @@ $(document).ready(function() {
   for (var i = 0; i < summonerInputIdNumber; i++) {
     var summonerInputId = 'summoner-input-' + i;
     summonerInputIds.push(summonerInputId);
-    $('#' + summonerInputId + ' button').click(function() {
-      $('#' + summonerInputId).remove();
-      summonerInputIds.splice(summonerInputIds.indexOf(summonerInputId), 1);
+    $('#' + summonerInputId + ' button').click((function(id) { return function() {
+      // Need to do some whacky closure manipulation so that we don't get the value of the
+      // id at the time of the callback creation rather than when the button is pressed
+      $(this).unbind('click');
+      $('#' + id).remove();
+      summonerInputIds.splice(summonerInputIds.indexOf(id), 1);
       updateInputSpacing();
-    });
+    }})(summonerInputId));
   }
 
   $('#add-summoner').click(function() {
@@ -27,6 +30,7 @@ $(document).ready(function() {
     $('#last-summoner-input-break').before(summonerInputHtml);
     summonerInputIds.push(summonerInputId);
     $('#' + summonerInputId + ' button').click(function() {
+      $(this).unbind('click');
       $('#' + summonerInputId).remove();
       summonerInputIds.splice(summonerInputIds.indexOf(summonerInputId), 1);
       updateInputSpacing();
