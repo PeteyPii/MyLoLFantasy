@@ -132,6 +132,7 @@ module.exports = {
         }
 
         updateLeagues();
+        app.locals.stats = stats;
       }
 
       return app;

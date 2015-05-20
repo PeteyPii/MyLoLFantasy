@@ -291,6 +291,29 @@ router.post('/CreateLeague', function(req, res) {
 
 module.exports = router;
 
+router.get("/League_:leagueId", function(req, res) {
+  if (!req.user) {  
+    redirectRequireLogin(req, res);
+    return;
+  }
+  res.locals.leagueId = req.params.leagueId
+  req.app.locals.db.getLeague(res.locals.leagueId).then(function(league) {
+    if (league){
+      for (var user in league.data) {
+        var points = req.app.locals.stats.evaluatePoints(league.data[user].stats);
+        league.data[user].stats.totalPoints = points;
+        console.log(points);
+      }
+      res.locals.league = league;
+    } else {
+      throw error;
+    }
+    res.render('league');
+  }).fail(function(reason){
+    res.render('league');
+  }).done();
+});
+
 function redirectRequireLogin(req, res) {
   req.flash('loginRequired', true);
   req.flash('loginError', 'You must be logged in to view that!');
