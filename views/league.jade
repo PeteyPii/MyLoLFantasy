@@ -1,0 +1,14 @@
+extends ./base.jade
+
+block title
+  title League  - My LoL Fantasy
+//- TODO: show people what league they are viewing -- with name or #
+block content
+  div(class='container theme-showcase' role='main')
+    if league
+      .text-center
+        h3= 'League ' + league.name
+        
+    else 
+      .text-cneter
+        h3 A league with that id could not be found
