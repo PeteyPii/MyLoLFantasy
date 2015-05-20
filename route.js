@@ -299,19 +299,17 @@ router.get("/League_:leagueId", function(req, res) {
   res.locals.leagueId = req.params.leagueId
   req.app.locals.db.getLeague(res.locals.leagueId).then(function(league) {
     if (league){
+      for (var user in league.data) {
+        var points = req.app.locals.stats.evaluatePoints(league.data[user].stats);
+        league.data[user].stats.totalPoints = points;
+        console.log(points);
+      }
       res.locals.league = league;
     } else {
-      error = "Cannot find league with id " + leagueId; 
-      req.flash('cannotFindLeagueError', leagueId);
       throw error;
     }
-    console.log(league);
     res.render('league');
   }).fail(function(reason){
-    req.flash('loadLeagueError', leagueId)
-    res.send({
-      success: false
-    })
     res.render('league');
   }).done();
 });
