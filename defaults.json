@@ -1,0 +1,6 @@
+{
+  "refresh_period": 3600000,
+  "lol_burst_requests": 8,
+  "lol_burst_period": 10000,
+  "password_hash_rounds": 8
+}

@@ -1,11 +1,8 @@
 *.css
-*.css.map
-*.db
-*.pyc
+*.map
+*.log
 *.sublime-workspace
-.sass-cache
-__pycache__
-dbState.json
+node_modules/
 settings.json
 Thumbs.db
 
