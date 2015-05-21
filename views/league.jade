@@ -1,0 +1,38 @@
+extends ./base.jade
+
+block title
+  title League  - My LoL Fantasy
+//- TODO: show people what league they are viewing -- with name or #
+block content
+  div(class='container theme-showcase' role='main')
+    if league
+      table(class='table table-league')
+        thead: tr
+          th.column-player: h3= 'Player'
+          th.column-kills: h3= 'Kills'
+          th.column-asssists: h3= 'Assists'
+          th.column-deaths: h3= 'Deaths'
+          th.column-minions: h3= 'Minions Killed'
+          th.column-turrets: h3= 'Turrets Killed'
+          th.column-double: h3= 'Double Kills'
+          th.column-triple: h3= 'Triple Kills'
+          th.column-quadra: h3= 'Quadra Kills'
+          th.column-penta: h3= 'Penta Kills'
+          th.column-points: h3= 'Total Points'
+        tbody
+        each user, key in league.data
+          tr
+            td: p= key
+            td: p= user.stats.championKills
+            td: p= user.stats.assists
+            td: p= user.stats.deaths
+            td: p= user.stats.minionKills
+            td: p= user.stats.turretKills
+            td: p= user.stats.doubleKills
+            td: p= user.stats.tripleKills
+            td: p= user.stats.quadraKills
+            td: p= user.stats.pentaKills
+            td: p= user.stats.totalPoints
+    else 
+      .text-center
+        h3 A league with that id could not be found

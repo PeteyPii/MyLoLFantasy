@@ -1,0 +1,32 @@
+extends ./base.jade
+
+block title
+  title Create a League - My LoL Fantasy
+
+block content
+  div(class='container theme-showcase' role='main')
+    .well
+      .create-league-error
+        if messages.createLeagueError
+          p= messages.createLeagueError
+
+      form#create-league-form(method='post', role='form', action='')
+        h1 Create New League
+        div#league-name-input-div
+          input#league-name-input.form-control(type='text', name='groupName', placeholder='League Name', value= messages.createLeagueName ? messages.createLeagueName : false)
+        br
+        if messages.createLeagueSummoners
+          each name, index in messages.createLeagueSummoners
+            div(id= 'summoner-input-' + index, class= 'summoner-input ' + (messages.createLeagueInvalidSummoner && 'has-error'))
+              input.form-control(type='text', placeholder='Summoner Name', value= name)
+              button(type='button', class='btn btn-primary') Remove
+        else
+          div#summoner-input-0.summoner-input
+            input.form-control(type='text', placeholder='Summoner Name')
+            button(type='button', class='btn btn-primary') Remove
+        br#last-summoner-input-break
+        button#add-summoner(type='button', class='btn btn-primary') Add Summoner
+        button(type='submit', class='btn btn-primary') Create
+
+block scripts
+  script(src= baseUrl + '/js/create_league.js')
