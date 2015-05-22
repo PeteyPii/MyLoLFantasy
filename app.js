@@ -45,8 +45,7 @@ module.exports = {
               throw err;
             }
 
-            var outFileName = path.join(dirPath.split(path.sep).slice(0, -1).join(path.sep), 'public/css',
-              path.basename(files[i], '.less') + '.css');
+            var outFileName = path.join(__dirname, 'public/css', path.basename(files[i], '.less') + '.css');
             fs.writeFileSync(outFileName, output.css);
           });
         }
