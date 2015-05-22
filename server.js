@@ -1,11 +1,12 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var path = require('path');
 
 var express = require('express');
 var reload = require('reload');
 
-mlf = require('./app.js');
+var mlf = require(path.join(__dirname, 'app.js'));
 
 try {
   mlf.createApp(true).then(function(mlfApp) {
@@ -16,9 +17,9 @@ try {
     app.use('/MLF', mlfApp);
 
     var httpsServer = https.createServer({
-      key: fs.readFileSync('./certs/server.key'),
-      cert: fs.readFileSync('./certs/server.crt'),
-      ca: fs.readFileSync('./certs/ca.crt'),
+      key: fs.readFileSync(path.join(__dirname, 'certs/server.key')),
+      cert: fs.readFileSync(path.join(__dirname, 'certs/server.crt')),
+      ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
       requestCert: true,
       rejectUnauthorized: false
     }, app);

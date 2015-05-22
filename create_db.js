@@ -1,13 +1,14 @@
 var fs = require('fs');
+var path = require('path');
 
 var _ = require('lodash');
 var Q = require('q');
 
-var dbApi = require('./database.js');
+var dbApi = require(path.join(__dirname, 'database.js'));
 
 try {
   var settings = {};
-  settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
+  settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
 
   var db = new dbApi(settings.postgre_url);
 

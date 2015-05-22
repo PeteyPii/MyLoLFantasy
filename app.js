@@ -14,16 +14,16 @@ var localStrat = require('passport-local');
 var Q = require('q');
 var favicon = require('serve-favicon');
 
-var dbApi = require('./database.js');
-var lolApi = require('./lol.js');
-var statsApi = require('./statistics.js');
+var dbApi = require(path.join(__dirname, 'database.js'));
+var lolApi = require(path.join(__dirname, 'lol.js'));
+var statsApi = require(path.join(__dirname, 'statistics.js'));
 
 var VERSION = '0.0.1';
 var settings = {};
 
 module.exports = {
   createApp: function(gatherStats) {
-    settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
+    settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
 
     validateSettings(settings);
 
@@ -33,11 +33,11 @@ module.exports = {
     var promise = db.init().then(function() {
       return lol.init();
     }).then(function() {
-      file.walkSync('less', function(dirPath, dirs, files) {
+      file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
         for (var i = 0; i < files.length; i++) {
           var filePath = path.join(dirPath, files[i]);
           less.render(fs.readFileSync(filePath).toString('utf8'), {
-            paths: ['less'],
+            paths: [path.join(__dirname, 'less')],
             filename: filePath,
             compress: false
           }, function(err, output) {
@@ -45,8 +45,7 @@ module.exports = {
               throw err;
             }
 
-            var outFileName = path.join('public/css',
-              dirPath.split(path.sep).slice(1).join(path.sep),
+            var outFileName = path.join(dirPath.split(path.sep).slice(0, -1).join(path.sep), 'public/css',
               path.basename(files[i], '.less') + '.css');
             fs.writeFileSync(outFileName, output.css);
           });
@@ -55,11 +54,11 @@ module.exports = {
     }).then(function() {
       var app = express();
 
-      app.set('views', './views');
+      app.set('views', path.join(__dirname, 'views'));
       app.set('view engine', 'jade');
 
-      app.use(express.static('public'));
-      app.use(favicon('./public/img/favicon.ico'));
+      app.use(express.static(path.join(__dirname, 'public')));
+      app.use(favicon(path.join(__dirname, 'public/img/favicon.ico')));
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({
         extended: true,
@@ -107,7 +106,7 @@ module.exports = {
         });
       });
 
-      app.use('/', require('./route.js'));
+      app.use('/', require(path.join(__dirname, 'route.js')));
 
       app.locals.settings = settings;
       app.locals.db = db;
