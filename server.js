@@ -19,14 +19,11 @@ try {
     var httpsServer = https.createServer({
       key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
       cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
-      // ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
-      requestCert: true,
-      rejectUnauthorized: false
     }, app);
 
     reload(httpsServer, app, 1000);
 
-    httpsServer.listen(443, '127.0.0.1', function() {
+    httpsServer.listen(443, function() {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
