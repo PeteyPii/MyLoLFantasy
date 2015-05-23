@@ -31,6 +31,7 @@ module.exports = {
 
     var db = new dbApi(settings.postgre_url);
     var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
+    var stats = new statsApi(db, lol);
 
     var promise = db.init().then(function() {
       return lol.init();
@@ -117,14 +118,18 @@ module.exports = {
       app.locals.settings = settings;
       app.locals.db = db;
       app.locals.lol = lol;
+      app.locals.stats = stats;
 
       if (gatherStats) {
-        var stats = new statsApi(db, lol);
         var lastUpdateTime = 0;
 
         function updateLeagues() {
           lastUpdateTime = (new Date()).getTime();
-          stats.updateAllLeagues().fail(function(err) {
+          lol.resetTempCache().then(function() {
+            return stats.updateAllLeagues();
+          }).then(function() {
+            return lol.resetTempCache();
+          }).fail(function(err) {
             if (err.stack) {
               console.error('Error while updating all Leagues');
               console.error(err.stack);
@@ -136,8 +141,8 @@ module.exports = {
           });
         }
 
-        updateLeagues();
-        app.locals.stats = stats;
+        // Wait 5 seconds to start updating leagues so that things don't get hairy in the middle of starting up
+        setTimeout(updateLeagues, 5000);
       }
 
       return app;
