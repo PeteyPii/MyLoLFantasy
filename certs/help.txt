@@ -1,5 +1,1 @@
 IMPORTANT NOTE: Only use these for development. It would be extremely insecure to use them on production environments.
-
-All this stuff generated using the steps from: http://greengeckodesign.com/blog/2013/06/15/creating-an-ssl-certificate-for-node-dot-js/
-All passphrases are: "keyboardcat"
-

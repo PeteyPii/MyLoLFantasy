@@ -17,9 +17,9 @@ try {
     app.use('/MLF', mlfApp);
 
     var httpsServer = https.createServer({
-      key: fs.readFileSync(path.join(__dirname, 'certs/server.key')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/server.crt')),
-      ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
+      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
+      // ca: fs.readFileSync(path.join(__dirname, 'certs/ca.crt')),
       requestCert: true,
       rejectUnauthorized: false
     }, app);
