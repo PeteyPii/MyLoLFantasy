@@ -1,17 +1,19 @@
 var fs = require('fs');
 var path = require('path');
 
-var _ = require('lodash');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
+var connectRedis = require('connect-redis');
 var express = require('express');
 var flash = require('express-flash');
 var session = require('express-session');
 var file = require('file');
 var less = require('less');
+var _ = require('lodash');
 var passport = require('passport');
 var localStrat = require('passport-local');
 var Q = require('q');
+var redis = require('redis');
 var favicon = require('serve-favicon');
 
 var dbApi = require(path.join(__dirname, 'database.js'));
@@ -52,6 +54,7 @@ module.exports = {
       });
     }).then(function() {
       var app = express();
+      var redisStore = connectRedis(session);
 
       app.set('views', path.join(__dirname, 'views'));
       app.set('view engine', 'jade');
@@ -66,6 +69,10 @@ module.exports = {
         secret: settings.secret_key,
         resave: false,
         saveUninitialized: true,
+        store: new redisStore({
+          host: 'localhost',
+          port: '6379'
+        })
       }));
       app.use(flash());
       app.use(passport.initialize());

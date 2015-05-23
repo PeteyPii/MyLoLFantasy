@@ -36,8 +36,7 @@ try {
     // Create server for redirecting to the secure version of the app
     var redirectApp = express();
     redirectApp.get('*', function(req, res) {
-      console.log('Redirecting to main site');
-      res.redirect('https://' + req.hostname + req.url)
+      res.redirect('https://' + req.hostname + req.url);
     });
     var httpServer = http.createServer(redirectApp).listen(80);
 

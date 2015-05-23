@@ -21,7 +21,7 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
   self.config.requestBurstCount = requestBurstCount;
   self.config.requestBurstPeriod = requestBurstPeriod;
 
-  self.redisClient =  redis.createClient();
+  self.redisClient = redis.createClient();
 
   self.init = function() {
     var multi = self.redisClient.multi();

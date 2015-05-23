@@ -7,7 +7,7 @@ var Q = require('q');
 var router = express.Router();
 
 router.use(function logRequests(req, res, next) {
-  console.log(req.method + ' request at URL: ' + req.url);
+  console.log(req.method + ' request for MLF at ' + req.url);
 
   next();
 });
