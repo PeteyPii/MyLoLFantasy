@@ -2,23 +2,25 @@ extends ./base.jade
 
 block title
   title League  - My LoL Fantasy
-//- TODO: show people what league they are viewing -- with name or #
 block content
   div(class='container theme-showcase' role='main')
     if league
+      .text-center
+        h2= 'League ' + league.name
       table(class='table table-league')
         thead: tr
-          th.column-player: h3= 'Player'
-          th.column-kills: h3= 'Kills'
-          th.column-asssists: h3= 'Assists'
-          th.column-deaths: h3= 'Deaths'
-          th.column-minions: h3= 'Minions Killed'
-          th.column-turrets: h3= 'Turrets Killed'
-          th.column-double: h3= 'Double Kills'
-          th.column-triple: h3= 'Triple Kills'
-          th.column-quadra: h3= 'Quadra Kills'
-          th.column-penta: h3= 'Penta Kills'
-          th.column-points: h3= 'Total Points'
+          th.column-player: h4= 'Player'
+          th.column-kills: h4= 'Kills'
+          th.column-asssists: h4= 'Assists'
+          th.column-deaths: h4= 'Deaths'
+          th.column-minions: h4= 'Minions Killed'
+          th.column-turrets: h4= 'Turrets Killed'
+          th.column-double: h4= 'Double Kills'
+          th.column-triple: h4= 'Triple Kills'
+          th.column-quadra: h4= 'Quadra Kills'
+          th.column-penta: h4= 'Penta Kills'
+          th.column-points: h4= 'Total Points'
+          th.column-games: h4= 'Games Played'
         tbody
         each user, key in league.data
           tr
@@ -33,6 +35,7 @@ block content
             td: p= user.stats.quadraKills
             td: p= user.stats.pentaKills
             td: p= user.stats.totalPoints
+            td: p= user.stats.totalGames
     else 
       .text-center
         h3 A league with that id could not be found
