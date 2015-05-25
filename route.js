@@ -107,7 +107,10 @@ router.post('/SignUp', function(req, res) {
       success: false
     });
   }).done();
+});
 
+router.get('/EULA', function(req, res) {
+  res.render('eula');
 });
 
 router.post('/LogIn', function(req, res) {
