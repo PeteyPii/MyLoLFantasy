@@ -20,7 +20,7 @@ First install the following:
 - PostgreSQL (v9.4.1)
 - Redis (v2.8.19)
 - Python (v2.7.9)
-- The correct build system for C++ (e.g. VS Express 2013 for Desktop on Windows)
+- The correct build system for C++, for [node-gyp](https://github.com/TooTallNate/node-gyp) (e.g. VS Express 2013 for Desktop on Windows)
 
 Other versions may be okay, but these are the ones we use and test with.
 
