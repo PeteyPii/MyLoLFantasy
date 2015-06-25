@@ -303,6 +303,7 @@ router.get('/League_:leagueId', function(req, res) {
       for (var user in league.data) {
         var points = req.app.locals.stats.evaluatePoints(league.data[user].stats);
         league.data[user].stats.totalPoints = points;
+        res.locals.gamesPlayed = league.data[user].stats.totalGames;
       }
       res.locals.league = league;
     }
