@@ -1,108 +1,65 @@
 My LoL Fantasy
 ==============
+Play fantasy League of Legends with your friends by earning your team's points yourself. Play League of Legends games with friends to compete and see who is the best!
 
-Play fantasy League of Legends with your friends by earning points yourself. Play games with friends and earn points and compete.
-
-
-Tools
------
-
-- Flask
-- SQLite
-- passlib
+Technologies
+------------
+- Node.js
+- Express
+- Redis
+- PostgreSQL
 - League of Legends API
-- Sass
+- Less
 - Twitter Bootstrap
 - Font Awesome
 
-
-Getting Up and Running
+Getting up and running
 ----------------------
+First install the following:
+- Node.js (v0.12.0)
+- PostgreSQL (v9.4.1)
+- Redis (v2.8.19)
+- Python (v2.7.9)
+- The correct build system for C++, for [node-gyp](https://github.com/TooTallNate/node-gyp) (e.g. VS Express 2013 for Desktop on Windows)
 
-Prerequisite: Make sure you are running Python 3. We use Python 3.4 but it should work on other Python 3 versions as well. You'll also need Sass (and by extension of this, Ruby).
+Other versions may be okay, but these are the ones we use and test with.
 
-To start, install some dependencies:
-
-```
-pip install Flask
-pip install passlib
-```
-
-It is recommended you install one of the following if you can:
-
-```
-pip install bcrypt
-pip install py-bcrypt
-pip install bcryptor
-```
-
-Next, clone the repository, then go to the server/database directory and run:
+Next, `git clone` the repo. In the root directory do `npm install` and make sure all the dependencies are fetched and built correctly. At this point
+you'll want to make sure that you've set up a working PostgreSQL service and a local Redis service on port 6379. Now, you need to set up a `settings.json`
+with the following:
 
 ```
-python dbCreate.py
+{
+  "lol_api_key": "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "postgre_url": "postgres://user:password@hostname/database",
+  "secret_key": "keyboard cat"
+}
 ```
 
-Now, go up a directory and run:
+Where:
+- `lol_api_key` is your API key from Riot games
+- `postgre_url` is a URL to your PostgreSQL database dedicated to MLF
+- `secret_key` is used for cookies, use some random string here
 
-```
-python settings.py
-```
-
-Follow the instructions during its execution and your settings should be set up okay.
-
-We use Sass so you will need to compile the website's style sheets. From the current (server) directory you can run:
-
-```
-sass static/scss/theme.scss:static/css/theme.scss
-```
-
-for a one-time compile whenever you want or you can do:
-
-```
-sass --watch static/scss:static/css
-```
-
-for automatic recompiling whenever the Sass files change.
-
-Once you run:
-
-```
-python server.py
-```
-
-Your server should be online and you should be able to view it at localhost:5000!
-
+Finally, as long as you've done everything correctly so far, you should be able to run `node create_db.js` to initialize database tables. Now, install
+some tools, `npm install -g grunt-cli supervisor`, and then run `grunt` and you should see the app in your browser shortly. If not, try manually checking out
+`https:\\localhost` (sometimes the startup script fails for some race condition) and double-check all your steps.
 
 Contributing
 ------------
+Fork the repo, make sure that you have the latest changes, then branch off the `development` branch. Make your changes. Send a pull request
+into the original repo's `development` branch and wait for us to review it and hopefully accept it.
 
-First make sure you are on the development branch:
+Things we like to see are:
+- Commit messages in the past tense (e.g. "Fixed problem x" or "Implemented feature y").
+- Branch name in snake case.
+- If you're working on a relevant issue from GitHub, precede commit messages and branch names with the issue number (e.g. I25_branch_name or "I25: Commit message").
+- Follow the coding styles we already use.
 
-```
-git checkout development
-```
-
-Then create a branch to work on. Name it nicely with a description and issue number like so:
-
-```
-git branch features/I29_use_git_branches
-git checkout features/I29_use_git_branches
-```
-
-If there's no issue number to go with your change or there are multiple, just include the description. If you're fixing a bug use the naming convention "fixes" instead of "features". Afterwards, change whatever you wanted to change and commit your work with a meaningful message (don't forget to double-check your work before doing so):
-
-```
-git status    # Make sure you are on the right branch
-git diff      # and that your changes are okay
-git add .
-git commit -m "I29: Added git branches and described workflow in README"
-git push
-```
-
-You should get an error about the upstream not being set, solve this by typing what git tells you to. If you know what you're doing feel free to do this in the previous step.
-
-```
-git push --set-upstream origin features/I29_use_git_branches
-```
-
-You can either continue working if you're not satisfied with your changes by making more commits and pushing them or you can ask for a pull request on GitHub. We'll review your changes there and then if we like them we'll merge your changes in and delete the branch you created.
+Special mentions
+----------------
+We would like to thank the following people for their work on My LoL Fantasy:
+- Patrick Wrobel
+- Balaji Sankaranarayanan
+- Josh Kergan
+- Patrick Perrier

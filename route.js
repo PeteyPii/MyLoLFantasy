@@ -107,7 +107,10 @@ router.post('/SignUp', function(req, res) {
       success: false
     });
   }).done();
+});
 
+router.get('/EULA', function(req, res) {
+  res.render('eula');
 });
 
 router.post('/LogIn', function(req, res) {
@@ -292,10 +295,10 @@ router.post('/CreateLeague', function(req, res) {
 module.exports = router;
 
 router.get('/League_:leagueId', function(req, res) {
-  if (!req.user) {
+  /*if (!req.user) {
     redirectRequireLogin(req, res);
     return;
-  }
+  }*/
 
   res.locals.leagueId = req.params.leagueId
   req.app.locals.db.getLeague(res.locals.leagueId).then(function(league) {
@@ -312,6 +315,12 @@ router.get('/League_:leagueId', function(req, res) {
   }).fail(function(reason) {
     res.render('league');
   }).done();
+});
+
+router.use(function(req, res) {
+  res.status(404);
+
+  res.render('404');
 });
 
 function redirectRequireLogin(req, res) {
