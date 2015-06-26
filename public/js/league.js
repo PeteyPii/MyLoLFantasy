@@ -1,8 +1,15 @@
 $(document).ready(function() {
-  $("#btn-show-details").on("click", function() {
-    window.location.href = window.location.pathname + "?detailed=true";
+  $('#individualGameStatsBtn').on('click', function() {
+    $('.table-league').hide();
+    $('.table-league-individual').show();
+    $(this).hide();
+    $('#allGameStatsBtn').show();
   });
-  $("#btn-hide-details").on("click", function() {
-    window.location.href = window.location.pathname + "?detailed=false";
+
+    $('#allGameStatsBtn').on('click', function() {
+    $('.table-league').show();
+    $('.table-league-individual').hide();
+    $(this).hide();
+    $('#individualGameStatsBtn').show();
   });
 });
