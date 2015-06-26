@@ -10,8 +10,8 @@ block content
       .text-left
          h3= 'Total Games Played: ' + gamesPlayed
       .text-right
-        button#individualGameStats(class='btn btn-primary') Show Individual Games
-        button#allGameStats(class='btn btn-primary hide') Show All Games
+        button#individualGameStatsBtn(class='btn btn-primary') Show Individual Games
+        button#allGameStatsBtn(class='btn btn-primary button-individual-games') Show All Games
       table(class='table table-league')
         thead: tr
           th.column-player: h4= 'Player'
@@ -39,7 +39,7 @@ block content
             td= user.stats.quadraKills
             td= user.stats.pentaKills
             td= user.stats.totalPoints
-      table(class='table table-league-individual hide')
+      table(class='table table-league-individual')
         thead: tr
           th.column-player: h4= 'Player'
           th.column-kills: h4= 'Kills'
@@ -56,16 +56,16 @@ block content
         each user, key in league.data
           tr
             td= key
-            td= Math.round(user.stats.championKills / gamesPlayed)
-            td= Math.round(user.stats.assists / gamesPlayed)
-            td= Math.round(user.stats.deaths / gamesPlayed)
-            td= Math.round(user.stats.minionKills / gamesPlayed)
-            td= Math.round(user.stats.turretKills / gamesPlayed)
-            td= Math.round(user.stats.doubleKills / gamesPlayed)
-            td= Math.round(user.stats.tripleKills / gamesPlayed)
-            td= Math.round(user.stats.quadraKills / gamesPlayed)
-            td= Math.round(user.stats.pentaKills / gamesPlayed)
-            td= Math.round(user.stats.totalPoints / gamesPlayed)
+            td= Math.round(user.stats.championKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.assists * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.deaths * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.minionKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.turretKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.doubleKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.tripleKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.quadraKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.pentaKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.totalPoints * 100 / gamesPlayed) / 100
     else 
       .text-center
         h3 A league with that id could not be found

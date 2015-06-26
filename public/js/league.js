@@ -8,17 +8,17 @@ $(document).ready(function() {
   });
 
 
-  $('#individualGameStats').on("click", function() {
-    $(document.getElementsByClassName("table table-league")[0]).addClass('hide');
-    $(document.getElementsByClassName("table table-league-individual hide")[0]).removeClass('hide');
-    $(this).addClass('hide');
-    $('#allGameStats').removeClass('hide');
+  $('#individualGameStatsBtn').on("click", function() {
+    $(document.getElementsByClassName("table table-league")[0]).hide();
+    $(document.getElementsByClassName("table table-league-individual")[0]).show();
+    $(this).hide();
+    $('#allGameStatsBtn').show();
   });
 
-    $('#allGameStats').on("click", function() {
-    $(document.getElementsByClassName("table table-league hide")[0]).removeClass('hide');
-    $(document.getElementsByClassName("table table-league-individual")[0]).addClass('hide');
-    $(this).addClass('hide');
-    $('#individualGameStats').removeClass('hide');
+    $('#allGameStatsBtn').on("click", function() {
+    $(document.getElementsByClassName("table table-league")[0]).show();
+    $(document.getElementsByClassName("table table-league-individual")[0]).hide();
+    $(this).hide();
+    $('#individualGameStatsBtn').show();
   });
 });
