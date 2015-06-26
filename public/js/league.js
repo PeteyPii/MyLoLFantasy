@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  var individualGames = false;
   $("#btn-show-details").on("click", function() {
     window.location.href = window.location.pathname + "?detailed=true";
   });
