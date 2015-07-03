@@ -153,7 +153,7 @@ function dbApi(connectionUrl) {
   self.createUser = function(username, passwordHash, email, summonerName, region) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -180,7 +180,7 @@ function dbApi(connectionUrl) {
   self.getUser = function(username) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -216,7 +216,7 @@ function dbApi(connectionUrl) {
   self.createLeague = function(name, owner, region, data) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -245,7 +245,7 @@ function dbApi(connectionUrl) {
   self.getAllLeagues = function(leagueCallback, finishedCallback) {
     var clientDone;
 
-    Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -280,7 +280,7 @@ function dbApi(connectionUrl) {
   self.getUsersLeagues = function(username) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -312,7 +312,7 @@ function dbApi(connectionUrl) {
   self.getLeague = function(id) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -347,7 +347,7 @@ function dbApi(connectionUrl) {
   self.updateLeague = function(id, data, trackedMatches) {
     var clientDone;
 
-    return Q.ninvoke(pg, 'connect', this.config.connectionUrl).then(function(values) {
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
       var client = values[0];
       clientDone = values[1];
 
@@ -357,6 +357,32 @@ function dbApi(connectionUrl) {
         name: 'update_league',
         text: 'UPDATE leagues SET data = $2, matches_tracked = $3 WHERE id = $1;',
         values: [id, JSON.stringify(data), trackedMatches]
+      };
+
+      return Q.ninvoke(client, 'query', queryParams);
+    }).then(function() {
+      // Absorb previous return and return nothing instead
+    }).fin(function() {
+      if (clientDone) {
+        clientDone();
+      }
+    });
+  };
+
+  // Delete the League with the given id and returns nothing
+  self.deleteLeague = function(id) {
+    var clientDone;
+
+    return Q.ninvoke(pg, 'connect', self.config.connectionUrl).then(function(values) {
+      var client = values[0];
+      clientDone = values[1];
+
+      return client;
+    }).then(function(client) {
+      var queryParams = {
+        name: 'delete_league',
+        text: 'DELETE FROM leagues WHERE id = $1',
+        values: [id]
       };
 
       return Q.ninvoke(client, 'query', queryParams);

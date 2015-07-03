@@ -2,19 +2,23 @@ $(document).ready(function() {
   $('#nav-leagues').addClass('active');
 
   $('.leagues-delete').click(function() {
-    var groupName = $(this).attr('data-groupname');
-    var groupId = $(this).attr('data-groupid');
+    var leagueName = $(this).attr('data-leaguename');
+    var leagueId = $(this).attr('data-leagueid');
 
-    $('#confirmation-message').text('Delete group \'' + groupName + '\'? This cannot be undone.');
+    $('#confirmation-message').text('Delete League \'' + leagueName + '\'? This cannot be undone.');
     $('#confirmation-popup').modal('show');
-    $('#confirmation-yes').unbind();
     $('#confirmation-yes').click(function() {
+      $(this).unbind();
       var request = $.post(gBaseUrl + '/DeleteLeague', {
-        id: groupId
+        leagueId: leagueId
       });
 
       request.done(function(response) {
-        window.location.reload();
+        window.location = response.url;
+      });
+
+      request.fail(function(a, b) {
+        alert('fail');
       });
     });
   });

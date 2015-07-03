@@ -7,6 +7,11 @@ block content
     if league
       .text-center
         h2= 'League ' + league.name
+      .text-left
+         h3= 'Total Games Played: ' + gamesPlayed
+      .text-right
+        button#individualGameStatsBtn(class='btn btn-primary') Show Individual Games
+        button#allGameStatsBtn(class='btn btn-primary button-individual-games') Show All Games
       table(class='table table-league')
         thead: tr
           th.column-player: h4= 'Player'
@@ -20,22 +25,50 @@ block content
           th.column-quadra: h4= 'Quadra Kills'
           th.column-penta: h4= 'Penta Kills'
           th.column-points: h4= 'Total Points'
-          th.column-games: h4= 'Games Played'
         tbody
         each user, key in league.data
           tr
-            td: p= key
-            td: p= user.stats.championKills
-            td: p= user.stats.assists
-            td: p= user.stats.deaths
-            td: p= user.stats.minionKills
-            td: p= user.stats.turretKills
-            td: p= user.stats.doubleKills
-            td: p= user.stats.tripleKills
-            td: p= user.stats.quadraKills
-            td: p= user.stats.pentaKills
-            td: p= user.stats.totalPoints
-            td: p= user.stats.totalGames
+            td= key
+            td= user.stats.championKills
+            td= user.stats.assists
+            td= user.stats.deaths
+            td= user.stats.minionKills
+            td= user.stats.turretKills
+            td= user.stats.doubleKills
+            td= user.stats.tripleKills
+            td= user.stats.quadraKills
+            td= user.stats.pentaKills
+            td= user.stats.totalPoints
+      table(class='table table-league-individual')
+        thead: tr
+          th.column-player: h4= 'Player'
+          th.column-kills: h4= 'Kills'
+          th.column-asssists: h4= 'Assists'
+          th.column-deaths: h4= 'Deaths'
+          th.column-minions: h4= 'Minions Killed'
+          th.column-turrets: h4= 'Turrets Killed'
+          th.column-double: h4= 'Double Kills'
+          th.column-triple: h4= 'Triple Kills'
+          th.column-quadra: h4= 'Quadra Kills'
+          th.column-penta: h4= 'Penta Kills'
+          th.column-points: h4= 'Total Points'
+        tbody
+        each user, key in league.data
+          tr
+            td= key
+            td= Math.round(user.stats.championKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.assists * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.deaths * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.minionKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.turretKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.doubleKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.tripleKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.quadraKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.pentaKills * 100 / gamesPlayed) / 100
+            td= Math.round(user.stats.totalPoints * 100 / gamesPlayed) / 100
     else 
       .text-center
         h3 A league with that id could not be found
+
+block scripts
+  script(src= baseUrl + '/js/League.js')
