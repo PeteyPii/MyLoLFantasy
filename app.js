@@ -20,7 +20,7 @@ var dbApi = require(path.join(__dirname, 'database.js'));
 var lolApi = require(path.join(__dirname, 'lol.js'));
 var statsApi = require(path.join(__dirname, 'statistics.js'));
 
-var VERSION = '0.0.1';
+var VERSION = '1.0.1';
 var settings = {};
 
 module.exports = {
