@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $("#nav-create-league").addClass("active");
+  $('#nav-create-league').addClass('active');
 
   var $form = $('#create-league-form');
   var summonerInputIdNumber = $('.summoner-input').length;

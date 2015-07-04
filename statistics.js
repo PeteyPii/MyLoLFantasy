@@ -70,7 +70,7 @@ module.exports = function(db, lol) {
 
         game.fellowPlayers = game.fellowPlayers || {};
         for (var j = 0; j < game.fellowPlayers.length; j++) {
-          if (game.fellowPlayers[j].summonerId in summonerIds) {
+          if (summonerIds.indexOf(game.fellowPlayers[j].summonerId) !== -1) {
             commonPlayerCount += 1;
           }
         }
@@ -114,33 +114,35 @@ module.exports = function(db, lol) {
     for (var i = 0; i < summonerNames.length; i++) {
       var summonerName = summonerNames[i];
       var summonerId = summonerIds[summonerName];
-      playerGameStatsPromises.push(lol.getSummonersRecentGames(region, summonerIds[summonerNames[i]]).then(function(recentGames) {
-        for (var j = 0; j < recentGames.length; j++) {
-          var game = recentGames[j];
-          if (game.gameId in gameIds && !(game.gameId in excludedGameIds)) {
-            if (game.createDate && game.createDate >= minStartDate.getTime()) {
-              playerStats[summonerName].championKills            += game.stats.championsKilled || 0;
-              playerStats[summonerName].deaths                   += game.stats.numDeaths || 0;
-              playerStats[summonerName].assists                  += game.stats.assists || 0;
-              playerStats[summonerName].minionKills              += (game.stats.minionsKilled || 0) + (game.stats.neutralMinionsKilled || 0);
-              playerStats[summonerName].doubleKills              += game.stats.doubleKills || 0;
-              playerStats[summonerName].tripleKills              += game.stats.tripleKills || 0;
-              playerStats[summonerName].quadraKills              += game.stats.quadraKills || 0;
-              playerStats[summonerName].pentaKills               += game.stats.pentaKills || 0;
-              playerStats[summonerName].goldEarned               += game.stats.goldEarned || 0;
-              playerStats[summonerName].damageDealtToChampions   += game.stats.totalDamageDealtToChampions || 0;
-              playerStats[summonerName].healed                   += game.stats.totalHeal || 0;
-              playerStats[summonerName].levels                   += game.stats.level || 0;
-              playerStats[summonerName].turretKills              += game.stats.turretsKilled || 0;
-              playerStats[summonerName].wardKills                += game.stats.wardKilled || 0;
-              playerStats[summonerName].wardPlaces               += game.stats.wardPlaced || 0;
-              playerStats[summonerName].damageTaken              += game.stats.totalDamageTaken || 0;
-              playerStats[summonerName].totalWins                += game.stats.win ? 1 : 0;
-              playerStats[summonerName].totalGames               += 1;
+      playerGameStatsPromises.push((function(name) {
+        return lol.getSummonersRecentGames(region, summonerIds[summonerNames[i]]).then(function(recentGames) {
+          for (var j = 0; j < recentGames.length; j++) {
+            var game = recentGames[j];
+            if (game.gameId in gameIds && !(game.gameId in excludedGameIds)) {
+              if (game.createDate && game.createDate >= minStartDate.getTime()) {
+                playerStats[name].championKills            += game.stats.championsKilled || 0;
+                playerStats[name].deaths                   += game.stats.numDeaths || 0;
+                playerStats[name].assists                  += game.stats.assists || 0;
+                playerStats[name].minionKills              += (game.stats.minionsKilled || 0) + (game.stats.neutralMinionsKilled || 0);
+                playerStats[name].doubleKills              += game.stats.doubleKills || 0;
+                playerStats[name].tripleKills              += game.stats.tripleKills || 0;
+                playerStats[name].quadraKills              += game.stats.quadraKills || 0;
+                playerStats[name].pentaKills               += game.stats.pentaKills || 0;
+                playerStats[name].goldEarned               += game.stats.goldEarned || 0;
+                playerStats[name].damageDealtToChampions   += game.stats.totalDamageDealtToChampions || 0;
+                playerStats[name].healed                   += game.stats.totalHeal || 0;
+                playerStats[name].levels                   += game.stats.level || 0;
+                playerStats[name].turretKills              += game.stats.turretsKilled || 0;
+                playerStats[name].wardKills                += game.stats.wardKilled || 0;
+                playerStats[name].wardPlaces               += game.stats.wardPlaced || 0;
+                playerStats[name].damageTaken              += game.stats.totalDamageTaken || 0;
+                playerStats[name].totalWins                += game.stats.win ? 1 : 0;
+                playerStats[name].totalGames               += 1;
+              }
             }
           }
-        }
-      }));
+        });
+      })(summonerName));
     }
 
     return Q.all(playerGameStatsPromises).then(function() {

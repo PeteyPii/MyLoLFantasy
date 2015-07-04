@@ -8,6 +8,12 @@ block content
     if messages.createLeagueSuccess
       p= messages.createLeagueSuccess
 
+    if messages.deleteLeagueSuccess
+      p= messages.deleteLeagueSuccess
+
+    if messages.deleteLeagueFailure
+      p= messages.deleteLeagueFailure
+
     if leagues.length
       table(class='table table-leagues')
         thead: tr
@@ -17,7 +23,7 @@ block content
           each league in leagues
             tr
               td: a(href= baseUrl + '/League_' + league.id)= league.name
-              td.text-center: button(class='btn btn-link leagues-delete', type='button', title='Delete League', data-groupname= league.name, data-groupid= league.id): span(class='fa fa-close')
+              td.text-center: button(class='btn btn-link leagues-delete', type='button', title='Delete League', data-leaguename= league.name, data-leagueid= league.id): span(class='fa fa-close')
     else
       .text-center
         h3 Leagues

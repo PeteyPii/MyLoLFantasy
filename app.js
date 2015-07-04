@@ -1,43 +1,46 @@
 var fs = require('fs');
 var path = require('path');
 
-var _ = require('lodash');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
+var connectRedis = require('connect-redis');
 var express = require('express');
 var flash = require('express-flash');
 var session = require('express-session');
 var file = require('file');
 var less = require('less');
+var _ = require('lodash');
 var passport = require('passport');
 var localStrat = require('passport-local');
 var Q = require('q');
+var redis = require('redis');
 var favicon = require('serve-favicon');
 
-var dbApi = require('./database.js');
-var lolApi = require('./lol.js');
-var statsApi = require('./statistics.js');
+var dbApi = require(path.join(__dirname, 'database.js'));
+var lolApi = require(path.join(__dirname, 'lol.js'));
+var statsApi = require(path.join(__dirname, 'statistics.js'));
 
-var VERSION = '0.0.1';
+var VERSION = '1.0.1';
 var settings = {};
 
 module.exports = {
   createApp: function(gatherStats) {
-    settings = _.assign(settings, require('./defaults.json'), require('./settings.json'));
+    settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
 
     validateSettings(settings);
 
     var db = new dbApi(settings.postgre_url);
     var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
+    var stats = new statsApi(db, lol);
 
     var promise = db.init().then(function() {
       return lol.init();
     }).then(function() {
-      file.walkSync('less', function(dirPath, dirs, files) {
+      file.walkSync(path.join(__dirname, 'less'), function(dirPath, dirs, files) {
         for (var i = 0; i < files.length; i++) {
           var filePath = path.join(dirPath, files[i]);
           less.render(fs.readFileSync(filePath).toString('utf8'), {
-            paths: ['less'],
+            paths: [path.join(__dirname, 'less')],
             filename: filePath,
             compress: false
           }, function(err, output) {
@@ -45,21 +48,20 @@ module.exports = {
               throw err;
             }
 
-            var outFileName = path.join('public/css',
-              dirPath.split(path.sep).slice(1).join(path.sep),
-              path.basename(files[i], '.less') + '.css');
+            var outFileName = path.join(__dirname, 'public/css', path.basename(files[i], '.less') + '.css');
             fs.writeFileSync(outFileName, output.css);
           });
         }
       });
     }).then(function() {
       var app = express();
+      var redisStore = connectRedis(session);
 
-      app.set('views', './views');
+      app.set('views', path.join(__dirname, 'views'));
       app.set('view engine', 'jade');
 
-      app.use(express.static('public'));
-      app.use(favicon('./public/img/favicon.ico'));
+      app.use(express.static(path.join(__dirname, 'public')));
+      app.use(favicon(path.join(__dirname, 'public/img/favicon.ico')));
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({
         extended: true,
@@ -68,6 +70,10 @@ module.exports = {
         secret: settings.secret_key,
         resave: false,
         saveUninitialized: true,
+        store: new redisStore({
+          host: 'localhost',
+          port: '6379'
+        })
       }));
       app.use(flash());
       app.use(passport.initialize());
@@ -107,19 +113,23 @@ module.exports = {
         });
       });
 
-      app.use('/', require('./route.js'));
+      app.use('/', require(path.join(__dirname, 'route.js')));
 
       app.locals.settings = settings;
       app.locals.db = db;
       app.locals.lol = lol;
+      app.locals.stats = stats;
 
       if (gatherStats) {
-        var stats = new statsApi(db, lol);
         var lastUpdateTime = 0;
 
         function updateLeagues() {
           lastUpdateTime = (new Date()).getTime();
-          stats.updateAllLeagues().fail(function(err) {
+          lol.resetTempCache().then(function() {
+            return stats.updateAllLeagues();
+          }).then(function() {
+            return lol.resetTempCache();
+          }).fail(function(err) {
             if (err.stack) {
               console.error('Error while updating all Leagues');
               console.error(err.stack);
@@ -131,8 +141,8 @@ module.exports = {
           });
         }
 
-        updateLeagues();
-        app.locals.stats = stats;
+        // Wait 5 seconds to start updating leagues so that things don't get hairy in the middle of starting up
+        setTimeout(updateLeagues, 5000);
       }
 
       return app;

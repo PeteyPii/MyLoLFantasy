@@ -1,11 +1,12 @@
 var fs = require('fs');
 var http = require('http');
 var https = require('https');
+var path = require('path');
 
 var express = require('express');
 var reload = require('reload');
 
-mlf = require('./app.js');
+var mlf = require(path.join(__dirname, 'app.js'));
 
 try {
   mlf.createApp(true).then(function(mlfApp) {
@@ -16,16 +17,13 @@ try {
     app.use('/MLF', mlfApp);
 
     var httpsServer = https.createServer({
-      key: fs.readFileSync('./certs/server.key'),
-      cert: fs.readFileSync('./certs/server.crt'),
-      ca: fs.readFileSync('./certs/ca.crt'),
-      requestCert: true,
-      rejectUnauthorized: false
+      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
+      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
     }, app);
 
     reload(httpsServer, app, 1000);
 
-    httpsServer.listen(443, '127.0.0.1', function() {
+    httpsServer.listen(443, function() {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
@@ -35,8 +33,7 @@ try {
     // Create server for redirecting to the secure version of the app
     var redirectApp = express();
     redirectApp.get('*', function(req, res) {
-      console.log('Redirecting to main site');
-      res.redirect('https://' + req.hostname + req.url)
+      res.redirect('https://' + req.hostname + req.url);
     });
     var httpServer = http.createServer(redirectApp).listen(80);
 

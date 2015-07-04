@@ -1,10 +1,11 @@
 {
   "name": "my-lol-fantasy",
-  "version": "0.0.1",
+  "version": "v1.0.1",
   "description": "Data server for My LoL Fantasy",
   "dependencies": {
     "bcrypt": "0.8.1",
     "body-parser": "1.12.2",
+    "connect-redis": "2.3.0",
     "deci-mal": "1.0.2",
     "express": "4.12.2",
     "express-flash": "0.0.2",
