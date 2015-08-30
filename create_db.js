@@ -5,11 +5,9 @@ var _ = require('lodash');
 var Q = require('q');
 
 var dbApi = require(path.join(__dirname, 'database.js'));
+var settings = require(path.join(__dirname, 'settings.js'));
 
 try {
-  var settings = {};
-  settings = _.assign(settings, require(path.join(__dirname, 'defaults.json')), require(path.join(__dirname, 'settings.json')));
-
   var db = new dbApi(settings.postgre_url);
 
   db.createDb().fail(function(err) {
