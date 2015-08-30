@@ -4,7 +4,6 @@ var https = require('https');
 var path = require('path');
 
 var express = require('express');
-var reload = require('reload');
 
 var mlf = require(path.join(__dirname, 'app.js'));
 
@@ -20,8 +19,6 @@ try {
       key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
       cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
     }, app);
-
-    reload(httpsServer, app, 1000);
 
     httpsServer.listen(443, function() {
       var host = httpsServer.address().address;
