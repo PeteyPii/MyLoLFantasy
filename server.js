@@ -6,6 +6,7 @@ var path = require('path');
 var express = require('express');
 
 var mlf = require(path.join(__dirname, 'app.js'));
+var settings = require(path.join(__dirname, 'settings.js'));
 
 try {
   mlf.createApp(true).then(function(mlfApp) {
@@ -20,19 +21,23 @@ try {
       cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
     }, app);
 
-    httpsServer.listen(443, function() {
+    httpsServer.listen(settings.server_https_port, function() {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
-      console.log('Server listening at http://%s:%s', host, port);
+      console.log('Server listening at https://%s:%s', host, port);
     });
 
     // Create server for redirecting to the secure version of the app
     var redirectApp = express();
     redirectApp.get('*', function(req, res) {
-      res.redirect('https://' + req.hostname + req.url);
+      if (settings.redirect_default_port) {
+        res.redirect('https://' + req.hostname + req.url);
+      } else {
+        res.redirect('https://' + req.hostname + ':' + settings.server_https_port + req.url);
+      }
     });
-    var httpServer = http.createServer(redirectApp).listen(80);
+    var httpServer = http.createServer(redirectApp).listen(settings.server_http_port);
 
   }).fail(function(err) {
     if (err.stack) {

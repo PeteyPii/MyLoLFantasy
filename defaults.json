@@ -2,5 +2,8 @@
   "refresh_period": 3600000,
   "lol_burst_requests": 8,
   "lol_burst_period": 10000,
-  "password_hash_rounds": 8
+  "password_hash_rounds": 8,
+  "server_http_port": 80,
+  "server_https_port": 443,
+  "redirect_default_port": false
 }

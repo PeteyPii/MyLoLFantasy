@@ -1,9 +1,11 @@
 var childProcess = require('child_process');
-var http = require('http');
 var os = require('os');
+var path = require('path');
 
 var express = require('express');
 var open = require('open');
+
+var settings = require(path.join(__dirname, 'settings.js'));
 
 module.exports = function(grunt) {
   grunt.initConfig({
@@ -35,8 +37,8 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('open', 'Task to open the app in the browser.', function() {
-    console.log('Opening http://localhost in your browser');
-    open('https://localhost');
+    console.log('Opening https://localhost in your browser');
+    open('https://localhost:' + settings.server_https_port);
   });
 
   grunt.registerTask('wait', 'Task to wait forever in grunt.', function() {

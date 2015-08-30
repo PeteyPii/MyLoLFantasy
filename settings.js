@@ -26,12 +26,21 @@ function validateSettings(settings) {
     'secret_key',
     'lol_burst_requests',
     'lol_burst_period',
-    'password_hash_rounds'
+    'password_hash_rounds',
+    'server_http_port',
+    'server_https_port',
+    'redirect_default_port',
   ];
 
   for (var i = 0; i < requiredSettings.length; i++) {
     if (typeof settings[requiredSettings[i]] == 'undefined')
       throw new Error('Missing setting \'' + requiredSettings[i] + '\'');
+  }
+
+  function isValidPort(port) {
+    return _.isNumber(port) &&
+      port > 0 && port < 65536 &&
+      port === port | 0;
   }
 
   if (!_.isString(settings.lol_api_key) || !settings.lol_api_key.match(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i))
@@ -50,6 +59,12 @@ function validateSettings(settings) {
     throw new Error('LoL burst request period must be a a non-negative integer');
   if (!_.isNumber(settings.password_hash_rounds) || (settings.password_hash_rounds !== settings.password_hash_rounds | 0) || settings.password_hash_rounds < 1)
     throw new Error('Password hash rounds must be an integer greater than zero');
+  if (!isValidPort(settings.server_http_port))
+    throw new Error('Port for HTTP server must be valid');
+  if (!isValidPort(settings.server_https_port))
+    throw new Error('Port for HTTPS server must be valid');
+  if (!_.isBoolean(settings.redirect_default_port))
+    throw new Error('Redirection to default port must be either `true` or `false`');
 }
 
 try {
