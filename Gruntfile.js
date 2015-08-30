@@ -28,12 +28,24 @@ module.exports = function(grunt) {
       supervisorCommand += '.cmd';
     }
 
-    childProcess.spawn(supervisorCommand, ['--extensions', 'js,jade,html,less,json', '--no-restart-on-exit', 'exit', '--quiet', 'server.js'], {
-      stdio: [0, 1, 2]
+    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,jade,html,less,json', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
+
+    webServer.stdout.on('data', function(data) {
+      var strData = data.toString();
+      process.stdout.write(strData);
+
+      // Wait for the console to log that the server is listening to open up the site in the browser
+      if (data.toString().match('listening')) {
+        if (done) {
+          done();
+          done = null;
+        }
+      }
     });
 
-    // Wait for server to start up in a very crude way
-    setTimeout(done, 4000);
+    webServer.stderr.on('data', function(data) {
+      process.stdout.write(data.toString());
+    });
   });
 
   grunt.registerTask('open', 'Task to open the app in the browser.', function() {
