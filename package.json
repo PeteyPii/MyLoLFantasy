@@ -1,6 +1,6 @@
 {
   "name": "my-lol-fantasy",
-  "version": "v1.0.1",
+  "version": "v1.0.2",
   "description": "Data server for My LoL Fantasy",
   "dependencies": {
     "bcrypt": "0.8.1",

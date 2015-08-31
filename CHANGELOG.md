@@ -1,4 +1,10 @@
 # Changelog
+## v1.0.2
+- Fixed issue with Leagues failing to update regularly
+- Reload script is no longer used
+- Added a setting for configuring ports used by the web server
+- General code quality improvements
+
 ## v1.0.1
 - Users can delete Leagues
 - Users can look at per-game statistics
