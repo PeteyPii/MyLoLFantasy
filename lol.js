@@ -8,6 +8,15 @@ var REQUEST_LIST_KEY = REDIS_NAMESPACE + 'request_times';
 var TEMP_DATA_KEY = REDIS_NAMESPACE + 'temp_data';
 var PERM_DATA_KEY = REDIS_NAMESPACE + 'perm_data';
 
+// Usage: 'EVAL <the_script> 1 mlf:request_times <current_time> <min_wait>'
+// Returns: Time to wait
+// Note: All times in ms
+var ATOMIC_DELAY_SCRIPT =
+  'local oldestTime = redis.call(\'lpop\', KEYS[1]);' +
+  'local waitTime = math.max(0, ARGV[2] - (ARGV[1] - oldestTime));' +
+  'redis.call(\'rpush\', KEYS[1], ARGV[1] + waitTime);' +
+  'return waitTime;'
+
 var buildUrl = function(region, version, api, argument, apiKey) {
   return 'https://' + region + '.api.pvp.net/api/lol/' + region + '/v' + version + '/' + api + '/' + argument + '?api_key=' + apiKey;
 };
@@ -23,6 +32,8 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
 
   self.redisClient = redis.createClient();
 
+  self.delaySha = null;
+
   self.init = function() {
     var multi = self.redisClient.multi();
     multi.del(REQUEST_LIST_KEY);
@@ -34,6 +45,10 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
       return self.resetTempCache();
     }).then(function() {
       return self.resetPermCache();
+    }).then(function() {
+      return Q.ninvoke(self.redisClient, 'script', 'load', ATOMIC_DELAY_SCRIPT);
+    }).then(function(sha) {
+      self.delaySha = sha;
     });
   };
 
@@ -83,14 +98,8 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
       } else {
         var time = (new Date()).getTime();
 
-        var multiRequestTime = self.redisClient.multi();
-        multiRequestTime.lpop(REQUEST_LIST_KEY);
-        multiRequestTime.rpush(REQUEST_LIST_KEY, time);
-
-        return Q.ninvoke(multiRequestTime, 'exec').then(function(values) {
-          var oldestRequestTime = values[0];
-
-          return Q.delay(Math.max(0, self.config.requestBurstPeriod - (time - oldestRequestTime)));
+        return Q.ninvoke(self.redisClient, 'evalsha', self.delaySha, '1', REQUEST_LIST_KEY, time, self.config.requestBurstPeriod).then(function(waitTime) {
+          return Q.delay(waitTime);
         }).then(function() {
           return Q.ninvoke(request, 'get', url);
         }).then(function(values) {
@@ -100,6 +109,7 @@ function lolApi(apiKey, requestBurstCount, requestBurstPeriod) {
           switch (response.statusCode) {
             case 400:
             case 401:
+            case 403:
             case 404:
             case 429:
             case 503:

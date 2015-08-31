@@ -1,9 +1,11 @@
 var childProcess = require('child_process');
-var http = require('http');
 var os = require('os');
+var path = require('path');
 
 var express = require('express');
 var open = require('open');
+
+var settings = require(path.join(__dirname, 'settings.js'));
 
 module.exports = function(grunt) {
   grunt.initConfig({
@@ -26,17 +28,29 @@ module.exports = function(grunt) {
       supervisorCommand += '.cmd';
     }
 
-    childProcess.spawn(supervisorCommand, ['--extensions', 'js,jade,html,less,json', '--no-restart-on-exit', 'exit', '--quiet', 'server.js'], {
-      stdio: [0, 1, 2]
+    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,jade,html,less,json', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
+
+    webServer.stdout.on('data', function(data) {
+      var strData = data.toString();
+      process.stdout.write(strData);
+
+      // Wait for the console to log that the server is listening to open up the site in the browser
+      if (data.toString().match('listening')) {
+        if (done) {
+          done();
+          done = null;
+        }
+      }
     });
 
-    // Wait for server to start up in a very crude way
-    setTimeout(done, 4000);
+    webServer.stderr.on('data', function(data) {
+      process.stdout.write(data.toString());
+    });
   });
 
   grunt.registerTask('open', 'Task to open the app in the browser.', function() {
-    console.log('Opening http://localhost in your browser');
-    open('https://localhost');
+    console.log('Opening https://localhost in your browser');
+    open('https://localhost:' + settings.server_https_port);
   });
 
   grunt.registerTask('wait', 'Task to wait forever in grunt.', function() {
