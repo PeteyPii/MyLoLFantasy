@@ -2,6 +2,8 @@ var path = require('path');
 
 var _ = require('lodash');
 
+var logger = require(path.join(__dirname, 'logger.js'));
+
 var settings = {};
 
 try {
@@ -71,9 +73,9 @@ try {
   validateSettings(settings);
 } catch (err) {
   if (err.stack) {
-    console.error(err.stack);
+    logger.error(err.stack);
   } else {
-    console.error('Error: ' + err);
+    logger.error('Error: ' + err);
   }
 
   // Just stop everything and tell the user they need to fix their settings

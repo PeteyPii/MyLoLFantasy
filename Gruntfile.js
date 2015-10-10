@@ -5,6 +5,7 @@ var path = require('path');
 var express = require('express');
 var open = require('open');
 
+var logger = require(path.join(__dirname, 'logger.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 
 module.exports = function(grunt) {
@@ -49,12 +50,12 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('open', 'Task to open the app in the browser.', function() {
-    console.log('Opening https://localhost in your browser');
+    logger.log('Opening https://localhost in your browser');
     open('https://localhost:' + settings.server_https_port);
   });
 
   grunt.registerTask('wait', 'Task to wait forever in grunt.', function() {
-    console.log('Waiting forever...\n');
+    logger.log('Waiting forever...\n');
     this.async();
   });
 

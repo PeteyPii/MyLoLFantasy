@@ -5,6 +5,7 @@ var _ = require('lodash');
 var Q = require('q');
 
 var dbApi = require(path.join(__dirname, 'database.js'));
+var logger = require(path.join(__dirname, 'logger.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 
 try {
@@ -12,17 +13,17 @@ try {
 
   db.createDb().fail(function(err) {
     if (err.stack) {
-      console.error(err.stack);
+      logger.error(err.stack);
     } else {
-      console.error('Error: ' + err)
+      logger.error('Error: ' + err)
     }
   }).fin(function() {
     db.deinit();
   }).done();
 } catch (err) {
   if (err.stack) {
-    console.error(err.stack);
+    logger.error(err.stack);
   } else {
-    console.error('Error: ' + err)
+    logger.error('Error: ' + err)
   }
 }

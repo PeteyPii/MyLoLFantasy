@@ -1,6 +1,9 @@
 var _ = require('lodash');
 var decimal = require('deci-mal');
+var path = require('path');
 var Q = require('q');
+
+var logger = require(path.join(__dirname, 'logger.js'));
 
 module.exports = function(db, lol) {
   var self = this;
@@ -47,10 +50,10 @@ module.exports = function(db, lol) {
         rowsReceived++;
         updateStatsOfLeague(league).then(function() {
           rowsProcessed++;
-          console.log('Updated League with id: ' + league.id);
+          logger.log('Updated League with id: ' + league.id);
           resolveCheck();
         }).fail(function(err) {
-          console.error('Failed to process League with id: ' + league.id);
+          logger.error('Failed to process League with id: ' + league.id);
           rowsProcessed++;
           resolveCheck();
         }).done();

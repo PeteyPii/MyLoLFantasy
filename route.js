@@ -2,12 +2,15 @@ var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var express = require('express');
 var passport = require('passport');
+var path = require('path');
 var Q = require('q');
+
+var logger = require(path.join(__dirname, 'logger.js'));
 
 var router = express.Router();
 
 router.use(function logRequests(req, res, next) {
-  console.log(req.method + ' request for MLF at ' + req.url);
+  logger.log(req.method + ' request for MLF at ' + req.url);
 
   next();
 });

@@ -6,6 +6,7 @@ var path = require('path');
 var express = require('express');
 
 var mlf = require(path.join(__dirname, 'app.js'));
+var logger = require(path.join(__dirname, 'logger.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 
 try {
@@ -25,7 +26,7 @@ try {
       var host = httpsServer.address().address;
       var port = httpsServer.address().port;
 
-      console.log('Server listening at https://%s:%s', host, port);
+      logger.log('Server listening at https://' + host + ':' + port);
     });
 
     // Create server for redirecting to the secure version of the app
@@ -41,15 +42,15 @@ try {
 
   }).fail(function(err) {
     if (err.stack) {
-      console.error(err.stack);
+      logger.error(err.stack);
     } else {
-      console.error('Error: ' + err);
+      logger.error('Error: ' + err);
     }
   }).done();
 } catch (err) {
   if (err.stack) {
-    console.error(err.stack);
+    logger.error(err.stack);
   } else {
-    console.error('Error: ' + err);
+    logger.error('Error: ' + err);
   }
 }
