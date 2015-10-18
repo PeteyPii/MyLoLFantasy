@@ -3,6 +3,7 @@ var path = require('path');
 
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
+var compress = require('compression');
 var connectRedis = require('connect-redis');
 var express = require('express');
 var flash = require('express-flash');
@@ -15,7 +16,6 @@ var localStrat = require('passport-local');
 var Q = require('q');
 var redis = require('redis');
 var favicon = require('serve-favicon');
-var compress = require('compression')
 
 var dbApi = require(path.join(__dirname, 'database.js'));
 var logger = require(path.join(__dirname, 'logger.js'));
@@ -77,7 +77,7 @@ module.exports = {
       app.use(passport.initialize());
       app.use(passport.session());
       app.use(compress());
-      
+
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
           if (!user) {
