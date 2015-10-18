@@ -3,6 +3,7 @@ var path = require('path');
 
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
+var compress = require('compression');
 var connectRedis = require('connect-redis');
 var express = require('express');
 var flash = require('express-flash');
@@ -75,6 +76,7 @@ module.exports = {
       app.use(flash());
       app.use(passport.initialize());
       app.use(passport.session());
+      app.use(compress());
 
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
