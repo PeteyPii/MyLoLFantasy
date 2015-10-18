@@ -5,7 +5,7 @@
   "dependencies": {
     "bcrypt": "0.8.1",
     "body-parser": "1.12.2",
-    "compression": "^1.6.0",
+    "compression": "1.6.0",
     "connect-redis": "2.3.0",
     "deci-mal": "1.0.2",
     "express": "4.12.2",
