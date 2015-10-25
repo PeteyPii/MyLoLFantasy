@@ -55,7 +55,7 @@ $(document).ready(function() {
       postValues.summonerNames.push(input.value);
     });
 
-    postValues.spectatorLeague = false;
+    postValues.spectatorLeague = !($('#league-include-self').is(':checked'));
 
     for (var i = 0; i < summonerInputIds.length; i++) {
       var $summonerInputDiv = $('#' + summonerInputIds[i]);
