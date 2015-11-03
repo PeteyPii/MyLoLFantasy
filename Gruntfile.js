@@ -49,7 +49,7 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('open', 'Task to open the app in the browser.', function() {
+  grunt.registerTask('open_localhost', 'Task to open the app in the browser.', function() {
     logger.log('Opening https://localhost in your browser');
     open('https://localhost:' + settings.server_https_port);
   });
@@ -59,5 +59,6 @@ module.exports = function(grunt) {
     this.async();
   });
 
-  grunt.registerTask('default', ['serve:develop', 'open', 'wait']);
+  grunt.registerTask('default', ['serve:develop', 'wait']);
+  grunt.registerTask('open', ['serve:develop', 'open_localhost', 'wait']);
 };
