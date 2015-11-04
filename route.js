@@ -19,6 +19,8 @@ router.use(function setRenderData(req, res, next) {
   res.locals.baseUrl = req.baseUrl;
   res.locals.isLoggedIn = !!req.user;
   res.locals.user = req.user;
+  res.locals.prod = req.app.locals.settings.is_prod;
+  res.locals.appSettings = req.app.locals.settings;
 
   next();
 });
