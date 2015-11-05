@@ -1,4 +1,10 @@
 # Changelog
+## v1.0.3
+- Added Google Analytics tracking
+- Improved logging with timestamps
+- Added gzip compression compatibility when serving pages
+- Moved behaviour of `grunt` to `grunt open` and changed `grunt` to no longer open the app
+
 ## v1.0.2
 - Fixed issue with Leagues failing to update regularly
 - Reload script is no longer used

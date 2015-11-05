@@ -5,5 +5,7 @@
   "password_hash_rounds": 8,
   "server_http_port": 80,
   "server_https_port": 443,
+  "is_prod": false,
+  "ga_key": "UA-XXXXXXXX-X",
   "redirect_default_port": false
 }

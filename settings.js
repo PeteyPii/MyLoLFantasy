@@ -2,6 +2,8 @@ var path = require('path');
 
 var _ = require('lodash');
 
+var logger = require(path.join(__dirname, 'logger.js'));
+
 var settings = {};
 
 try {
@@ -30,6 +32,8 @@ function validateSettings(settings) {
     'server_http_port',
     'server_https_port',
     'redirect_default_port',
+    'is_prod',
+    'ga_key',
   ];
 
   for (var i = 0; i < requiredSettings.length; i++) {
@@ -65,15 +69,19 @@ function validateSettings(settings) {
     throw new Error('Port for HTTPS server must be valid');
   if (!_.isBoolean(settings.redirect_default_port))
     throw new Error('Redirection to default port must be either `true` or `false`');
+  if (!_.isBoolean(settings.is_prod))
+    throw new Error('Is production must be either `true` or `false`');
+  if (!_.isString(settings.ga_key))
+    throw new Error('Google Analytics key must be a string value');
 }
 
 try {
   validateSettings(settings);
 } catch (err) {
   if (err.stack) {
-    console.error(err.stack);
+    logger.error(err.stack);
   } else {
-    console.error('Error: ' + err);
+    logger.error('Error: ' + err);
   }
 
   // Just stop everything and tell the user they need to fix their settings

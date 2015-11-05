@@ -5,6 +5,7 @@ var path = require('path');
 var express = require('express');
 var open = require('open');
 
+var logger = require(path.join(__dirname, 'logger.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 
 module.exports = function(grunt) {
@@ -28,7 +29,7 @@ module.exports = function(grunt) {
       supervisorCommand += '.cmd';
     }
 
-    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,jade,html,less,json', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
+    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,less,json', '--watch', '.', '--ignore', 'public', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
 
     webServer.stdout.on('data', function(data) {
       var strData = data.toString();
@@ -48,15 +49,16 @@ module.exports = function(grunt) {
     });
   });
 
-  grunt.registerTask('open', 'Task to open the app in the browser.', function() {
-    console.log('Opening https://localhost in your browser');
+  grunt.registerTask('open_localhost', 'Task to open the app in the browser.', function() {
+    logger.log('Opening https://localhost in your browser');
     open('https://localhost:' + settings.server_https_port);
   });
 
   grunt.registerTask('wait', 'Task to wait forever in grunt.', function() {
-    console.log('Waiting forever...\n');
+    logger.log('Waiting forever...\n');
     this.async();
   });
 
-  grunt.registerTask('default', ['serve:develop', 'open', 'wait']);
+  grunt.registerTask('default', ['serve:develop', 'wait']);
+  grunt.registerTask('open', ['serve:develop', 'open_localhost', 'wait']);
 };

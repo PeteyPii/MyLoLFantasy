@@ -3,6 +3,7 @@ var path = require('path');
 
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
+var compress = require('compression');
 var connectRedis = require('connect-redis');
 var express = require('express');
 var flash = require('express-flash');
@@ -17,11 +18,12 @@ var redis = require('redis');
 var favicon = require('serve-favicon');
 
 var dbApi = require(path.join(__dirname, 'database.js'));
+var logger = require(path.join(__dirname, 'logger.js'));
 var lolApi = require(path.join(__dirname, 'lol.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 var statsApi = require(path.join(__dirname, 'statistics.js'));
 
-var VERSION = '1.0.2';
+var VERSION = '1.0.3';
 
 module.exports = {
   createApp: function(gatherStats) {
@@ -74,6 +76,7 @@ module.exports = {
       app.use(flash());
       app.use(passport.initialize());
       app.use(passport.session());
+      app.use(compress());
 
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
@@ -127,10 +130,10 @@ module.exports = {
             return lol.resetTempCache();
           }).fail(function(err) {
             if (err.stack) {
-              console.error('Error while updating all Leagues');
-              console.error(err.stack);
+              logger.error('Error while updating all Leagues');
+              logger.error(err.stack);
             } else {
-              console.error('Error updating all Leagues: ' + err);
+              logger.error('Error updating all Leagues: ' + err);
             }
           }).done(function() {
             setTimeout(updateLeagues, Math.max(0, settings.refresh_period - ((new Date()).getTime() - lastUpdateTime)));
