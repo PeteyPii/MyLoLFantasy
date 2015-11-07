@@ -3,6 +3,7 @@
   "lol_burst_requests": 8,
   "lol_burst_period": 15000,
   "password_hash_rounds": 8,
+  "cookie_age": 2592000000,
   "server_http_port": 80,
   "server_https_port": 443,
   "is_prod": false,

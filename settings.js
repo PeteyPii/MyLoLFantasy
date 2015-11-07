@@ -34,6 +34,7 @@ function validateSettings(settings) {
     'redirect_default_port',
     'is_prod',
     'ga_key',
+    'cookie_age',
   ];
 
   for (var i = 0; i < requiredSettings.length; i++) {
@@ -73,6 +74,8 @@ function validateSettings(settings) {
     throw new Error('Is production must be either `true` or `false`');
   if (!_.isString(settings.ga_key))
     throw new Error('Google Analytics key must be a string value');
+  if (!_.isNumber(settings.cookie_age) || (settings.cookie_age !== settings.cookie_age | 0) || settings.cookie_age <= 0)
+    throw new Error('Cookie age should be a positive integer');
 }
 
 try {

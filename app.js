@@ -71,7 +71,12 @@ module.exports = {
         store: new redisStore({
           host: 'localhost',
           port: '6379'
-        })
+        }),
+        rolling: true,
+        cookie: {
+          secure: true,
+          maxAge: settings.cookie_age,
+        },
       }));
       app.use(flash());
       app.use(passport.initialize());
