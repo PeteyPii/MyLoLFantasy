@@ -28,6 +28,8 @@ html(lang='en')
   body
     nav(class='navbar navbar-default' role='navigation')
       .container
+        .navbar-header
+          .navbar-brand My LoL Fantasy #[span.brand-version= version]
         ul(class='nav navbar-nav')
           li#nav-home: a(href= baseUrl + '/Home') Home
           if isLoggedIn

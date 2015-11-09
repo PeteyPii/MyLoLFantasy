@@ -23,8 +23,6 @@ var lolApi = require(path.join(__dirname, 'lol.js'));
 var settings = require(path.join(__dirname, 'settings.js'));
 var statsApi = require(path.join(__dirname, 'statistics.js'));
 
-var VERSION = '1.0.3';
-
 module.exports = {
   createApp: function(gatherStats) {
     var db = new dbApi(settings.postgre_url);

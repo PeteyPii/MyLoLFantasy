@@ -6,6 +6,7 @@ var path = require('path');
 var Q = require('q');
 
 var logger = require(path.join(__dirname, 'logger.js'));
+var version = require('./version.js');
 
 var router = express.Router();
 
@@ -21,6 +22,7 @@ router.use(function setRenderData(req, res, next) {
   res.locals.user = req.user;
   res.locals.prod = req.app.locals.settings.is_prod;
   res.locals.appSettings = req.app.locals.settings;
+  res.locals.version = version;
 
   next();
 });
