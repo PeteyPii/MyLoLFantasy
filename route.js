@@ -2,10 +2,9 @@ var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var express = require('express');
 var passport = require('passport');
-var path = require('path');
 var Q = require('q');
 
-var logger = require(path.join(__dirname, 'logger.js'));
+var logger = require('./logger.js');
 var version = require('./version.js');
 
 var router = express.Router();

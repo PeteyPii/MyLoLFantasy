@@ -1,12 +1,11 @@
 var childProcess = require('child_process');
 var os = require('os');
-var path = require('path');
 
 var express = require('express');
 var open = require('open');
 
-var logger = require(path.join(__dirname, 'logger.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
+var logger = require('./logger.js');
+var settings = require('./settings.js');
 
 module.exports = function(grunt) {
   grunt.initConfig({

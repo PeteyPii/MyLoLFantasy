@@ -17,11 +17,12 @@ var Q = require('q');
 var redis = require('redis');
 var favicon = require('serve-favicon');
 
-var dbApi = require(path.join(__dirname, 'database.js'));
-var logger = require(path.join(__dirname, 'logger.js'));
-var lolApi = require(path.join(__dirname, 'lol.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
-var statsApi = require(path.join(__dirname, 'statistics.js'));
+var dbApi = require('./database.js');
+var logger = require('./logger.js');
+var lolApi = require('./lol.js');
+var route = require('./route.js');
+var settings = require('./settings.js');
+var statsApi = require('./statistics.js');
 
 module.exports = {
   createApp: function(gatherStats) {
@@ -115,7 +116,7 @@ module.exports = {
         });
       });
 
-      app.use('/', require(path.join(__dirname, 'route.js')));
+      app.use('/', route);
 
       app.locals.settings = settings;
       app.locals.db = db;

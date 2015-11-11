@@ -1,20 +1,18 @@
-var path = require('path');
-
 var _ = require('lodash');
 
-var logger = require(path.join(__dirname, 'logger.js'));
+var logger = require('./logger.js');
 
 var settings = {};
 
 try {
-  var defaults = require(path.join(__dirname, 'defaults.json'));
+  var defaults = require('./defaults.json');
   _.assign(settings, defaults);
 } catch (err) {
   // Silently ignore (in case the file is missing)
 }
 
 try {
-  var userSettings = require(path.join(__dirname, 'settings.json'));
+  var userSettings = require('./settings.json');
   _.assign(settings, userSettings);
 } catch (err) {
   // Silently ignore (in case the file is missing)
