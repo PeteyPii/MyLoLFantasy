@@ -4,7 +4,7 @@ block title
   title Leagues - My LoL Fantasy
 
 block content
-  div(class='container theme-showcase' role='main')
+  div.container.theme-showcase(role='main')
     if messages.createLeagueSuccess
       p= messages.createLeagueSuccess
 
@@ -15,7 +15,7 @@ block content
       p= messages.deleteLeagueFailure
 
     if leagues.length
-      table(class='table table-leagues')
+      table.table.table-leagues
         thead: tr
             th.column-leagues: h1 Leagues
             th.column-delete
@@ -23,7 +23,7 @@ block content
           each league in leagues
             tr
               td: a(href= baseUrl + '/League_' + league.id)= league.name
-              td.text-center: button(class='btn btn-link leagues-delete', type='button', title='Delete League', data-leaguename= league.name, data-leagueid= league.id): span(class='fa fa-close')
+              td.text-center: button.btn.btn-link.leagues-delete(type='button', title='Delete League', data-leaguename= league.name, data-leagueid= league.id): span.fa.fa-close
     else
       .text-center
         h3 Leagues
@@ -31,16 +31,15 @@ block content
         .well
           p.no-margin You have no Leagues! Create one at the #[a(href= baseUrl + '/CreateLeague') Create a League page].
 
-  div#confirmation-popup(class='modal fade', tabindex='-1', role='dialog', aria-hidden='true')
-    div(class='modal-dialog modal-sm')
+  div#confirmation-popup.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+    div.modal-dialog.modal-sm
       .modal-content
-        button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
+        button.close(type='button', data-dismiss='modal'): span.fa.fa-close.modal-close
         h2 Are you sure?
         p#confirmation-message
         br
-        button#confirmation-yes(class='btn btn-primary') Yes
-        button#confirmation-no(class='btn btn-primary') No
-
+        button#confirmation-yes.btn.btn-primary Yes
+        button#confirmation-no.btn.btn-primary No
 
 block scripts
   script(src= baseUrl + '/js/leagues.js')
