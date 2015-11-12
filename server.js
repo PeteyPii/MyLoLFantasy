@@ -5,9 +5,9 @@ var path = require('path');
 
 var express = require('express');
 
-var mlf = require(path.join(__dirname, 'app.js'));
-var logger = require(path.join(__dirname, 'logger.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
+var mlf = require('./app.js');
+var logger = require('./logger.js');
+var settings = require('./settings.js');
 
 try {
   mlf.createApp(true).then(function(mlfApp) {

@@ -1,12 +1,11 @@
 var fs = require('fs');
-var path = require('path');
 
 var _ = require('lodash');
 var Q = require('q');
 
-var dbApi = require(path.join(__dirname, 'database.js'));
-var logger = require(path.join(__dirname, 'logger.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
+var dbApi = require('./database.js');
+var logger = require('./logger.js');
+var settings = require('./settings.js');
 
 try {
   var db = new dbApi(settings.postgre_url);

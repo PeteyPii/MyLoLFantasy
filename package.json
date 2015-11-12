@@ -1,6 +1,6 @@
 {
   "name": "my-lol-fantasy",
-  "version": "v1.0.3",
+  "version": "v1.0.4",
   "description": "Full My LoL Fantasy App",
   "dependencies": {
     "bcrypt": "0.8.5",
@@ -25,6 +25,7 @@
     "request": "2.53.0",
     "serve-favicon": "2.2.0"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/PeteyPii/MyLoLFantasy"

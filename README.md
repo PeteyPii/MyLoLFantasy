@@ -42,8 +42,8 @@ Where:
 - `secret_key` is used for cookies, use some random string here
 
 Finally, as long as you've done everything correctly so far, you should be able to run `node create_db.js` to initialize database tables. Now, install
-some tools, `npm install -g grunt-cli supervisor`, and then run `grunt` and you should see the app in your browser shortly. If not, try manually checking out
-`https:\\localhost` (sometimes the startup script fails for some race condition) and double-check all your steps.
+some tools, `npm install -g grunt-cli supervisor`, and then run `grunt open` and you should see the app in your browser shortly. If not, try manually
+checking out `https:\\localhost`.
 
 Contributing
 ------------

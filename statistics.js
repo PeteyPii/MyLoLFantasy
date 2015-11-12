@@ -1,9 +1,8 @@
 var _ = require('lodash');
 var decimal = require('deci-mal');
-var path = require('path');
 var Q = require('q');
 
-var logger = require(path.join(__dirname, 'logger.js'));
+var logger = require('./logger.js');
 
 module.exports = function(db, lol) {
   var self = this;

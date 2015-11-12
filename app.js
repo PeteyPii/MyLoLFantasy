@@ -17,13 +17,12 @@ var Q = require('q');
 var redis = require('redis');
 var favicon = require('serve-favicon');
 
-var dbApi = require(path.join(__dirname, 'database.js'));
-var logger = require(path.join(__dirname, 'logger.js'));
-var lolApi = require(path.join(__dirname, 'lol.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
-var statsApi = require(path.join(__dirname, 'statistics.js'));
-
-var VERSION = '1.0.3';
+var dbApi = require('./database.js');
+var logger = require('./logger.js');
+var lolApi = require('./lol.js');
+var route = require('./route.js');
+var settings = require('./settings.js');
+var statsApi = require('./statistics.js');
 
 module.exports = {
   createApp: function(gatherStats) {
@@ -71,12 +70,21 @@ module.exports = {
         store: new redisStore({
           host: 'localhost',
           port: '6379'
-        })
+        }),
+        rolling: true,
+        cookie: {
+          secure: true,
+          maxAge: settings.cookie_age,
+        },
       }));
       app.use(flash());
       app.use(passport.initialize());
       app.use(passport.session());
       app.use(compress());
+
+      // All pages are dynamic due to login status shown in the header.
+      // Avoids computing hash of response all the time.
+      app.set('etag', false);
 
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
@@ -112,7 +120,7 @@ module.exports = {
         });
       });
 
-      app.use('/', require(path.join(__dirname, 'route.js')));
+      app.use('/', route);
 
       app.locals.settings = settings;
       app.locals.db = db;

@@ -3,16 +3,16 @@ extends ./base.jade
 block title
   title League  - My LoL Fantasy
 block content
-  div(class='container theme-showcase' role='main')
+  div.container.theme-showcase(role='main')
     if league
       .text-center
         h2= 'League ' + league.name
       .text-left
          h3= 'Total Games Played: ' + gamesPlayed
       .text-right
-        button#individualGameStatsBtn(class='btn btn-primary') Show Individual Games
-        button#allGameStatsBtn(class='btn btn-primary button-individual-games') Show All Games
-      table(class='table table-league')
+        button#individualGameStatsBtn.btn.btn-primary Show Individual Games
+        button#allGameStatsBtn.btn.btn-primary.button-individual-games Show All Games
+      table.table.table-league
         thead: tr
           th.column-player: h4= 'Player'
           th.column-kills: h4= 'Kills'
@@ -39,7 +39,7 @@ block content
             td= user.stats.quadraKills
             td= user.stats.pentaKills
             td= user.stats.totalPoints
-      table(class='table table-league-individual')
+      table.table.table-league-individual
         thead: tr
           th.column-player: h4= 'Player'
           th.column-kills: h4= 'Kills'
@@ -66,7 +66,7 @@ block content
             td= Math.round(user.stats.quadraKills * 100 / gamesPlayed) / 100
             td= Math.round(user.stats.pentaKills * 100 / gamesPlayed) / 100
             td= Math.round(user.stats.totalPoints * 100 / gamesPlayed) / 100
-    else 
+    else
       .text-center
         h3 A league with that id could not be found
 

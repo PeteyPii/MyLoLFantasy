@@ -26,27 +26,29 @@ html(lang='en')
         ga('send', 'pageview');
 
   body
-    nav(class='navbar navbar-default' role='navigation')
+    nav.navbar.navbar-default(role='navigation')
       .container
-        ul(class='nav navbar-nav')
+        .navbar-header
+          .navbar-brand My LoL Fantasy #[span.brand-version= version]
+        ul.nav.navbar-nav
           li#nav-home: a(href= baseUrl + '/Home') Home
           if isLoggedIn
             li#nav-create-league: a(href= baseUrl + '/CreateLeague') Create a League
             li#nav-leagues: a(href= baseUrl + '/Leagues') View Leagues
-        ul(class='nav navbar-nav navbar-right')
+        ul.nav.navbar-nav.navbar-right
           if isLoggedIn
             li: a#identification Logged in as #[em= user.username]
-            li: button#logout(class='btn btn-primary') Log Out
+            li: button#logout.btn.btn-primary Log Out
           else
-            li: button#login(class='btn btn-primary', data-toggle='modal', data-target='#login-popup') Log In
-            li: button#signup(class='btn btn-primary', data-toggle='modal', data-target='#signup-popup') Sign Up
+            li: button#login.btn.btn-primary(data-toggle='modal', data-target='#login-popup') Log In
+            li: button#signup.btn.btn-primary(data-toggle='modal', data-target='#signup-popup') Sign Up
 
     block content
 
-    div#login-popup(class='modal fade', tabindex='-1', role='dialog', aria-hideen='true')
-      div(class='modal-dialog modal-sm')
+    div#login-popup.modal.fade(tabindex='-1', role='dialog', aria-hideen='true')
+      div.modal-dialog.modal-sm
         div.modal-content
-          button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
+          button.close(type='button', data-dismiss='modal'): span.fa.fa-close.modal-close
           form#login-form(method='post', role='form', action='')
             h2 Log In
             div#login-username-div(class= (messages.loginMismatch || messages.loginRequired) && 'has-error')
@@ -55,15 +57,15 @@ html(lang='en')
             div#login-password-div(class= (messages.loginMismatch || messages.loginRequired) && 'has-error')
               input#login-password.form-control(type='password', name='password', placeholder='Password')
             br
-            button#login-submit(class='btn btn-primary', type='submit') Submit
+            button#login-submit.btn.btn-primary(type='submit') Submit
           .login-error
             if messages.loginError
               p= messages.loginError
 
-    div#signup-popup(class='modal fade', tabindex='-1', role='dialog', aria-hideen='true')
-      div(class='modal-dialog modal-sm')
+    div#signup-popup.modal.fade(tabindex='-1', role='dialog', aria-hideen='true')
+      div.modal-dialog.modal-sm
         div.modal-content
-          button.close(type='button', data-dismiss='modal'): span(class='fa fa-close modal-close')
+          button.close(type='button', data-dismiss='modal'): span.fa.fa-close.modal-close
           form#signup-form(method='post', role='form', action='')
             h2 Sign Up
             div#signup-username-div(class= messages.signupNameTaken && 'has-error')
@@ -82,7 +84,7 @@ html(lang='en')
             .checkbox
               input#signup-agree(type='checkbox', checked=true, name='agree')
               label By signing up you are accepting our #[a(href= baseUrl + '/EULA', target='_blank') End User License Agreement]
-            button#signup-submit(class='btn btn-primary', type='submit') Submit
+            button#signup-submit.btn.btn-primary(type='submit') Submit
           .signup-error
             if messages.signupError
               p= messages.signupError

@@ -1,27 +1,18 @@
 var childProcess = require('child_process');
 var os = require('os');
-var path = require('path');
 
 var express = require('express');
 var open = require('open');
 
-var logger = require(path.join(__dirname, 'logger.js'));
-var settings = require(path.join(__dirname, 'settings.js'));
+var logger = require('./logger.js');
+var settings = require('./settings.js');
 
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json')
   });
 
-  grunt.registerTask('serve', 'Task to run the MLF server in development.', function(build) {
-    if (!build) {
-      throw new Error('Need to set build');
-    }
-
-    if (build.toLowerCase() !== 'develop') {
-      throw new Error('Not implemented');
-    }
-
+  grunt.registerTask('serve', 'Task to run the MLF server in development.', function() {
     var done = this.async();
 
     var supervisorCommand = 'supervisor';
@@ -29,7 +20,7 @@ module.exports = function(grunt) {
       supervisorCommand += '.cmd';
     }
 
-    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,less,json', '--watch', '.', '--ignore', 'public', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
+    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,less,json', '--watch', '.', '--ignore', 'league_api_examples,public,views', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
 
     webServer.stdout.on('data', function(data) {
       var strData = data.toString();
@@ -59,6 +50,6 @@ module.exports = function(grunt) {
     this.async();
   });
 
-  grunt.registerTask('default', ['serve:develop', 'wait']);
-  grunt.registerTask('open', ['serve:develop', 'open_localhost', 'wait']);
+  grunt.registerTask('default', ['serve', 'wait']);
+  grunt.registerTask('open', ['serve', 'open_localhost', 'wait']);
 };
