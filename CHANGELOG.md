@@ -1,4 +1,13 @@
 # Changelog
+## v1.0.4
+- Made cookies not session based
+- Made cookies secure
+- Added title and app version to site header
+- Updated README after grunt changes
+- Added LICENSE for the app (it's MIT)
+- Stopped caching on dynamic pages so cookies aren't cached publicly and so server load is reduced
+- Code improvements
+
 ## v1.0.3
 - Added Google Analytics tracking
 - Improved logging with timestamps
