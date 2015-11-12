@@ -26,6 +26,14 @@ router.use(function setRenderData(req, res, next) {
   next();
 });
 
+router.use(function noStore(req, res, next) {
+  // All pages are dynamic due to login status shown in the header.
+  // Avoids computing hash of response all the time.
+  res.header('Cache-Control', 'no-store');
+
+  next();
+});
+
 router.get('/', function(req, res) {
   res.render('home');
 });

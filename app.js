@@ -82,6 +82,10 @@ module.exports = {
       app.use(passport.session());
       app.use(compress());
 
+      // All pages are dynamic due to login status shown in the header.
+      // Avoids computing hash of response all the time.
+      app.set('etag', false);
+
       passport.use(new localStrat(function(username, password, done) {
         db.getUser(username).done(function(user) {
           if (!user) {
