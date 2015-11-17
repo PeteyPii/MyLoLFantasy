@@ -1,4 +1,19 @@
 # Changelog
+## v1.0.4
+- Made cookies not session based
+- Made cookies secure
+- Added title and app version to site header
+- Updated README after grunt changes
+- Added LICENSE for the app (it's MIT)
+- Stopped caching on dynamic pages so cookies aren't cached publicly and so server load is reduced
+- Code improvements
+
+## v1.0.3
+- Added Google Analytics tracking
+- Improved logging with timestamps
+- Added gzip compression compatibility when serving pages
+- Moved behaviour of `grunt` to `grunt open` and changed `grunt` to no longer open the app
+
 ## v1.0.2
 - Fixed issue with Leagues failing to update regularly
 - Reload script is no longer used

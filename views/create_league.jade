@@ -4,7 +4,7 @@ block title
   title Create a League - My LoL Fantasy
 
 block content
-  div(class='container theme-showcase' role='main')
+  div.container.theme-showcase(role='main')
     .well
       .create-league-error
         if messages.createLeagueError
@@ -24,14 +24,14 @@ block content
           each name, index in messages.createLeagueSummoners
             div(id= 'summoner-input-' + index, class= 'summoner-input ' + (messages.createLeagueInvalidSummoner && 'has-error'))
               input.form-control(type='text', placeholder='Summoner Name', value= name)
-              button(type='button', class='btn btn-primary') Remove
+              button.btn.btn-primary(type='button') Remove
         else
           div#summoner-input-0.summoner-input
             input.form-control(type='text', placeholder='Summoner Name')
-            button(type='button', class='btn btn-primary') Remove
+            button.btn.btn-primary(type='button') Remove
         br#last-summoner-input-break
-        button#add-summoner(type='button', class='btn btn-primary') Add Summoner
-        button(type='submit', class='btn btn-primary') Create
+        button#add-summoner.btn.btn-primary(type='button') Add Summoner
+        button.btn.btn-primary(type='submit') Create
 
 block scripts
   script(src= baseUrl + '/js/create_league.js')

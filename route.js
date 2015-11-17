@@ -2,10 +2,10 @@ var _ = require('lodash');
 var bcrypt = require('bcrypt');
 var express = require('express');
 var passport = require('passport');
-var path = require('path');
 var Q = require('q');
 
-var logger = require(path.join(__dirname, 'logger.js'));
+var logger = require('./logger.js');
+var version = require('./version.js');
 
 var router = express.Router();
 
@@ -19,6 +19,17 @@ router.use(function setRenderData(req, res, next) {
   res.locals.baseUrl = req.baseUrl;
   res.locals.isLoggedIn = !!req.user;
   res.locals.user = req.user;
+  res.locals.prod = req.app.locals.settings.is_prod;
+  res.locals.appSettings = req.app.locals.settings;
+  res.locals.version = version;
+
+  next();
+});
+
+router.use(function noStore(req, res, next) {
+  // All pages are dynamic due to login status shown in the header.
+  // Avoids computing hash of response all the time.
+  res.header('Cache-Control', 'no-store');
 
   next();
 });
