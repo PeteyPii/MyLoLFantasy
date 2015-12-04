@@ -9,12 +9,6 @@ var version = require('./version.js');
 
 var router = express.Router();
 
-router.use(function logRequests(req, res, next) {
-  logger.log(req.method + ' request for MLF at ' + req.url);
-
-  next();
-});
-
 router.use(function setRenderData(req, res, next) {
   res.locals.baseUrl = req.baseUrl;
   res.locals.isLoggedIn = !!req.user;

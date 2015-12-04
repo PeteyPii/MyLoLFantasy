@@ -12,6 +12,13 @@ var settings = require('./settings.js');
 try {
   mlf.createApp(true).then(function(mlfApp) {
     var app = express();
+
+    // Log all requests to the server
+    app.use(function logRequests(req, res, next) {
+      logger.logRequest(req);
+      next();
+    });
+
     app.get('/', function(req, res) {
       res.redirect('/MLF');
     });
