@@ -20,7 +20,7 @@ module.exports = function(grunt) {
       supervisorCommand += '.cmd';
     }
 
-    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,less,json', '--watch', '.', '--ignore', 'league_api_examples,public,views', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
+    var webServer = childProcess.spawn(supervisorCommand, ['--extensions', 'js,less,json', '--watch', '.', '--ignore', 'league_api_examples,public,views,.git', '--no-restart-on-exit', 'exit', '--quiet', 'server.js']);
 
     webServer.stdout.on('data', function(data) {
       var strData = data.toString();
