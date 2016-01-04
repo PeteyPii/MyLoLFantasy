@@ -15,9 +15,10 @@ block content
         div#league-name-input-div
           input#league-name-input.form-control(type='text', name='groupName', placeholder='League Name', value= messages.createLeagueName ? messages.createLeagueName : false)
         br
-        div(class='div-inline-block')
-          input#league-include-self(type='checkbox', name='includeSelf')
-        div(class='div-inline-block')
+        div(class='inline-block')
+          input#league-include-self(type='checkbox', name='includeSelf', checked= !messages.spectatorLeague ? 'checked': false)
+          &nbsp;
+        div(class='inline-block')
           p= "Include Self in League"
         br
         if messages.createLeagueSummoners

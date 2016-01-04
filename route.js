@@ -300,6 +300,8 @@ router.post('/CreateLeague', function(req, res) {
       req.flash('createLeagueSummoners', summonerNames);
     }
 
+    req.flash('spectatorLeague', spectatorLeague);
+
     res.send({
       success: false
     });
