@@ -16,8 +16,7 @@ block content
           input#league-name-input.form-control(type='text', name='groupName', placeholder='League Name', value= messages.createLeagueName ? messages.createLeagueName : false)
         br
         div(class='inline-block')
-          input#league-include-self(type='checkbox', name='includeSelf', checked= !messages.spectatorLeague ? 'checked': false)
-          &nbsp;
+          input#league-include-self(type='checkbox', name='includeSelf', checked= !messages.spectatorLeague) 
         div(class='inline-block')
           p= "Include Self in League"
         br
