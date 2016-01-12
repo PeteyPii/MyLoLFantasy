@@ -4,8 +4,8 @@ var os = require('os');
 var express = require('express');
 var open = require('open');
 
-var logger = require('./logger.js');
-var settings = require('./settings.js');
+var logger = require('./lib/logger.js');
+var settings = require('./lib/settings.js');
 
 module.exports = function(grunt) {
   grunt.initConfig({

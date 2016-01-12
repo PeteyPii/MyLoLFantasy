@@ -1,4 +1,5 @@
 *.css
+*.html
 *.map
 *.log
 *.sublime-workspace

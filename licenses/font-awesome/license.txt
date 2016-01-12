@@ -1,0 +1,4 @@
+Font Awesome licensing information (read more at http://fortawesome.github.io/Font-Awesome/license/):
+
+font-awesome.min.css:   MIT License     (http://opensource.org/licenses/mit-license.html)
+Font Awesome fonts:     SIL OFL 1.1     (http://scripts.sil.org/OFL)

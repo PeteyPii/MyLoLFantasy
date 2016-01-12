@@ -13,6 +13,7 @@
     "express-session": "1.10.4",
     "file": "0.2.2",
     "grunt": "0.4.5",
+    "gulp": "3.9.0",
     "jade": "1.9.2",
     "less": "2.5.0",
     "lodash": "3.5.0",

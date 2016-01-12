@@ -20,7 +20,7 @@ First install the following:
 - PostgreSQL (v9.4.1)
 - Redis (v2.8.19)
 - Python (v2.7.9)
-- The correct build system for C++, for [node-gyp](https://github.com/TooTallNate/node-gyp) (e.g. VS Express 2013 for Desktop on Windows)
+- The correct build system for C++, for [node-gyp](https://github.com/TooTallNate/node-gyp) (e.g. VS Community 2015 on Windows)
 
 Other versions may be okay, but these are the ones we use and test with.
 
@@ -41,7 +41,7 @@ Where:
 - `postgre_url` is a URL to your PostgreSQL database dedicated to MLF
 - `secret_key` is used for cookies, use some random string here
 
-Finally, as long as you've done everything correctly so far, you should be able to run `node create_db.js` to initialize database tables. Now, install
+Finally, as long as you've done everything correctly so far, you should be able to run `node batch/create_db.js` to initialize database tables. Now, install
 some tools, `npm install -g grunt-cli supervisor`, and then run `grunt open` and you should see the app in your browser shortly. If not, try manually
 checking out `https:\\localhost`.
 

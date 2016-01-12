@@ -5,15 +5,17 @@ html(lang='en')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1.0')
 
-    block title
+    base(href='/MLF/')
 
-    link(rel='icon', type='image/x-icon', href= baseUrl + '/img/favicon.ico')
+    //- block title
 
-    link(rel='stylesheet', href= baseUrl + '/css/bootstrap.min.css')
-    link(rel='stylesheet', href= baseUrl + '/css/bootstrap-theme.min.css')
-    link(rel='stylesheet', href= baseUrl + '/css/font-awesome.min.css')
+    link(rel='icon', type='image/x-icon', href='imgs/favicon.ico')
 
-    link(rel='stylesheet', href= baseUrl + '/css/theme.css')
+    link(rel='stylesheet', href= 'css/lib/bootstrap.min.css')
+    link(rel='stylesheet', href= 'css/lib/bootstrap-theme.min.css')
+    link(rel='stylesheet', href= 'css/lib/font-awesome.min.css')
+
+    link(rel='stylesheet', href= 'css/theme.css')
 
     if prod
       script.
@@ -24,6 +26,8 @@ html(lang='en')
 
         ga('create', '#{appSettings.ga_key}', 'auto');
         ga('send', 'pageview');
+
+    script(src='js/lib/angular.min.js')
 
   body
     nav.navbar.navbar-default(role='navigation')
@@ -43,7 +47,7 @@ html(lang='en')
             li: button#login.btn.btn-primary(data-toggle='modal', data-target='#login-popup') Log In
             li: button#signup.btn.btn-primary(data-toggle='modal', data-target='#signup-popup') Sign Up
 
-    block content
+    //- block content
 
     div#login-popup.modal.fade(tabindex='-1', role='dialog', aria-hideen='true')
       div.modal-dialog.modal-sm
@@ -91,8 +95,8 @@ html(lang='en')
 
     script.
       gBaseUrl = '#{baseUrl}';
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js')
-    script(src= baseUrl + '/js/bootstrap.min.js')
-    script(src= baseUrl + '/js/base.js')
+    script(src='js/lib/jquery.min.js')
+    script(src='js/lib/bootstrap.min.js')
+    script(src='js/base.js')
 
-    block scripts
+    //- block scripts
