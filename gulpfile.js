@@ -3,6 +3,7 @@ var childProcess = require('child_process');
 var gulp = require('gulp');
 var watch = require('gulp-watch');
 var less = require('gulp-less');
+var jade = require('gulp-jade');
 var plumber = require('gulp-plumber');
 
 var logger = require('./lib/logger.js');
