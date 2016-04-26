@@ -3,8 +3,8 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".git", "node_modules"],
-      "file_exclude_patterns": ["*.sublime-workspace", "*.map", "*.eot", "*.woff*", "*.otf", "*.svg", "*.min.*", "*.css"]
+      "folder_exclude_patterns": [".git", "node_modules", "bower_components"],
+      "file_exclude_patterns": ["*.sublime-workspace", "*.map", "*.eot", "*.ttf", "*.woff*", "*.otf", "*.svg", "*.min.*", "*.css", "public/index.html"]
     }
   ],
   "settings":

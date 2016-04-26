@@ -9,6 +9,10 @@ var plumber = require('gulp-plumber');
 var logger = require('./lib/logger.js');
 var settings = require('./lib/settings.js');
 
+jadeLocals = {
+  settings: settings,
+}
+
 var paths = {
   less: 'less/**/*.less',
   css: 'public/css/',
@@ -71,7 +75,9 @@ gulp.task('less', function() {
 
 gulp.task('jade', function() {
   return gulp.src(paths.jade)
-    .pipe(jade())
+    .pipe(jade({
+      locals: jadeLocals,
+    }))
     .pipe(gulp.dest(paths.html));
 });
 
@@ -87,7 +93,9 @@ gulp.task('watch_jade', function() {
   return gulp.src(paths.jade)
     .pipe(watch(paths.jade))
     .pipe(plumber())
-    .pipe(jade())
+    .pipe(jade({
+      locals: jadeLocals,
+    }))
     .pipe(gulp.dest(paths.html));
 });
 

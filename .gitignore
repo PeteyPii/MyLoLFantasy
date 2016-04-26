@@ -4,6 +4,7 @@
 *.log
 *.sublime-workspace
 node_modules/
+bower_components/
 settings.json
 Thumbs.db
 

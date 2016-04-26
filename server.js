@@ -20,7 +20,7 @@ try {
     });
 
     app.get('/', function(req, res) {
-      res.redirect('/MLF');
+      res.redirect('/MLF/');
     });
     app.use('/MLF', mlfApp);
 
