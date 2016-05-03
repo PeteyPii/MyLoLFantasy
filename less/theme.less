@@ -1,150 +1,132 @@
-.navbar
-{
-  #login, #logout, #signup
-  {
-    margin-top: 7px;
-    width: 80px;
-  }
-  #signup
-  {
-    margin-left: 15px;
-  }
-  #identification:hover
-  {
-    color: #777;
-  }
-}
-.navbar-default
-{
-  .navbar-brand
-  {
-    color: #111;
-    font-weight: bold;
-    &:hover,
-    &:focus
-    {
-      color: #111;
-    }
-    .brand-version
-    {
-      color: #777;;
-      font-size: small;
-      font-weight: normal;
-    }
-  }
+/* Constants */
+@xs-max-width: 767px;
+@sm-min-width: 768px;
+@sm-max-width: 991px;
+@md-min-width: 992px;
+@md-max-width: 1199px;
+@lg-min-width: 1200px;
+
+@main-colour: #7B3B90;
+@main-colour-highlight: lighten(@main-colour, 10%);
+@main-colour-highlight-double: lighten(@main-colour, 20%);
+@white-text-colour: #EEE;
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Regular.ttf');
 }
 
-.modal
-{
-  text-align: center;
-  margin: 0 auto;
-
-  .modal-content
-  {
-    padding-bottom: 20px;
-  }
-  .btn
-  {
-    width: 33%;
-    margin: auto;
-  }
-  input[type="text"],
-  input[type="password"]
-  {
-    width: 80%;
-    margin: auto;
-  }
-  p
-  {
-    max-width: 80%;
-    margin: auto;
-  }
-  label
-  {
-    max-width: 80%;
-  }
-  h2
-  {
-    margin-bottom: 20px;
-  }
-  button:focus
-  {
-    outline: none;
-  }
-  .modal-close
-  {
-    position: absolute;
-    top: 9px;
-    right: 12px;
-  }
-  .login-error, .signup-error
-  {
-    color: #F44;
-    margin-top: 10px;
-  }
-  .login-error p,
-  .signup-error p
-  {
-    margin-left: 10%;
-    margin-right: 10%;
-  }
-  #signup-password
-  {
-    margin-bottom: 5px;
-  }
-}
-
-.table-leagues
-{
-  .column-leagues
-  {
-    width: 97%;
-  }
-  .column-remove
-  {
-    width: 3%;
-  }
-}
-
-#last-summoner-input-break
-{
-  display: none;
-}
-
-.server-error
-{
-  margin-top: 10px;
-  text-align: center;
-}
-.no-margin
-{
+body, html {
+  width: 100%;
+  height: 100%;
   margin: 0;
-}
-.trim-style
-{
-  color: #777;
-}
-.no-table
-{
-  display: none;
-}
-.constrict-well
-{
-  display: inline-block;
-  padding: 40px;
+  padding: 0;
 }
 
-.table-league-individual
-{
-  display: none;
+@navbar-height: 64px;
+@navbar-brand-font-size: 32px;
+@navbar-link-font-size: 18px;
+@navbar-icon-size: 40px;
+@navbar-icon-horizontal-padding: 10px;
+
+.navbar {
+  background-color: @main-colour;
 }
 
-.button-individual-games
-{
-  display: none;
+.navbar-collapse {
+  border: 0;
 }
 
-.inline-block
-{
-  display: inline-block;
+.navbar-static-top {
+  margin-bottom: 0;
+}
+
+.navbar-brand {
+  font-size: @navbar-brand-font-size;
+  font-weight: bold;
+  line-height: @navbar-brand-font-size + 2;
+  height: @navbar-height;
+  color: @white-text-colour;
+
+  &:hover {
+    color: @white-text-colour;
+  }
+
+  &:focus {
+    color: @white-text-colour;
+    background-color: @main-colour-highlight-double;
+    outline-width: 0;
+  }
+
+  @media(max-width: @sm-max-width) {
+    margin-right: 0;
+  }
+  @media(min-width: @md-min-width) {
+    margin-right: 25px;
+  }
+}
+
+.navbar-nav {
+  & > li {
+    & > a {
+      height: @navbar-height;
+      padding: 22px;
+      font-size: @navbar-link-font-size;
+      color: #EEE;
+
+      @media(max-width: @md-max-width) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: @main-colour-highlight-double;
+        outline-width: 0;
+      }
+
+      // &.navbar-icon {
+      //   font-size: @navbar-icon-size;
+      //   padding-right: @navbar-icon-horizontal-padding;
+      //   padding-left: @navbar-icon-horizontal-padding;
+
+      //   &:hover,
+      //   &:focus {
+      //     color: @washed-theme-colour;
+      //     background-color: inherit;
+      //   }
+      // }
+    }
+  }
+  & > li.active {
+    & > a {
+      background-color: @main-colour-highlight;
+
+      &:hover,
+      &:focus {
+        background-color: @main-colour-highlight-double;
+        outline-width: 0;
+      }
+    }
+  }
+}
+
+.navbar-toggle {
+  color: @white-text-colour;
+  font-size: @navbar-icon-size;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 @navbar-icon-horizontal-padding;
+  height: @navbar-height;
+
+  &:hover,
+  &:focus, {
+    background-color: @main-colour-highlight-double;
+  }
+}
+
+.navbar-right {
+  @media(min-width: @sm-min-width) {
+    margin-right: 0;
+  }
 }

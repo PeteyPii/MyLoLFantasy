@@ -37,4 +37,15 @@ html(lang='en', data-ng-app='mlf')
     script(src='js/controllers/page_not_found.js')
 
   body
+    nav.navbar.navbar-static-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='Home', tabindex='-1') MyLF
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', ariua-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.fa.fa-bars
+        #navbar.navbar-collapse.collapse(aria-expanded='false')
+          ul.nav.navbar-nav
+            li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home') Home
+
     div(data-ng-view)
