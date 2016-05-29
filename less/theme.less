@@ -10,6 +10,8 @@
 @main-colour-highlight: lighten(@main-colour, 10%);
 @main-colour-highlight-double: lighten(@main-colour, 20%);
 @white-text-colour: #EEE;
+@dark-grey-bg-colour: #2B2B2B;
+@dark-bg-main: #513068;
 
 @font-face {
   font-family: 'Open Sans';
@@ -21,6 +23,9 @@ body, html {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: @dark-grey-bg-colour;
+  color: @white-text-colour;
+  font-family: 'Open Sans';
 }
 
 @navbar-height: 64px;
@@ -39,6 +44,7 @@ body, html {
 
 .navbar-static-top {
   margin-bottom: 0;
+  border: 0;
 }
 
 .navbar-brand {
@@ -84,18 +90,6 @@ body, html {
         background-color: @main-colour-highlight-double;
         outline-width: 0;
       }
-
-      // &.navbar-icon {
-      //   font-size: @navbar-icon-size;
-      //   padding-right: @navbar-icon-horizontal-padding;
-      //   padding-left: @navbar-icon-horizontal-padding;
-
-      //   &:hover,
-      //   &:focus {
-      //     color: @washed-theme-colour;
-      //     background-color: inherit;
-      //   }
-      // }
     }
   }
   & > li.active {
@@ -129,4 +123,31 @@ body, html {
   @media(min-width: @sm-min-width) {
     margin-right: 0;
   }
+}
+
+.footer {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-top: 1px solid @white-text-colour;
+}
+
+.marketing-row {
+  background-color: @dark-grey-bg-colour;
+  color: @white-text-colour;
+
+  &:nth-child(even) {
+    background-color: @dark-bg-main;
+  }
+}
+
+.marketing-row__header {
+  font-size: 48px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.marketing-row__text {
+  font-size: 24px;
+  margin-bottom: 24px;
+  line-height: 38px;
 }
