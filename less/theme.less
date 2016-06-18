@@ -31,8 +31,16 @@ body, html {
 @navbar-height: 64px;
 @navbar-brand-font-size: 32px;
 @navbar-link-font-size: 18px;
+@navbar-btn-font-size: @navbar-link-font-size;
 @navbar-icon-size: 40px;
 @navbar-icon-horizontal-padding: 10px;
+@navbar-btn-height: 42px;
+@navbar-btn-colour: #4a2b54;
+@navbar-btn-colour-hover: darken(@navbar-btn-colour, 3%);
+@navbar-btn-colour-focus: darken(@navbar-btn-colour, 5%);
+@navbar-input-height: 36px;
+@navbar-input-colour: @dark-grey-bg-colour;
+@navbar-input-border-colour: lighten(@navbar-input-colour, 10%);
 
 .navbar {
   background-color: @main-colour;
@@ -123,6 +131,55 @@ body, html {
   @media(min-width: @sm-min-width) {
     margin-right: 0;
   }
+}
+
+.nav-btn {
+  border: 0;
+  height: @navbar-btn-height;
+  font-size: @navbar-btn-font-size;
+  background-color: @navbar-btn-colour;
+  margin-top: (@navbar-height - @navbar-btn-height) / 2;
+  margin-bottom: (@navbar-height - @navbar-btn-height) / 2;
+  margin-left: 6px;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: @navbar-btn-colour-hover;
+  }
+
+  &:active {
+    background-color: @navbar-btn-colour-focus;
+  }
+
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+}
+
+.nav-btn--fixed-width {
+  width: 80px;
+}
+
+.nav-input {
+  background-color: @navbar-input-colour;
+  height: @navbar-input-height;
+  margin-top: (@navbar-height - @navbar-input-height) / 2;
+  margin-bottom: (@navbar-height - @navbar-input-height) / 2;
+  border: 2px solid @navbar-input-border-colour;
+  padding: 2px;
+  margin-left: 6px;
+  margin-right: 6px;
+
+  &:focus {
+    outline-width: 0;
+  }
+}
+
+.nav-txt {
+  padding-top: 22px;
+  padding-bottom: 22px;
+  height: @navbar-height;
 }
 
 .footer {

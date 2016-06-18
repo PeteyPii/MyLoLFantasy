@@ -2,23 +2,32 @@ var app = angular.module('mlf', [
   'ngRoute',
 ]);
 
-app.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
-    $routeProvider.when('/Home', {
-      templateUrl: 'views/home.html',
-      controller: 'HomeController',
-    }).when('/', {
-      redirectTo: '/Home'
-    }).otherwise({
-      templateUrl: 'views/page_not_found.html',
-      controller: 'MissingPageController',
-    });
+var profile;
 
-    $locationProvider.html5Mode(true);
-  }
-]);
+angular.element(document).ready(function() {
+  $.get('api/profile', function(data) {
+    profile = data;
+    angular.bootstrap(document, ['mlf']);
+  });
+});
 
-app.run(['$location', '$rootScope', '$window', function($location, $rootScope, $window) {
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  $routeProvider.when('/Home', {
+    templateUrl: 'views/home.html',
+    controller: 'HomeController',
+  }).when('/', {
+    redirectTo: '/Home'
+  }).otherwise({
+    templateUrl: 'views/page_not_found.html',
+    controller: 'MissingPageController',
+  });
+
+  $locationProvider.html5Mode(true);
+}]);
+
+app.run(['$location', '$rootScope', '$window', 'authService', function($location, $rootScope, $window, authService) {
+  authService.setProfile(profile);
+
   $rootScope.$on('$viewContentLoaded', function() {
     // This isn't in $routeChangeSuccess since that event gets fired multiple times for redirects.
     if ($window.ga) {
