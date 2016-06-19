@@ -30,7 +30,9 @@ html(lang='en')
         ga('create', '#{settings.ga_key}', 'auto');
         ga('send', 'pageview');
 
-    script(src='js/lib/angular.min.js')
+
+    script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js')
+    //- script(src='js/lib/angular.min.js')
     script(src='js/lib/angular-route.min.js')
 
     script(src='js/lib/jquery.min.js')
@@ -38,8 +40,9 @@ html(lang='en')
     script(src='js/services/auth_service.js')
     script(src='js/controllers/home.js')
     script(src='js/controllers/page_not_found.js')
+    script(src='js/controllers/flash.js')
+    script(src='js/controllers/log_in.js')
     script(src='js/directives/logged_in.js')
-
 
   body
     nav.navbar.navbar-static-top
@@ -53,13 +56,21 @@ html(lang='en')
           ul.nav.navbar-nav
             li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home') Home
             li(data-ng-class='{ active: activeNavLinks.leagues }' data-logged-in='true'): a(href='Leagues') Leagues
-          ul.nav.navbar-nav.navbar-right
-            li: input.nav-input(type='text' placeholder='Username')
-            li: input.nav-input(type='password' placeholder='Password')
-            li: button.nav-btn.nav-btn--fixed-width(data-logged-in='false') Log In
-            li: .nav-txt or
-            li: button.nav-btn.nav-btn--fixed-width(data-logged-in='false') Sign Up
+          div(data-ng-controller='LogInController')
+            ul.nav.navbar-nav.navbar-right
+              li(data-logged-in='false'): input.nav-input(type='text', placeholder='Username', data-ng-model='username')
+              li(data-logged-in='false'): input.nav-input(type='password', placeholder='Password', data-ng-model='password')
+              li(data-logged-in='false'): button.nav-btn.nav-btn--fixed-width(data-ng-click='logIn()')    Log In
+              li(data-logged-in='false'): .nav-txt or
+              li(data-logged-in='false'): button.nav-btn.nav-btn--fixed-width(data-ng-click='signUp()') Sign Up
 
+    .div(data-ng-controller='FlashController')
+      .container
+        .row
+          ul.flash
+            li(data-ng-repeat='message in messages')
+              .flash__item(data-ng-class='{ "flash__item--error": message.type == "error" }'): |{{ message.text }}
+                button.flash__close.fa.fa-times.pull-right(tabindex='-1', data-ng-click='close($index)')
     div(data-ng-view)
 
     .container.footer

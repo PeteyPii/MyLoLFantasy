@@ -208,3 +208,35 @@ body, html {
   margin-bottom: 24px;
   line-height: 38px;
 }
+
+@flash-item-height: 32px;
+
+.flash {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.flash__item {
+  margin: 6px;
+  padding: 6px;
+  height: @flash-item-height;
+  font-size: @flash-item-height - 2 * 6;
+  line-height: @flash-item-height - 2 * 6;
+}
+
+.flash__item--error {
+  background-color: #a01a1a;
+}
+
+.flash__close {
+  background-color: transparent;
+  border: 0;
+  outline-width: 0;
+  &:hover {
+    color: darken(@white-text-colour, 20%);
+  }
+  &:active {
+    color: darken(@white-text-colour, 40%);
+  }
+}

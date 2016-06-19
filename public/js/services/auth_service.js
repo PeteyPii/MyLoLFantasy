@@ -1,6 +1,6 @@
 app.factory('authService', ['$rootScope',
   function($rootScope) {
-    var profile;
+    var profile = {};
     return {
       setProfile: function(newProfile) {
         profile = newProfile;
