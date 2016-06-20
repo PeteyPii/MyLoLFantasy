@@ -9,6 +9,9 @@ app.factory('authService', ['$rootScope',
       isLoggedIn: function() {
         return profile.isLoggedIn;
       },
+      username: function() {
+        return profile.username || '';
+      },
     }
   }
 ]);

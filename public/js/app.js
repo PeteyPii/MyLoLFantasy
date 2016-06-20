@@ -18,6 +18,9 @@ app.config(['$routeProvider', '$locationProvider',
       controller: 'HomeController',
     }).when('/', {
       redirectTo: '/Home'
+    }).when('/SignUp', {
+      templateUrl: 'views/sign_up.html',
+      controller: 'SignUpController',
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',

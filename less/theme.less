@@ -11,7 +11,10 @@
 @main-colour-highlight-double: lighten(@main-colour, 20%);
 @white-text-colour: #EEE;
 @dark-grey-bg-colour: #2B2B2B;
-@dark-bg-main: #513068;
+@main-bg-colour: #513068;
+@error-colour: #A01A1A;
+@link-colour: #6FBAE6;
+@link-colour-hover: lighten(@link-colour, 10%);
 
 @font-face {
   font-family: 'Open Sans';
@@ -28,19 +31,27 @@ body, html {
   font-family: 'Open Sans';
 }
 
+a {
+  color: @link-colour;
+
+  &:hover, &:focus {
+    color: @link-colour-hover;
+  }
+}
+
 @navbar-height: 64px;
 @navbar-brand-font-size: 32px;
 @navbar-link-font-size: 18px;
-@navbar-btn-font-size: @navbar-link-font-size;
 @navbar-icon-size: 40px;
 @navbar-icon-horizontal-padding: 10px;
-@navbar-btn-height: 42px;
-@navbar-btn-colour: #4a2b54;
+@btn-height: 42px;
+@btn-font-size: 18px;
+@navbar-btn-colour: #4A2B54;
 @navbar-btn-colour-hover: darken(@navbar-btn-colour, 3%);
 @navbar-btn-colour-focus: darken(@navbar-btn-colour, 5%);
-@navbar-input-height: 36px;
-@navbar-input-colour: @dark-grey-bg-colour;
-@navbar-input-border-colour: lighten(@navbar-input-colour, 10%);
+@input-height: 36px;
+@input-colour: @dark-grey-bg-colour;
+@input-border-colour: lighten(@input-colour, 10%);
 
 .navbar {
   background-color: @main-colour;
@@ -135,11 +146,11 @@ body, html {
 
 .nav-btn {
   border: 0;
-  height: @navbar-btn-height;
-  font-size: @navbar-btn-font-size;
+  height: @btn-height;
+  font-size: @btn-font-size;
   background-color: @navbar-btn-colour;
-  margin-top: (@navbar-height - @navbar-btn-height) / 2;
-  margin-bottom: (@navbar-height - @navbar-btn-height) / 2;
+  margin-top: (@navbar-height - @btn-height) / 2;
+  margin-bottom: (@navbar-height - @btn-height) / 2;
   margin-left: 6px;
   margin-right: 6px;
 
@@ -161,25 +172,15 @@ body, html {
   width: 80px;
 }
 
-.nav-input {
-  background-color: @navbar-input-colour;
-  height: @navbar-input-height;
-  margin-top: (@navbar-height - @navbar-input-height) / 2;
-  margin-bottom: (@navbar-height - @navbar-input-height) / 2;
-  border: 2px solid @navbar-input-border-colour;
-  padding: 2px;
-  margin-left: 6px;
-  margin-right: 6px;
-
-  &:focus {
-    outline-width: 0;
-  }
-}
-
 .nav-txt {
+  display: inline;
   padding-top: 22px;
   padding-bottom: 22px;
   height: @navbar-height;
+}
+
+.nav-txt__spaced {
+  margin-right: 6px;
 }
 
 .footer {
@@ -193,7 +194,7 @@ body, html {
   color: @white-text-colour;
 
   &:nth-child(even) {
-    background-color: @dark-bg-main;
+    background-color: @main-bg-colour;
   }
 }
 
@@ -221,12 +222,12 @@ body, html {
   margin: 6px;
   padding: 6px;
   height: @flash-item-height;
-  font-size: @flash-item-height - 2 * 6;
-  line-height: @flash-item-height - 2 * 6;
+  font-size: @flash-item-height - 12;
+  line-height: @flash-item-height - 12;
 }
 
 .flash__item--error {
-  background-color: #a01a1a;
+  background-color: @error-colour;
 }
 
 .flash__close {
@@ -239,4 +240,90 @@ body, html {
   &:active {
     color: darken(@white-text-colour, 40%);
   }
+}
+
+.button {
+  border: 0;
+  height: @btn-height;
+  font-size: @btn-font-size;
+  background-color: @main-colour;
+
+  &:hover {
+    background-color: @main-colour-highlight;
+  }
+
+  &:active {
+    background-color: @main-colour-highlight-double;
+  }
+
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+}
+
+.input {
+  background-color: @input-colour;
+  height: @input-height;
+  border: 2px solid @input-border-colour;
+  padding: 2px;
+  margin: 6px;
+
+  &:focus {
+    outline-width: 0;
+  }
+}
+
+.input--nav {
+  margin-top: (@navbar-height - @input-height) / 2;
+  margin-bottom: (@navbar-height - @input-height) / 2;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+.input--form {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 6px 0;
+}
+
+.input--error {
+  border: 2px solid @error-colour;
+}
+
+.sign-up-form {
+  background-color: @main-bg-colour;
+  margin: 24px;
+  padding: 12px;
+}
+
+.sign-up-form__header {
+  margin: 12px 0 18px 0;
+  text-align: center;
+}
+
+.sign-up-form__email {
+  position: relative;
+
+  .input {
+    padding-right: 30px;
+  }
+
+  .fa {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+  }
+}
+
+.sign-up-form__checkbox {
+  margin-left: 6px;
+}
+
+.sign-up-form__break {
+  height: 12px;
+}
+
+.sign-up-form__submit {
+  width: 100%;
 }

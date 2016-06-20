@@ -1,0 +1,21 @@
+.container
+  .row
+    .col-xs-3
+    .col-xs-6
+      .sign-up-form
+        h1.sign-up-form__header Sign Up
+        input.input.input--form(type='text', data-ng-class='{"input--error": error.username}', data-ng-model='username', placeholder='Username')
+        .sign-up-form__break
+        input.input.input--form(type='password', data-ng-class='{"input--error": error.password}', data-ng-model='password', placeholder='Password')
+        input.input.input--form(type='password', data-ng-class='{"input--error": error.confirmPassword}', data-ng-model='confirmPassword', placeholder='Confirm Password')
+        .sign-up-form__break
+        .sign-up-form__email
+          input.input.input--form(type='email', data-ng-class='{"input--error": error.email}', data-ng-model='email', placeholder='Email (Optional)')
+          span.fa.fa-lg.fa-question(title='MyLF cares about your privacy. We only use your email for password recovery.')
+        .sign-up-form__break
+        input.input.input--form(type='text', data-ng-class='{"input--error": error.summonerName}', data-ng-model='summonerName', placeholder='Summoner Name')
+        .checkbox.sign-up-form__checkbox
+          label.
+            #[input(type='checkbox', data-ng-model='agree')] By signing up you are accepting
+            our #[a(href='EULA', target='_blank') End User License Agreement]
+        button.button.sign-up-form__submit(data-ng-click='signUp()') Submit
