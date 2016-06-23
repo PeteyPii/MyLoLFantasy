@@ -21,6 +21,7 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/SignUp', {
       templateUrl: 'views/sign_up.html',
       controller: 'SignUpController',
+      loggedIn: false,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',

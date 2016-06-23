@@ -37,6 +37,7 @@ html(lang='en')
     script(src='js/lib/jquery.min.js')
     script(src='js/app.js')
     script(src='js/services/auth_service.js')
+    script(src='js/controllers/main.js')
     script(src='js/controllers/home.js')
     script(src='js/controllers/sign_up.js')
     script(src='js/controllers/page_not_found.js')
@@ -44,7 +45,7 @@ html(lang='en')
     script(src='js/controllers/log_in.js')
     script(src='js/directives/logged_in.js')
 
-  body
+  body(data-ng-controller='MainController')
     nav.navbar.navbar-static-top
       .container
         .navbar-header
