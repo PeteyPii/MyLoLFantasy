@@ -44,6 +44,7 @@ html(lang='en')
     script(src='js/controllers/flash.js')
     script(src='js/controllers/log_in.js')
     script(src='js/directives/logged_in.js')
+    script(src='js/directives/no_click_focus.js')
 
   body(data-ng-controller='MainController')
     nav.navbar.navbar-static-top
@@ -55,16 +56,16 @@ html(lang='en')
             span.fa.fa-bars
         #navbar.navbar-collapse.collapse(aria-expanded='false')
           ul.nav.navbar-nav
-            li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home') Home
-            li(data-ng-class='{ active: activeNavLinks.leagues }' data-logged-in='true'): a(href='Leagues') Leagues
+            li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home', data-no-click-focus) Home
+            li(data-ng-class='{ active: activeNavLinks.leagues }' data-logged-in='true'): a(href='Leagues', data-no-click-focus) Leagues
           div(data-ng-controller='LogInController')
             ul.nav.navbar-nav.navbar-right
               li(data-logged-in='false')
                 input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}')
                 input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}')
-                button.nav-btn.nav-btn--fixed-width(data-ng-click='logIn()') Log In
+                button.nav-btn.nav-btn--fixed-width(data-ng-click='logIn()' data-no-click-focus) Log In
                 .nav-txt or
-                button.nav-btn.nav-btn--fixed-width(data-ng-click='signUp()') Sign Up
+                button.nav-btn.nav-btn--fixed-width(data-ng-click='signUp()' data-no-click-focus) Sign Up
               li(data-logged-in='true')
                 .nav-txt.nav-txt__spaced Welcome,
                   em: |{{ ' ' + displayUsername }}
