@@ -22,6 +22,10 @@ app.config(['$routeProvider', '$locationProvider',
       templateUrl: 'views/sign_up.html',
       controller: 'SignUpController',
       loggedIn: false,
+    }).when('/CreateLeague', {
+      templateUrl: 'views/create_league.html',
+      controller: 'CreateLeagueController',
+      loggedIn: true,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',

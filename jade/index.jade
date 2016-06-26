@@ -43,6 +43,7 @@ html(lang='en')
     script(src='js/controllers/page_not_found.js')
     script(src='js/controllers/flash.js')
     script(src='js/controllers/log_in.js')
+    script(src='js/controllers/create_league.js')
     script(src='js/directives/logged_in.js')
     script(src='js/directives/no_click_focus.js')
 
@@ -58,6 +59,7 @@ html(lang='en')
           ul.nav.navbar-nav
             li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home', data-no-click-focus) Home
             li(data-ng-class='{ active: activeNavLinks.leagues }' data-logged-in='true'): a(href='Leagues', data-no-click-focus) Leagues
+            li(data-ng-class='{ active: activeNavLinks.createLeague }' data-logged-in='true'): a(href='CreateLeague', data-no-click-focus) Create League
           div(data-ng-controller='LogInController')
             ul.nav.navbar-nav.navbar-right
               li(data-logged-in='false')
@@ -76,7 +78,7 @@ html(lang='en')
         .row
           ul.flash
             li(data-ng-repeat='message in messages')
-              .flash__item(data-ng-class='{"flash__item--error": message.type == "error"}'): |{{ message.text }}
+              .flash__item(data-ng-class='{"flash__item--error": message.type == "error", "flash__item--success": message.type == "success"}'): |{{ message.text }}
                 button.flash__close.fa.fa-times.pull-right(tabindex='-1', data-ng-click='close($index)')
 
     div(data-ng-view)

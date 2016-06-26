@@ -12,6 +12,9 @@ app.factory('authService', ['$rootScope',
       username: function() {
         return profile.username || '';
       },
+      summonerName: function() {
+        return profile.summonerName || '';
+      },
     }
   }
 ]);

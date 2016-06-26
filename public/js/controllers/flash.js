@@ -12,5 +12,12 @@ app.controller('FlashController', ['$rootScope', '$scope',
         text: messageText,
       });
     });
+
+    $scope.$on('flashSuccess', function(event, messageText) {
+      $scope.messages.push({
+        type: 'success',
+        text: messageText,
+      });
+    });
   }
 ]);

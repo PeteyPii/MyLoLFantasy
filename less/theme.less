@@ -13,6 +13,7 @@
 @dark-grey-bg-colour: #2B2B2B;
 @main-bg-colour: #513068;
 @error-colour: #A01A1A;
+@success-colour: #377D00;
 @link-colour: #6FBAE6;
 @link-colour-hover: lighten(@link-colour, 10%);
 
@@ -230,7 +231,13 @@ a {
   background-color: @error-colour;
 }
 
+.flash__item--success {
+  background-color: @success-colour;
+}
+
 .flash__close {
+  position: relative;
+  bottom: 1px;
   background-color: transparent;
   border: 0;
   outline-width: 0;
@@ -262,6 +269,11 @@ a {
   }
 }
 
+.button--flex {
+  flex: 0;
+  margin: 3px 0;
+}
+
 .input {
   background-color: @input-colour;
   height: @input-height;
@@ -291,18 +303,28 @@ a {
   border: 2px solid @error-colour;
 }
 
-.sign-up-form {
+.input--flex {
+  margin: 0 6px 0 0;
+  flex: 1;
+}
+
+.island-form {
   background-color: @main-bg-colour;
   margin: 24px;
   padding: 12px;
 }
 
-.sign-up-form__header {
+.island-form__flex {
+  display: flex;
+  align-items: center;
+}
+
+.island-form__header {
   margin: 12px 0 18px 0;
   text-align: center;
 }
 
-.sign-up-form__email {
+.island-form__input-hint {
   position: relative;
 
   .input {
@@ -316,14 +338,23 @@ a {
   }
 }
 
-.sign-up-form__checkbox {
+.island-form__checkbox {
   margin-left: 6px;
+
+  .fa {
+    margin-top: 4px;
+  }
 }
 
-.sign-up-form__break {
+.island-form__break {
   height: 12px;
 }
 
-.sign-up-form__submit {
+.island-form__submit {
   width: 100%;
+}
+
+.island-form__centered {
+  display: block;
+  margin: auto;
 }

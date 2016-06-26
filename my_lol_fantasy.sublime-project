@@ -3,7 +3,7 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".git", "node_modules", "bower_components"],
+      "folder_exclude_patterns": [".git", "node_modules", "bower_components", "public/views"],
       "file_exclude_patterns": ["*.sublime-workspace", "*.map", "*.eot", "*.ttf", "*.woff*", "*.otf", "*.svg", "*.min.*", "*.css", "public/index.html"]
     }
   ],

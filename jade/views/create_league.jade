@@ -1,0 +1,19 @@
+.container
+  .row
+    .col-xs-3
+    .col-xs-6
+      .island-form
+        h1.island-form__header Create League
+        input.input.input--form(type='text', data-ng-class='{"input--error": error.leagueName}', data-ng-model='leagueName', placeholder='League Name')
+        .island-form__break
+        .island-form__flex(data-ng-repeat='summonerName in summonerNames')
+          input.input.input--flex(type='text', data-ng-class='{"input--error": error.summonerNames[$index]}', data-ng-model='summonerNames[$index]', placeholder='Summoner Name \#{{ $index + 1 }}')
+          button.button.button--flex(data-ng-click='remove($index)', data-no-click-focus) Remove
+        .island-form__break
+        button.button.island-form__centered(data-ng-click='add()', data-no-click-focus) Add Summoner
+        .island-form__break
+        .checkbox.island-form__checkbox
+          label.
+            #[input(type='checkbox', data-ng-model='isSpectatorLeague')] Spectator League
+          span.fa.fa-lg.fa-question.pull-right(title='Turning "Spectator League" on means you will not be included in the League.')
+        button.button.island-form__submit(data-ng-click='createLeague()', data-no-click-focus) Submit
