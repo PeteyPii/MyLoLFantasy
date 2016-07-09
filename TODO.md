@@ -1,0 +1,13 @@
+# 2.0.0 TODO List
+- CSRF protection
+- Max Leagues
+- Mobile prettiness
+- Footer
+  - GitHub link
+  - about page (Riot disclaimer)
+  - Site version
+- EULA
+- Build script (copy, concat, minify, clean)
+- Update Leagues script
+- Settings for cert path and redis connection info
+- Bower install script

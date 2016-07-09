@@ -145,42 +145,17 @@ a {
   }
 }
 
-.nav-btn {
-  border: 0;
-  height: @btn-height;
-  font-size: @btn-font-size;
-  background-color: @navbar-btn-colour;
-  margin-top: (@navbar-height - @btn-height) / 2;
-  margin-bottom: (@navbar-height - @btn-height) / 2;
-  margin-left: 6px;
-  margin-right: 6px;
 
-  &:hover {
-    background-color: @navbar-btn-colour-hover;
-  }
 
-  &:active {
-    background-color: @navbar-btn-colour-focus;
-  }
-
-  &:focus {
-    outline-width: 0;
-    box-shadow: inset 0 0 0 2px @white-text-colour;
-  }
-}
-
-.nav-btn--fixed-width {
-  width: 80px;
-}
-
-.nav-txt {
+.navbar-text {
   display: inline;
   padding-top: 22px;
   padding-bottom: 22px;
   height: @navbar-height;
+  float: none; // Bootstrap override
 }
 
-.nav-txt__spaced {
+.navbar-text__spaced {
   margin-right: 6px;
 }
 
@@ -192,7 +167,6 @@ a {
 
 .marketing-row {
   background-color: @dark-grey-bg-colour;
-  color: @white-text-colour;
 
   &:nth-child(even) {
     background-color: @main-bg-colour;
@@ -269,9 +243,39 @@ a {
   }
 }
 
+.button--nav {
+  background-color: @navbar-btn-colour;
+  margin-top: (@navbar-height - @btn-height) / 2;
+  margin-bottom: (@navbar-height - @btn-height) / 2;
+  margin-left: 6px;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: @navbar-btn-colour-hover;
+  }
+
+  &:active {
+    background-color: @navbar-btn-colour-focus;
+  }
+
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+}
+
+.button--fixed-width {
+  width: 80px;
+}
+
 .button--flex {
   flex: 0;
   margin: 3px 0;
+}
+
+.button--dialog {
+  margin: 0 6px;
+  width: 80px;
 }
 
 .input {
@@ -357,4 +361,133 @@ a {
 .island-form__centered {
   display: block;
   margin: auto;
+}
+
+.dialog {
+  padding-bottom: 160px;
+  padding-top: 160px;
+
+  .ngdialog-content {
+    margin: 0 auto;
+    width: 450px;
+    max-width: 100%;
+    position: relative;
+    background-color: @main-bg-colour;
+    animation: initial;
+  }
+
+  .ngdialog-overlay {
+    animation: initial;
+  }
+
+  .ngdialog-close {
+    position: absolute;
+    right: 6px;
+    top: 0;
+    cursor: pointer;
+    font-size: 22px;
+
+    &:before {
+      font-family: FontAwesome;
+      content: '\f00d';
+    }
+
+    &:hover {
+      color: darken(@white-text-colour, 20%);
+    }
+    &:active {
+      color: darken(@white-text-colour, 40%);
+    }
+  }
+}
+
+.ngdialog.ngdialog-closing {
+  .ngdialog-content {
+    animation: initial;
+  }
+
+  .ngdialog-overlay {
+    animation: initial;
+  }
+}
+
+.dialog__title {
+  font-size: 24px;
+  text-align: center;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.dialog__text {
+  text-align: center;
+  font-size: 18px;
+  line-height: 26px;
+  margin: 0;
+}
+
+.dialog__options {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.leagues-list {
+  margin: 24px;
+}
+
+.leagues-list__header {
+  background-color: @main-bg-colour;
+  padding: 12px;
+  margin: 0;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.leagues-list__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.leagues-list__item {
+  background-color: darken(@main-bg-colour, 10%);
+  font-size: 24px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  cursor: pointer;
+  &:nth-child(even) {
+    background-color: darken(@main-bg-colour, 5%);
+  }
+
+  span {
+    margin: 0 6px;
+  }
+
+  .fa {
+    position: relative;
+    top: 4px;
+    right: 4px;
+    &:hover {
+      color: darken(@white-text-colour, 20%);
+    }
+    &:active {
+      color: darken(@white-text-colour, 40%);
+    }
+  }
+}
+
+.leagues-list__error,
+.leagues-list__loading,
+.leagues-list__empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: darken(@main-bg-colour, 10%);
+  height: 300px;
+  font-size: 24px;
+
+  span {
+    margin: 0 6px;
+  }
 }

@@ -1,5 +1,6 @@
 var app = angular.module('mlf', [
   'ngRoute',
+  'ngDialog',
 ]);
 
 var profile;
@@ -25,6 +26,10 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/CreateLeague', {
       templateUrl: 'views/create_league.html',
       controller: 'CreateLeagueController',
+      loggedIn: true,
+    }).when('/Leagues', {
+      templateUrl: 'views/leagues.html',
+      controller: 'LeaguesController',
       loggedIn: true,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
