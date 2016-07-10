@@ -11,3 +11,14 @@
 - Update Leagues script
 - Settings for cert path and redis connection info
 - Bower install script
+- 404 page
+- Split LESS files
+- Change font
+- Home page images
+- League sorting
+- League individual stats
+- League update stats
+- League delete
+- Log in when hitting enter
+- Update npm packages used
+- Split API

@@ -31,7 +31,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
         template: 'views/dialogs/delete_league.html',
         className: 'dialog',
         disableAnimation: true,
-        controller: ['$scope', '$http', function($scope, $http) {
+        controller: ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
           $scope.leagueName = $outerScope.idToName[leagueId];
           $scope.confirmClick = function() {
             $http.delete('api/League/' + leagueId).then(function(response) {

@@ -31,6 +31,9 @@ app.config(['$routeProvider', '$locationProvider',
       templateUrl: 'views/leagues.html',
       controller: 'LeaguesController',
       loggedIn: true,
+    }).when('/League/:leagueId', {
+      templateUrl: 'views/league.html',
+      controller: 'LeagueController',
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',

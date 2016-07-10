@@ -1,0 +1,38 @@
+.container
+  .row
+    .col-xs-12
+      .league-container
+        .league(data-ng-show='!isLoading && !loadError && exists')
+          .league-header
+            span.league-header__name {{ league.name }}
+            span.league-header__game-count(data-ng-show='league.gameCount !== 1') {{ league.gameCount }} games
+            span.league-header__game-count(data-ng-show='league.gameCount === 1') 1 game played
+          table.league-table
+            tr
+              th.league-table__summoner Summoner
+              th.league-table__kda K / D / A
+              th.league-table__cs CS
+              th.league-table__turrets Turrets
+              th.league-table__doubles 2x
+              th.league-table__triples 3x
+              th.league-table__quadras 4x
+              th.league-table__pentas 5x
+              th.league-table__points Points
+            tr(data-ng-repeat='(summoner, data) in league.data')
+              td.league-table__summoner {{ summoner }}
+              td.league-table__kda {{ data.stats.championKills }} / {{ data.stats.deaths }} / {{ data.stats.assists }}
+              td.league-table__cs {{ data.stats.minionKills }}
+              td.league-table__turrets {{ data.stats.turretKills }}
+              td.league-table__doubles {{ data.stats.doubleKills }}
+              td.league-table__triples {{ data.stats.tripleKills }}
+              td.league-table__quadras {{ data.stats.quadraKills }}
+              td.league-table__pentas {{ data.stats.pentaKills }}
+              td.league-table__points {{ data.points.toFixed(2) }}
+        .league-loading(data-ng-show='isLoading')
+          span Loading...
+          span.fa.fa-spinner.fa-spin
+        .league-error(data-ng-show='!isLoading && loadError')
+          span Your Leagues failed to load. Try refreshing the page in a few minutes.
+        .league-not-found(data-ng-show='!isLoading && !exists')
+          span The League you are looking for does not exist.
+

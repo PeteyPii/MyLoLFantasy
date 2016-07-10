@@ -9,9 +9,10 @@
 @main-colour: #7B3B90;
 @main-colour-highlight: lighten(@main-colour, 10%);
 @main-colour-highlight-double: lighten(@main-colour, 20%);
+@main-colour-dark: #513068;
 @white-text-colour: #EEE;
+@faded-main-text-colour: #AE8CC7;
 @dark-grey-bg-colour: #2B2B2B;
-@main-bg-colour: #513068;
 @error-colour: #A01A1A;
 @success-colour: #377D00;
 @link-colour: #6FBAE6;
@@ -145,8 +146,6 @@ a {
   }
 }
 
-
-
 .navbar-text {
   display: inline;
   padding-top: 22px;
@@ -169,7 +168,7 @@ a {
   background-color: @dark-grey-bg-colour;
 
   &:nth-child(even) {
-    background-color: @main-bg-colour;
+    background-color: @main-colour-dark;
   }
 }
 
@@ -313,7 +312,7 @@ a {
 }
 
 .island-form {
-  background-color: @main-bg-colour;
+  background-color: @main-colour-dark;
   margin: 24px;
   padding: 12px;
 }
@@ -372,7 +371,7 @@ a {
     width: 450px;
     max-width: 100%;
     position: relative;
-    background-color: @main-bg-colour;
+    background-color: @main-colour-dark;
     animation: initial;
   }
 
@@ -435,7 +434,7 @@ a {
 }
 
 .leagues-list__header {
-  background-color: @main-bg-colour;
+  background-color: @main-colour-dark;
   padding: 12px;
   margin: 0;
 
@@ -451,13 +450,13 @@ a {
 }
 
 .leagues-list__item {
-  background-color: darken(@main-bg-colour, 10%);
+  background-color: darken(@main-colour-dark, 10%);
   font-size: 24px;
   padding-top: 6px;
   padding-bottom: 6px;
   cursor: pointer;
   &:nth-child(even) {
-    background-color: darken(@main-bg-colour, 5%);
+    background-color: darken(@main-colour-dark, 5%);
   }
 
   span {
@@ -483,7 +482,108 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: darken(@main-bg-colour, 10%);
+  background-color: darken(@main-colour-dark, 10%);
+  height: 300px;
+  font-size: 24px;
+
+  span {
+    margin: 0 6px;
+  }
+}
+
+.league-container {
+  margin: 24px;
+}
+
+.league {
+}
+
+.league-header {
+  background-color: darken(@main-colour, 10%);
+  padding: 12px;
+  margin: 0;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.league-header__name {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.league-header__game-count {
+  float: right;
+  font-size: 36px;
+  line-height: 36px;
+  font-size: 20px;
+  color: @faded-main-text-colour;
+}
+
+.league-table {
+  width: 100%;
+  display: block;
+  // margin-top: 12px;
+  padding: 12px;
+
+  tbody {
+    display: block;
+  }
+
+  tr {
+    display: flex;
+    background-color: darken(@main-colour-dark, 10%);
+    font-size: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    &:nth-child(odd) {
+      background-color: darken(@main-colour-dark, 5%);
+    }
+    &:first-child {
+      background-color: @main-colour-dark;
+      border-bottom: solid @white-text-colour 2px;
+    }
+  }
+
+  td, th {
+    text-align: center;
+    flex: 10;
+    min-width: 0;
+    margin: 0 6px;
+  }
+
+  .league-table__summoner {
+    text-align: left;
+    flex: 15;
+  }
+
+  .league-table__kda {
+    flex: 22;
+  }
+
+  .league-table__turrets {
+    flex: 7;
+  }
+
+  .league-table__doubles,
+  .league-table__triples,
+  .league-table__quadras,
+  .league-table__pentas {
+    flex: 5;
+  }
+}
+
+
+.league-loading,
+.league-error,
+.league-not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: darken(@main-colour-dark, 10%);
+  background-color: darken(@main-colour-dark, 5%);
   height: 300px;
   font-size: 24px;
 

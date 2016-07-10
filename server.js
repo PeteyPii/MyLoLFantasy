@@ -46,7 +46,6 @@ try {
       }
     });
     var httpServer = http.createServer(redirectApp).listen(settings.server_http_port);
-
   }).fail(function(err) {
     if (err.stack) {
       logger.error(err.stack);
