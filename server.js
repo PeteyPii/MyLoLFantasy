@@ -10,7 +10,7 @@ var logger = require('./lib/logger.js');
 var settings = require('./lib/settings.js');
 
 try {
-  mlf.createApp(true).then(function(mlfApp) {
+  mlf.createApp().then(function(mlfApp) {
     var app = express();
 
     // Log all requests to the server
@@ -25,8 +25,8 @@ try {
     app.use('/MLF', mlfApp);
 
     var httpsServer = https.createServer({
-      key: fs.readFileSync(path.join(__dirname, 'certs/key.pem')),
-      cert: fs.readFileSync(path.join(__dirname, 'certs/key-cert.pem')),
+      key: fs.readFileSync(path.join(__dirname, 'certs', settings.ssl_key_path)),
+      cert: fs.readFileSync(path.join(__dirname, 'certs', settings.ssl_cert_path)),
     }, app);
 
     httpsServer.listen(settings.server_https_port, function() {
