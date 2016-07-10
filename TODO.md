@@ -7,7 +7,6 @@
   - about page (Riot disclaimer) and privacy policy
   - Site version
 - Build script (copy, concat, minify, clean)
-- Settings for cert path and redis connection info
 - Bower install script
 - 404 page
 - Split LESS files
@@ -21,3 +20,4 @@
 - Update npm packages used
 - Split API
 - Time last updated on League and Leagues
+- Update README
