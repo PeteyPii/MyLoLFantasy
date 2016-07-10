@@ -55,7 +55,7 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
         if (!$scope.leagueName) {
           $scope.error.leagueName = true;
           $rootScope.$broadcast('flashError', 'League must have a name');
-        } else if (!$scope.isSpectatorLeague && summonerCount < 1) {
+        } else if ($scope.isSpectatorLeague && summonerCount < 1) {
           $rootScope.$broadcast('flashError', 'League cannot be a spectator League without any summoners');
         } else {
           foundError = false;

@@ -1,6 +1,5 @@
 # 2.0.0 TODO List
 - CSRF protection
-- Max Leagues
 - Mobile prettiness
 - Footer
   - GitHub link
