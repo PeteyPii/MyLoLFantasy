@@ -34,6 +34,9 @@ app.config(['$routeProvider', '$locationProvider',
     }).when('/League/:leagueId', {
       templateUrl: 'views/league.html',
       controller: 'LeagueController',
+    }).when('/EULA', {
+      templateUrl: 'views/eula.html',
+      controller: 'EULAController',
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',
