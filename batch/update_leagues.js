@@ -1,13 +1,13 @@
-var dbApi = require('../lib/database.js');
-var lolApi = require('../lib/lol.js');
+var DB = require('../lib/database.js');
+var LoL = require('../lib/lol.js');
 var logger = require('../lib/logger.js');
 var settings = require('../lib/settings.js');
-var statsApi = require('../lib/statistics.js');
+var Stats = require('../lib/statistics.js');
 
 try {
-  var db = new dbApi(settings.postgre_url);
-  var lol = new lolApi(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
-  var stats = new statsApi(db, lol);
+  var db = new DB(settings.postgre_url);
+  var lol = new LoL(settings.lol_api_key, settings.lol_burst_requests, settings.lol_burst_period);
+  var stats = new Stats(db, lol);
 
   db.init().then(function() {
     return lol.init();
@@ -17,21 +17,11 @@ try {
     return stats.updateAllLeagues();
   }).then(function() {
     return lol.resetTempCache();
-  }).fail(function(err) {
-    if (err.stack) {
-      logger.error(err.stack);
-    } else {
-      logger.error('Error: ' + err);
-    }
-  }).fin(function() {
+  }).fail(logger.logException).fin(function() {
     return db.deinit();
   }).fin(function() {
     return lol.deinit();
-  }).done();
+  }).fail(logger.logException).done();
 } catch (err) {
-  if (err.stack) {
-    logger.error(err.stack);
-  } else {
-    logger.error('Error: ' + err)
-  }
+  logger.logException(err);
 }

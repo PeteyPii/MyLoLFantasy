@@ -46,17 +46,7 @@ try {
       }
     });
     var httpServer = http.createServer(redirectApp).listen(settings.server_http_port);
-  }).fail(function(err) {
-    if (err.stack) {
-      logger.error(err.stack);
-    } else {
-      logger.error('Error: ' + err);
-    }
-  }).done();
+  }).fail(logger.logException).done();
 } catch (err) {
-  if (err.stack) {
-    logger.error(err.stack);
-  } else {
-    logger.error('Error: ' + err);
-  }
+  logger.logException(err);
 }
