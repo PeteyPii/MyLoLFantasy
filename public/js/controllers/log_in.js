@@ -10,6 +10,10 @@ app.controller('LogInController', ['$rootScope', '$scope', '$http', '$location',
 
     $scope.displayUsername = authService.username();
 
+    $scope.$on('profileChanged', function(event) {
+      $scope.displayUsername = authService.username();
+    });
+
     var isWorking = false;
 
     $scope.logIn = function() {
