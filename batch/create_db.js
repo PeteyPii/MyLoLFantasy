@@ -1,8 +1,3 @@
-var fs = require('fs');
-
-var _ = require('lodash');
-var Q = require('q');
-
 var dbApi = require('../lib/database.js');
 var logger = require('../lib/logger.js');
 var settings = require('../lib/settings.js');

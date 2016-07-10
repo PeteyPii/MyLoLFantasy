@@ -7,7 +7,6 @@
   - about page (Riot disclaimer) and privacy policy
   - Site version
 - Build script (copy, concat, minify, clean)
-- Update Leagues script
 - Settings for cert path and redis connection info
 - Bower install script
 - 404 page
