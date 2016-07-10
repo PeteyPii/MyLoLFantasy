@@ -32,7 +32,7 @@
           span Loading...
           span.fa.fa-spinner.fa-spin
         .league-error(data-ng-show='!isLoading && loadError')
-          span Your Leagues failed to load. Try refreshing the page in a few minutes.
-        .league-not-found(data-ng-show='!isLoading && !exists')
+          span League failed to load. Try refreshing the page in a few minutes.
+        .league-not-found(data-ng-show='!isLoading && !loadError && !exists')
           span The League you are looking for does not exist.
 

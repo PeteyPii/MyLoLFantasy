@@ -17,7 +17,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
       if (response.status === 404) {
         // $scope is set up to imply the League does not exist.
       } else {
-        $loadError = true;
+        $scope.loadError = true;
         $rootScope.$broadcast('flashError', 'Server responded with status code ' + response.status);
       }
     });
