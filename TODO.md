@@ -1,5 +1,4 @@
 # 2.0.0 TODO List
-- CSRF protection
 - Mobile prettiness
 - Footer
   - GitHub link
@@ -7,8 +6,8 @@
   - Site version
 - Build script (copy, concat, minify, clean)
 - Bower install script
-- 404 page
 - Split LESS files
+- Delete backup
 - Change font
 - Home page images
 - League sorting

@@ -1,4 +1,5 @@
 var app = angular.module('mlf', [
+  'ngCookies',
   'ngRoute',
   'ngDialog',
 ]);
@@ -12,8 +13,8 @@ angular.element(document).ready(function() {
   });
 });
 
-app.config(['$routeProvider', '$locationProvider',
-  function($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', '$httpProvider',
+  function($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.when('/Home', {
       templateUrl: 'views/home.html',
       controller: 'HomeController',
@@ -43,6 +44,8 @@ app.config(['$routeProvider', '$locationProvider',
     });
 
     $locationProvider.html5Mode(true);
+
+    $httpProvider.interceptors.push('csrf');
   }
 ]);
 

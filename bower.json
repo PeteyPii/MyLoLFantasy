@@ -16,6 +16,7 @@
     "font-awesome": "4.6.1",
     "angular": "1.5.5",
     "angular-route": "1.5.5",
+    "angular-cookies": "1.5.5",
     "ng-dialog": "0.6.2",
     "jquery": "2.2.4"
   }
