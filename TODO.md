@@ -7,7 +7,6 @@
 - Build script (copy, concat, minify, clean)
 - Bower install script
 - Split LESS files
-- Delete backup
 - Change font
 - Home page images
 - League sorting
