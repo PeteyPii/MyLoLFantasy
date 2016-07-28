@@ -70,8 +70,8 @@ html(lang='en')
           div(data-ng-controller='LogInController')
             ul.nav.navbar-nav.navbar-right
               li(data-logged-in='false')
-                input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}')
-                input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}')
+                input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}', data-ng-keydown="$event.which === 13 && logIn()")
+                input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}', data-ng-keydown="$event.which === 13 && logIn()")
                 button.button.button--nav.button--fixed-width(data-ng-click='logIn()', data-no-click-focus) Log In
                 .navbar-text or
                 button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up

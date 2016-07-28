@@ -13,7 +13,6 @@
 - League individual stats
 - League update stats
 - League delete
-- Log in when hitting enter
 - Update npm packages used
 - Split API
 - Time last updated on League and Leagues
