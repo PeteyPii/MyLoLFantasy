@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../fonts/OpenSans-Regular.ttf');
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: @dark-grey-bg-colour;
+  color: @white-text-colour;
+  font-family: 'Open Sans';
+}
+
+a {
+  color: @link-colour;
+
+  &:hover, &:focus {
+    color: @link-colour-hover;
+  }
+}

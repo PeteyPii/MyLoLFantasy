@@ -5,7 +5,6 @@
   - about page (Riot disclaimer) and privacy policy
   - Site version
 - Build script (copy, concat, minify, clean)
-- Split LESS files
 - Change font
   - Use bower
   - Update gitignore

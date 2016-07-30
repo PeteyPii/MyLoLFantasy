@@ -3,7 +3,16 @@
   [
     {
       "path": ".",
-      "folder_exclude_patterns": [".git", "node_modules", "bower_components", "public/js/lib"],
+      "folder_exclude_patterns": [
+        ".git",
+        "node_modules",
+        "bower_components",
+        "public/js/lib",
+        "public/css",
+        "public/fonts",
+        "public/imgs",
+        "public/views",
+      ],
       "file_exclude_patterns":
       [
         "*.sublime-workspace",

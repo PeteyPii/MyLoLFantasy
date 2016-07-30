@@ -4,8 +4,8 @@
 *.sublime-workspace
 bower_components/
 node_modules/
-public/css/*
-public/js/lib/*
+public/css/
+public/js/lib/
 public/fonts/fontawesome-webfont.*
 public/fonts/FontAwesome.*
 public/fonts/glyphicons-halflings-regular.*

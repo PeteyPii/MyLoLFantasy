@@ -1,0 +1,98 @@
+.league-container {
+  margin: 24px;
+}
+
+.league {
+}
+
+.league-header {
+  background-color: darken(@main-colour, 10%);
+  padding: 12px;
+  margin: 0;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.league-header__name {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.league-header__game-count {
+  float: right;
+  font-size: 36px;
+  line-height: 36px;
+  font-size: 20px;
+  color: @faded-main-text-colour;
+}
+
+.league-table {
+  width: 100%;
+  display: block;
+  padding: 12px;
+
+  tbody {
+    display: block;
+  }
+
+  tr {
+    display: flex;
+    background-color: darken(@main-colour-dark, 10%);
+    font-size: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    &:nth-child(odd) {
+      background-color: darken(@main-colour-dark, 5%);
+    }
+    &:first-child {
+      background-color: @main-colour-dark;
+      border-bottom: solid @white-text-colour 2px;
+    }
+  }
+
+  td, th {
+    text-align: center;
+    flex: 10;
+    min-width: 0;
+    margin: 0 6px;
+  }
+
+  .league-table__summoner {
+    text-align: left;
+    flex: 15;
+  }
+
+  .league-table__kda {
+    flex: 22;
+  }
+
+  .league-table__turrets {
+    flex: 7;
+  }
+
+  .league-table__doubles,
+  .league-table__triples,
+  .league-table__quadras,
+  .league-table__pentas {
+    flex: 5;
+  }
+}
+
+.league-loading,
+.league-error,
+.league-not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // background-color: darken(@main-colour-dark, 10%);
+  background-color: darken(@main-colour-dark, 5%);
+  height: 300px;
+  font-size: 24px;
+
+  span {
+    margin: 0 6px;
+  }
+}
