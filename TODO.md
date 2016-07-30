@@ -5,9 +5,10 @@
   - about page (Riot disclaimer) and privacy policy
   - Site version
 - Build script (copy, concat, minify, clean)
-- Bower install script
 - Split LESS files
 - Change font
+  - Use bower
+  - Update gitignore
 - Home page images
 - League sorting
 - League individual stats
@@ -17,3 +18,4 @@
 - Split API
 - Time last updated on League and Leagues
 - Update README
+- Isogram
