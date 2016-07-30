@@ -5,9 +5,6 @@
   - about page (Riot disclaimer) and privacy policy
   - Site version
 - Build script (copy, concat, minify, clean)
-- Change font
-  - Use bower
-  - Update gitignore
 - Home page images
 - League sorting
 - League individual stats
