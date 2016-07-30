@@ -18,26 +18,33 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
     $routeProvider.when('/Home', {
       templateUrl: 'views/home.html',
       controller: 'HomeController',
+      caseInsensitiveMatch: true,
     }).when('/', {
-      redirectTo: '/Home'
+      redirectTo: '/Home',
+      caseInsensitiveMatch: true,
     }).when('/SignUp', {
       templateUrl: 'views/sign_up.html',
       controller: 'SignUpController',
+      caseInsensitiveMatch: true,
       loggedIn: false,
     }).when('/CreateLeague', {
       templateUrl: 'views/create_league.html',
       controller: 'CreateLeagueController',
+      caseInsensitiveMatch: true,
       loggedIn: true,
     }).when('/Leagues', {
       templateUrl: 'views/leagues.html',
       controller: 'LeaguesController',
+      caseInsensitiveMatch: true,
       loggedIn: true,
     }).when('/League/:leagueId', {
       templateUrl: 'views/league.html',
       controller: 'LeagueController',
+      caseInsensitiveMatch: true,
     }).when('/EULA', {
       templateUrl: 'views/eula.html',
       controller: 'EULAController',
+      caseInsensitiveMatch: true,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',
