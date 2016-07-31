@@ -9,10 +9,14 @@ var watch = require('gulp-watch');
 
 var logger = require('./lib/logger.js');
 var settings = require('./lib/settings.js');
+var version = require('./lib/version.js');
 
 jadeLocals = {
   settings: settings,
+  version: version,
 }
+
+logger.log(version);
 
 var paths = {
   less: 'less/theme.less',

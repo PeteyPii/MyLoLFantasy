@@ -51,6 +51,8 @@ html(lang='en')
     script(src='js/controllers/leagues.js')
     script(src='js/controllers/league.js')
     script(src='js/controllers/eula.js')
+    script(src='js/controllers/about.js')
+    script(src='js/controllers/privacy_policy.js')
     script(src='js/directives/logged_in.js')
     script(src='js/directives/no_click_focus.js')
 
@@ -77,7 +79,7 @@ html(lang='en')
                 button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up
               li(data-logged-in='true')
                 .navbar-text.navbar-text__spaced Welcome,
-                  em: |{{ ' ' + displayUsername }}
+                  em {{ ' ' + displayUsername }}
                 button.button.button--nav.button--fixed-width(data-ng-click='logOut()') Log Out
 
     .div(data-ng-controller='FlashController')
@@ -90,6 +92,14 @@ html(lang='en')
 
     div(data-ng-view)
 
-    .container.footer
+    .container
+      .footer
+        .row
+          .col-md-4
+            p.footer__version My LoL Fantasy #{version}
+          .col-md-4
+            p.footer__github #[span.fa.fa-github.fa-lg] View this project on #[a(href='https://github.com/PeteyPii/MyLoLFantasy') GitHub]
+          .col-md-4
+            p.footer__legal #[a(href='PrivacyPolicy') Privacy Policy] and #[a(href='About') About]
 
     script(src='js/lib/bootstrap.js')

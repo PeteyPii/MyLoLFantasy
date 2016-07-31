@@ -1,9 +1,5 @@
 # 2.0.0 TODO List
 - Mobile prettiness
-- Footer
-  - GitHub link
-  - about page (Riot disclaimer) and privacy policy
-  - Site version
 - Build script (copy, concat, minify, clean)
 - Home page images
 - League sorting

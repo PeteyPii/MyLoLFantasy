@@ -45,6 +45,14 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
       templateUrl: 'views/eula.html',
       controller: 'EULAController',
       caseInsensitiveMatch: true,
+    }).when('/About', {
+      templateUrl: 'views/about.html',
+      controller: 'AboutController',
+      caseInsensitiveMatch: true,
+    }).when('/PrivacyPolicy', {
+      templateUrl: 'views/privacy_policy.html',
+      controller: 'PrivacyPolicyController',
+      caseInsensitiveMatch: true,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',
