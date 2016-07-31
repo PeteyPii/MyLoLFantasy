@@ -10,4 +10,3 @@
 - Split API
 - Time last updated on League and Leagues
 - Update README
-- Isogram
