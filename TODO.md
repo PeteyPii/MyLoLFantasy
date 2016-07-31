@@ -6,7 +6,6 @@
 - League individual stats
 - League update stats
 - League delete
-- Update npm packages used
 - Split API
 - Time last updated on League and Leagues
 - Update README
