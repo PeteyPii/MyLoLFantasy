@@ -1,11 +1,18 @@
 # 2.0.0 TODO List
 - Mobile prettiness
 - Build script (copy, concat, minify, clean)
+- Lint
 - Home page images
 - League sorting
 - League individual stats
 - League update stats
 - League delete
-- Split API
 - Time last updated on League and Leagues
 - Update README
+- Limit invalid password guesses
+  - by IP
+  - for any account
+- Limit account creation by IP
+- Reset password
+- Remove NG email validation
+- Gulpify bower script

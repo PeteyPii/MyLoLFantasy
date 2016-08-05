@@ -34,7 +34,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
         controller: ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
           $scope.leagueName = $outerScope.idToName[leagueId];
           $scope.confirmClick = function() {
-            $http.delete('api/League/' + leagueId).then(function(response) {
+            $http.delete('api/Leagues/' + leagueId).then(function(response) {
               if (response.data.success) {
                 $rootScope.$broadcast('flashSuccess', 'Successfully deleted \'' + $scope.leagueName + '\'');
                 for (var i = 0; i < $outerScope.leagues.length; i++) {

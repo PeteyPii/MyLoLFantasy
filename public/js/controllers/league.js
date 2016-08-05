@@ -8,7 +8,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
     $scope.exists = false;
     $scope.league = {};
 
-    $http.get('api/League/' + $routeParams.leagueId).then(function(response) {
+    $http.get('api/Leagues/' + $routeParams.leagueId).then(function(response) {
       $scope.isLoading = false;
       $scope.exists = true;
       $scope.league = response.data;

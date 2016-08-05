@@ -98,7 +98,7 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
             for (var i = 0; i < summonerCount; i++) {
               postData.summonerNames.push($scope.summonerNames[i]);
             }
-            $http.post('api/CreateLeague', postData).then(function(response) {
+            $http.post('api/Leagues', postData).then(function(response) {
               if (response.data.success) {
                 $location.path('Leagues');
                 $rootScope.$broadcast('flashSuccess', 'Successfully created League \'' + $scope.leagueName + '\'');
