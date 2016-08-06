@@ -14,4 +14,3 @@
   - for any account
 - Limit account creation by IP
 - Reset password
-- Gulpify bower script

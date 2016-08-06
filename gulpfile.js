@@ -7,6 +7,7 @@ var less = require('gulp-less');
 var plumber = require('gulp-plumber');
 var watch = require('gulp-watch');
 
+var bowerInstall = require('./lib/bower_install.js');
 var logger = require('./lib/logger.js');
 var settings = require('./lib/settings.js');
 var version = require('./lib/version.js');
@@ -15,8 +16,6 @@ jadeLocals = {
   settings: settings,
   version: version,
 }
-
-logger.log(version);
 
 var paths = {
   less: 'less/theme.less',
@@ -68,6 +67,11 @@ function restartServer(callback) {
 
   server.kill('SIGTERM');
 }
+
+gulp.task('bower', function(callback) {
+  bowerInstall();
+  callback();
+});
 
 gulp.task('server', function(callback) {
   startServer();
