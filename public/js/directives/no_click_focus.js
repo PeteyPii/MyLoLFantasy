@@ -1,4 +1,4 @@
-app.directive('noClickFocus', [function(authService) {
+app.directive('noClickFocus', [function() {
   return {
     link: function(scope, element, attrs) {
       element.bind('click', function(event) {

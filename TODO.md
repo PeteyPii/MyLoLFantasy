@@ -14,5 +14,4 @@
   - for any account
 - Limit account creation by IP
 - Reset password
-- Remove NG email validation
 - Gulpify bower script

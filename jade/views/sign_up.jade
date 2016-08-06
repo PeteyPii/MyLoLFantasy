@@ -10,7 +10,7 @@
         input.input.input--form(type='password', data-ng-class='{"input--error": error.confirmPassword}', data-ng-model='confirmPassword', placeholder='Confirm Password')
         .island-form__break
         .island-form__input-hint
-          input.input.input--form(type='email', data-ng-class='{"input--error": error.email}', data-ng-model='email', placeholder='Email (Optional)')
+          input.input.input--form(type='email', data-ng-class='{"input--error": error.email}', data-ng-model='email', placeholder='Email (Optional)', data-no-email-validation)
           span.fa.fa-lg.fa-question(title='MyLF cares about your privacy. We only use your email for password recovery.')
         .island-form__break
         input.input.input--form(type='text', data-ng-class='{"input--error": error.summonerName}', data-ng-model='summonerName', placeholder='Summoner Name')
