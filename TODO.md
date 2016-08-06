@@ -14,3 +14,4 @@
   - for any account
 - Limit account creation by IP
 - Reset password
+- Configure base path
