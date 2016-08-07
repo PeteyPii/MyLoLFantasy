@@ -4,7 +4,7 @@ app.controller('FlashController', ['$rootScope', '$scope',
 
     $scope.close = function(index) {
       $scope.messages.splice(index, 1);
-    }
+    };
 
     $scope.$on('flashError', function(event, messageText) {
       $scope.messages.push({

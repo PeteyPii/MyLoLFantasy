@@ -5,5 +5,5 @@ app.directive('noClickFocus', [function() {
         element[0].blur();
       });
     }
-  }
+  };
 }]);

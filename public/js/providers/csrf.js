@@ -9,8 +9,8 @@ app.provider('csrf', [
             }
             return config;
           }
-        }
+        };
       }
     ];
   }
-])
+]);

@@ -39,7 +39,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
                 $rootScope.$broadcast('flashSuccess', 'Successfully deleted \'' + $scope.leagueName + '\'');
                 for (var i = 0; i < $outerScope.leagues.length; i++) {
                   if ($outerScope.leagues[i].id === leagueId) {
-                    $outerScope.leagues.splice(i, 1)
+                    $outerScope.leagues.splice(i, 1);
                     break;
                   }
                 }

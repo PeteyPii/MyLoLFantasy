@@ -48,7 +48,9 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
           summonerNames: {},
           isSpectatorLeague: false,
         };
-        for (var i = 0; i < summonerCount; i++) {
+        var i;
+        var j;
+        for (i = 0; i < summonerCount; i++) {
           $scope.error.summonerNames[i] = false;
         }
 
@@ -59,7 +61,7 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
           $rootScope.$broadcast('flashError', 'League cannot be a spectator League without any summoners');
         } else {
           foundError = false;
-          for (var i = 0; i < summonerCount; i++) {
+          for (i = 0; i < summonerCount; i++) {
             if (!$scope.summonerNames[i]) {
               $scope.error.summonerNames[i] = true;
               $rootScope.$broadcast('flashError', 'Summoner name cannot be empty');
@@ -76,7 +78,7 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
               foundError = true;
               break;
             } else {
-              for (var j = i + 1; j < summonerCount; j++) {
+              for (j = i + 1; j < summonerCount; j++) {
                 if ($scope.summonerNames[i] === $scope.summonerNames[j]) {
                   $scope.error.summonerNames[i] = true;
                   $scope.error.summonerNames[j] = true;
@@ -95,7 +97,7 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
               summonerNames: [],
               isSpectatorLeague: $scope.isSpectatorLeague,
             };
-            for (var i = 0; i < summonerCount; i++) {
+            for (i = 0; i < summonerCount; i++) {
               postData.summonerNames.push($scope.summonerNames[i]);
             }
             $http.post('api/Leagues', postData).then(function(response) {
@@ -113,6 +115,6 @@ app.controller('CreateLeagueController', ['$scope', '$rootScope', '$http', '$loc
           }
         }
       }
-    }
+    };
   }
 ]);
