@@ -9,8 +9,5 @@
 - League delete
 - Time last updated on League and Leagues
 - Update README
-- Limit invalid password guesses
-  - by IP
-  - for any account
 - Reset password
 - Configure base path
