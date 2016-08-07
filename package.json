@@ -17,6 +17,7 @@
     "gulp-jade": "1.1.0",
     "gulp-jshint": "2.0.1",
     "gulp-less": "3.1.0",
+    "gulp-lesshint": "2.0.0",
     "gulp-plumber": "1.1.0",
     "gulp-watch": "4.3.9",
     "jshint": "2.9.2",

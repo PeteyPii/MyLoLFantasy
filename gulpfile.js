@@ -5,6 +5,7 @@ var gulp = require('gulp');
 var jade = require('gulp-jade');
 var jshint = require('gulp-jshint');
 var less = require('gulp-less');
+var lesshint = require('gulp-lesshint');
 var plumber = require('gulp-plumber');
 var watch = require('gulp-watch');
 
@@ -20,7 +21,7 @@ var jadeLocals = {
 
 var paths = {};
 paths.lessMain = 'less/theme.less';
-paths.lessWatch = 'less/**/*.less';
+paths.lessAll = 'less/**/*.less';
 paths.css = 'public/css/';
 paths.jade = 'jade/**/*.jade';
 paths.html = 'public/';
@@ -105,7 +106,7 @@ gulp.task('jade', function() {
 gulp.task('watch_less', ['less'], function() {
   // Watch is done like this so that if any Less file changes, the entire
   // monolithic less file is rebuilt (which depends on everything).
-  return watch(paths.lessWatch, function() {
+  return watch(paths.lessAll, function() {
     gulp.src(paths.lessMain)
       .pipe(less())
       .pipe(gulp.dest(paths.css));
@@ -138,6 +139,12 @@ gulp.task('lint_js', function() {
     .pipe(jshint.reporter('default'));
 });
 
-gulp.task('lint', ['lint_js']);
+gulp.task('lint_less', function() {
+  return gulp.src(paths.lessAll)
+    .pipe(lesshint())
+    .pipe(lesshint.reporter());
+});
+
+gulp.task('lint', ['lint_js', 'lint_less']);
 
 gulp.task('default', ['watch']);
