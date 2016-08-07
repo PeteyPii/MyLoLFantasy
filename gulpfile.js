@@ -16,7 +16,7 @@ var version = require('./lib/version.js');
 var jadeLocals = {
   settings: settings,
   version: version,
-}
+};
 
 var paths = {};
 paths.lessMain = 'less/theme.less';
@@ -24,10 +24,10 @@ paths.lessWatch = 'less/**/*.less';
 paths.css = 'public/css/';
 paths.jade = 'jade/**/*.jade';
 paths.html = 'public/';
-paths.serverJs = 'lib/**/*.js';
+paths.serverJs = ['server.js', 'lib/**/*.js'];
 paths.publicJs = ['public/js/**/*.js', '!public/js/lib/**/*.js'];
 paths.server = concatenateItems(paths.serverJs, '*.json');
-paths.js = concatenateItems(paths.serverJs, paths.publicJs);
+paths.js = concatenateItems('gulpfile.js', paths.serverJs, paths.publicJs);
 
 function concatenateItems() {
   var itemList = [];
@@ -40,7 +40,7 @@ function concatenateItems() {
 var server = null;
 var restarting = false;
 function startServer() {
-  if (server != null) {
+  if (server !== null) {
     throw new Error('Server is already started');
   }
 
