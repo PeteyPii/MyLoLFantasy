@@ -20,9 +20,9 @@ try {
     });
 
     app.get('/', function(req, res) {
-      res.redirect('/MLF/');
+      res.redirect(settings.base_path);
     });
-    app.use('/MLF', mlfApp);
+    app.use(settings.base_path, mlfApp);
 
     var httpsServer = https.createServer({
       key: fs.readFileSync(path.join(__dirname, 'certs', settings.ssl_key_path)),

@@ -1,4 +1,5 @@
 {
+  "base_path": "/MLF/",
   "cookie_age": 2592000000,
   "failed_log_in_count": 10,
   "failed_log_in_reset_time": 900000,
