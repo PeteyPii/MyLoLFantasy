@@ -3,6 +3,7 @@ var path = require('path');
 
 var gulp = require('gulp');
 var jade = require('gulp-jade');
+var jshint = require('gulp-jshint');
 var less = require('gulp-less');
 var plumber = require('gulp-plumber');
 var watch = require('gulp-watch');
@@ -12,19 +13,29 @@ var logger = require('./lib/logger.js');
 var settings = require('./lib/settings.js');
 var version = require('./lib/version.js');
 
-jadeLocals = {
+var jadeLocals = {
   settings: settings,
   version: version,
 }
 
-var paths = {
-  less: 'less/theme.less',
-  lessWatch: 'less/**/*.less',
-  css: 'public/css/',
-  jade: 'jade/**/*.jade',
-  html: 'public/',
-  server: ['lib/**/*.js', '*.json'],
-};
+var paths = {};
+paths.lessMain = 'less/theme.less';
+paths.lessWatch = 'less/**/*.less';
+paths.css = 'public/css/';
+paths.jade = 'jade/**/*.jade';
+paths.html = 'public/';
+paths.serverJs = 'lib/**/*.js';
+paths.publicJs = ['public/js/**/*.js', '!public/js/lib/**/*.js'];
+paths.server = concatenateItems(paths.serverJs, '*.json');
+paths.js = concatenateItems(paths.serverJs, paths.publicJs);
+
+function concatenateItems() {
+  var itemList = [];
+  for (var i = 0; i < arguments.length; i++) {
+    itemList = itemList.concat(arguments[i]);
+  }
+  return itemList;
+}
 
 var server = null;
 var restarting = false;
@@ -78,7 +89,7 @@ gulp.task('server', function(callback) {
 });
 
 gulp.task('less', function() {
-  return gulp.src(paths.less)
+  return gulp.src(paths.lessMain)
     .pipe(less())
     .pipe(gulp.dest(paths.css));
 });
@@ -92,10 +103,10 @@ gulp.task('jade', function() {
 });
 
 gulp.task('watch_less', ['less'], function() {
-  // Watch is done like this so that if any Less file changes the entire
+  // Watch is done like this so that if any Less file changes, the entire
   // monolithic less file is rebuilt (which depends on everything).
   return watch(paths.lessWatch, function() {
-    gulp.src(paths.less)
+    gulp.src(paths.lessMain)
       .pipe(less())
       .pipe(gulp.dest(paths.css));
   });
@@ -120,5 +131,13 @@ gulp.task('watch_server', function() {
 });
 
 gulp.task('watch', ['watch_less', 'watch_jade', 'watch_server']);
+
+gulp.task('lint_js', function() {
+  return gulp.src(paths.js)
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('lint', ['lint_js']);
 
 gulp.task('default', ['watch']);

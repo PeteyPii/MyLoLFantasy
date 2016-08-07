@@ -1,7 +1,6 @@
 # 2.0.0 TODO List
 - Mobile prettiness
 - Build script (copy, concat, minify, clean)
-- Lint
 - Home page images
 - League sorting
 - League individual stats
