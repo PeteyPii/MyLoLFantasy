@@ -7,9 +7,10 @@
 }
 
 .flash__item {
+  position: relative;
   margin: 6px;
   padding: 6px;
-  height: @flash-item-height;
+  padding-right: 24px;
   font-size: @flash-item-height - 12;
   line-height: @flash-item-height - 12;
 }
@@ -23,8 +24,9 @@
 }
 
 .flash__close {
-  position: relative;
-  bottom: 1px;
+  position: absolute;
+  right: 4px;
+  top: 4px;
   background-color: transparent;
   border: 0;
   outline-width: 0;

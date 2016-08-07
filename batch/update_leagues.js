@@ -11,7 +11,7 @@ try {
   var stats = new Stats(db, lol);
 
   db.init().then(function() {
-    return redis.init(true, false);
+    return redis.init(false, true, false);
   }).then(function() {
     return lol.init();
   }).then(function() {
