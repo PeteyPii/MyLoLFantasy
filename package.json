@@ -4,6 +4,7 @@
   "description": "Full My LoL Fantasy App",
   "dependencies": {
     "bcrypt": "0.8.7",
+    "bignumber.js": "2.4.0",
     "body-parser": "1.15.2",
     "bower": "1.7.9",
     "compression": "1.6.2",

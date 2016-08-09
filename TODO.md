@@ -9,3 +9,4 @@
 - Time last updated on League and Leagues
 - Update README
 - Reset password
+- Hover state in Leagues page
