@@ -81,8 +81,7 @@ function restartServer(callback) {
 }
 
 gulp.task('bower', function(callback) {
-  bowerInstall();
-  callback();
+  bowerInstall(callback);
 });
 
 gulp.task('server', function(callback) {

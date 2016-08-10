@@ -3,7 +3,6 @@
 - Build script (copy, concat, minify, clean)
 - Home page images
 - League sorting
-- League individual stats
 - League update stats
 - League delete
 - Time last updated on League and Leagues

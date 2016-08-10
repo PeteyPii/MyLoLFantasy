@@ -1,0 +1,34 @@
+@selector-height: 42px;
+@selector-font-size: 18px;
+
+.selector {
+  height: @selector-height;
+}
+
+.selector__label {
+  font-size: @selector-font-size;
+  font-weight: normal;
+  height: @selector-height;
+  line-height: @selector-height;
+  margin: 0;
+  padding: 0 12px;
+  cursor: pointer;
+  background-color: darken(@main-colour-dark, 10%);
+
+  &:hover {
+    background-color: @main-colour-dark;
+  }
+}
+
+.selector__label.active {
+  background-color: darken(@main-colour-dark, 5%);
+  box-shadow: inset 0 0 0 2px @main-colour-dark;
+
+  &:hover {
+    background-color: @main-colour-dark;
+  }
+}
+
+.selector__input {
+  display: none;
+}

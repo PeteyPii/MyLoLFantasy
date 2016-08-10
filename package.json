@@ -22,7 +22,7 @@
     "gulp-plumber": "1.1.0",
     "gulp-watch": "4.3.9",
     "jshint": "2.9.2",
-    "lodash": "4.14.1",
+    "lodash": "4.14.2",
     "passport": "0.3.2",
     "passport-local": "1.0.0",
     "pg": "6.0.3",

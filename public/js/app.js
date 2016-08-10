@@ -1,7 +1,8 @@
 var app = angular.module('mlf', [
+  'LocalStorageModule',
   'ngCookies',
-  'ngRoute',
   'ngDialog',
+  'ngRoute',
 ]);
 
 var profile;

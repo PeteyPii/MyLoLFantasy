@@ -19,6 +19,8 @@
     "angular-cookies": "1.5.5",
     "ng-dialog": "0.6.2",
     "jquery": "2.2.4",
-    "bower-pt-sans": "pt-sans#*"
+    "bower-pt-sans": "pt-sans#*",
+    "angular-local-storage": "0.3.0",
+    "lodash": "4.14.2"
   }
 }
