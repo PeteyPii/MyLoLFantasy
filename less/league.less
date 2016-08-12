@@ -38,6 +38,10 @@
     display: block;
   }
 
+  th {
+    cursor: pointer;
+  }
+
   tr {
     display: flex;
     background-color: darken(@main-colour-dark, 10%);
@@ -79,6 +83,20 @@
   .league-table__quadras,
   .league-table__pentas {
     flex: 5;
+  }
+
+  .league-table__summoner,
+  .league-table__kda,
+  .league-table__cs,
+  .league-table__turrets,
+  .league-table__doubles,
+  .league-table__triples,
+  .league-table__quadras,
+  .league-table__pentas,
+  .league-table__points {
+    .fa {
+      margin-left: 6px;
+    }
   }
 }
 

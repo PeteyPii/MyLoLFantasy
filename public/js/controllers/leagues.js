@@ -5,12 +5,14 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
 
     $scope.isLoading = true;
     $scope.loadError = false;
-    $scope.leagues = [];
-    $scope.idToName = {};
+
+    $scope.leagues = null;
+    $scope.idToName = null;
 
     $http.get('api/Leagues').then(function(response) {
       $scope.isLoading = false;
       $scope.leagues = response.data.a;
+      $scope.idToName = {};
       for (var i = 0; i < $scope.leagues.length; i++) {
         var league = $scope.leagues[i];
         $scope.idToName[league.id] = league.name;
