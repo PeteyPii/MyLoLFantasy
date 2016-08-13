@@ -37,8 +37,11 @@
               td.league-table__quadras {{ summonerDataPair[1].stats.quadraKills }}
               td.league-table__pentas {{ summonerDataPair[1].stats.pentaKills }}
               td.league-table__points {{ summonerDataPair[1].points }}
+          .league-actions
+            button.button.button--icon(data-ng-click='deleteLeague()')
+              .fa.fa-trash
           .league-display-type
-            form.selector.pull-right
+            form.selector
               label.selector__label(data-ng-class='{ active: activeData === totalData }')
                 input.selector__input(type='radio', data-ng-model='activeData', data-ng-value='totalData', data-ng-change='updateDisplayType()')
                 | Total

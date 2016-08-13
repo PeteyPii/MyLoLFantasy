@@ -166,6 +166,36 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
       }
     };
 
+    var $outerScope = $scope;
+    $scope.deleteLeague = function() {
+      ngDialog.open({
+        template: 'views/dialogs/delete_league.html',
+        className: 'dialog',
+        disableAnimation: true,
+        controller: ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
+          $scope.leagueName = $outerScope.league.name;
+          $scope.confirmClick = function() {
+            $http.delete('api/Leagues/' + $outerScope.league.id).then(function(response) {
+              if (response.data.success) {
+                $rootScope.$broadcast('flashSuccess', 'Successfully deleted \'' + $scope.leagueName + '\'');
+                $scope.closeThisDialog();
+                $location.path('Leagues');
+              } else {
+                $rootScope.$broadcast('flashError', response.data.reason);
+                $scope.closeThisDialog();
+              }
+            }, function(response) {
+              $rootScope.$broadcast('flashError', 'Error deleting \'' + $scope.leagueName + '\'. Server responded with status code ' + response.status);
+              $scope.closeThisDialog();
+            });
+          };
+          $scope.cancelClick = function() {
+            $scope.closeThisDialog();
+          };
+        }],
+      });
+    };
+
     function averageValue(value, count) {
       return (value / count).toFixed(2);
     }
