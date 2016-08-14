@@ -5,6 +5,5 @@
 - Time last updated on League and Leagues
 - Update README
 - Reset password
-- Throttle League creation
 - Throttle League updating
 - Update League stats on Leagues page

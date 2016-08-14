@@ -5,6 +5,8 @@
   "failed_log_in_reset_time": 900000,
   "ga_key": "UA-XXXXXXXX-X",
   "is_prod": false,
+  "league_creation_burst_count": 10,
+  "league_creation_burst_period": 500,
   "lol_burst_period": 15000,
   "lol_burst_requests": 8,
   "max_leagues_per_user": 10,
