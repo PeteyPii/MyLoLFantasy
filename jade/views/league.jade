@@ -40,6 +40,8 @@
           .league-actions
             button.button.button--icon(data-ng-click='deleteLeague()')
               .fa.fa-trash
+            button.button.button--icon(data-ng-click='updateLeague()')
+              .fa.fa-refresh
           .league-display-type
             form.selector
               label.selector__label(data-ng-class='{ active: activeData === totalData }')

@@ -33,6 +33,20 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
       NONE: 'none',
     };
 
+    $http.get('api/Leagues/' + $routeParams.leagueId).then(function(response) {
+      $scope.isLoading = false;
+      $scope.exists = true;
+      loadLeague(response.data);
+    }, function(response) {
+      $scope.isLoading = false;
+      if (response.status === 404) {
+        // $scope is set up to imply the League does not exist.
+      } else {
+        $scope.loadError = true;
+        $rootScope.$broadcast('flashError', 'Server responded with status code ' + response.status);
+      }
+    });
+
     $scope.sortedColumn = $scope.Column.NONE;
     $scope.ascendingSort = true;
     $scope.activateColumnForSorting = function(column) {
@@ -125,39 +139,6 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
 
     $scope.activateColumnForSorting($scope.Column.NAME);
 
-    $http.get('api/Leagues/' + $routeParams.leagueId).then(function(response) {
-      $scope.isLoading = false;
-      $scope.exists = true;
-      $scope.league = response.data;
-
-      $scope.totalData = _.cloneDeep($scope.league.data);
-      var summoner;
-      for (summoner in $scope.totalData) {
-        $scope.totalData[summoner].points = $scope.totalData[summoner].points.toFixed(2);
-      }
-
-      $scope.perGameData = _.cloneDeep($scope.league.data);
-      for (summoner in $scope.perGameData) {
-        $scope.perGameData[summoner].points = averageValue($scope.perGameData[summoner].points, $scope.league.gameCount);
-        var stats = $scope.perGameData[summoner].stats;
-        for (var stat in stats) {
-          stats[stat] = averageValue(stats[stat], $scope.league.gameCount);
-        }
-      }
-
-      $scope.totalData = dataToArray($scope.totalData);
-      $scope.perGameData = dataToArray($scope.perGameData);
-      setActiveData();
-    }, function(response) {
-      $scope.isLoading = false;
-      if (response.status === 404) {
-        // $scope is set up to imply the League does not exist.
-      } else {
-        $scope.loadError = true;
-        $rootScope.$broadcast('flashError', 'Server responded with status code ' + response.status);
-      }
-    });
-
     $scope.updateDisplayType = function() {
       if ($scope.activeData === $scope.totalData) {
         localStorageService.set(DISPLAY_TYPE_KEY, DisplayType.TOTAL);
@@ -195,6 +176,48 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
         }],
       });
     };
+
+    var isUpdating = false;
+    $scope.updateLeague = function() {
+      if (!isUpdating) {
+        isUpdating = true;
+        $http.post('api/Leagues/' + $scope.league.id + '/Update').then(function(response) {
+          isUpdating = false;
+          if (response.data.success) {
+            loadLeague(response.data.league);
+            $rootScope.$broadcast('flashSuccess', 'Successfully refreshed stats for \'' + $scope.league.name + '\'');
+          } else {
+            $rootScope.$broadcast('flashError', response.data.reason);
+          }
+        }, function(response) {
+          isUpdating = false;
+          $rootScope.$broadcast('flashError', 'Error updating \'' + $scope.league.name + '\'. Server responded with status code ' + response.status);
+        });
+      }
+    };
+
+    function loadLeague(league) {
+      $scope.league = league;
+
+      $scope.totalData = _.cloneDeep($scope.league.data);
+      var summoner;
+      for (summoner in $scope.totalData) {
+        $scope.totalData[summoner].points = $scope.totalData[summoner].points.toFixed(2);
+      }
+
+      $scope.perGameData = _.cloneDeep($scope.league.data);
+      for (summoner in $scope.perGameData) {
+        $scope.perGameData[summoner].points = averageValue($scope.perGameData[summoner].points, $scope.league.gameCount);
+        var stats = $scope.perGameData[summoner].stats;
+        for (var stat in stats) {
+          stats[stat] = averageValue(stats[stat], $scope.league.gameCount);
+        }
+      }
+
+      $scope.totalData = dataToArray($scope.totalData);
+      $scope.perGameData = dataToArray($scope.perGameData);
+      setActiveData();
+    }
 
     function averageValue(value, count) {
       return (value / count).toFixed(2);
