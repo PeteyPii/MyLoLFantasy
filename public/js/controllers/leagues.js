@@ -14,6 +14,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
       $scope.leagues = response.data.a;
       $scope.idToName = {};
       for (var i = 0; i < $scope.leagues.length; i++) {
+        $scope.leagues[i].lastUpdate = new Date($scope.leagues[i].lastUpdate);
         var league = $scope.leagues[i];
         $scope.idToName[league.id] = league.name;
       }

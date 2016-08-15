@@ -198,6 +198,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
 
     function loadLeague(league) {
       $scope.league = league;
+      $scope.league.lastUpdate = new Date($scope.league.lastUpdate);
 
       $scope.totalData = _.cloneDeep($scope.league.data);
       var summoner;

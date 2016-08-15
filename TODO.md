@@ -2,7 +2,6 @@
 - Mobile prettiness
 - Build script (copy, concat, minify, clean)
 - Home page images
-- Time last updated on League and Leagues
 - Update README
 - Reset password
 - Throttle League updating

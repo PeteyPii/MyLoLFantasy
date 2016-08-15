@@ -42,6 +42,7 @@
               .fa.fa-trash
             button.button.button--icon(data-ng-click='updateLeague()')
               .fa.fa-refresh
+            span.league-actions__info Last updated on {{ league.lastUpdate.toLocaleString() }}
           .league-display-type
             form.selector
               label.selector__label(data-ng-class='{ active: activeData === totalData }')

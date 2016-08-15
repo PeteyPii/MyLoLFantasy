@@ -11,6 +11,7 @@
           li.leagues-list__item(data-ng-repeat='league in leagues', data-ng-click='goToLeague(league.id)')
             span {{ league.name }}
             span.pull-right.fa.fa-lg.fa-times(title='Delete League', data-ng-click='deleteLeague(league.id); $event.stopPropagation()')
+            span.pull-right.meta {{ league.lastUpdate.toLocaleString() }}
           li.leagues-list__empty(data-ng-if='leagues.length === 0')
             span You have no Leagues! Visit the #[a(href='CreateLeague') Create a League] page to create one.
         .leagues-list__error(data-ng-show='loadError')
