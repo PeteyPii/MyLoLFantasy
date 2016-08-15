@@ -7,6 +7,7 @@
   "is_prod": false,
   "league_creation_burst_count": 10,
   "league_creation_burst_period": 500,
+  "league_refresh_min_wait": 300000,
   "lol_burst_period": 15000,
   "lol_burst_requests": 8,
   "max_leagues_per_user": 10,

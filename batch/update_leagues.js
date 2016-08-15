@@ -15,7 +15,7 @@ try {
   }).then(function() {
     return lol.init();
   }).then(function() {
-    return stats.updateAllLeagues();
+    return stats.updateAllLeagues(true);
   }).fail(logger.logException).fin(function() {
     return db.deinit();
   }).fin(function() {
