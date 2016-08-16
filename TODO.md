@@ -4,5 +4,3 @@
 - Home page images
 - Update README
 - Reset password
-- Throttle League updating
-- Update League stats on Leagues page

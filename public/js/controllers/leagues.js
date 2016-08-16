@@ -11,13 +11,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
 
     $http.get('api/Leagues').then(function(response) {
       $scope.isLoading = false;
-      $scope.leagues = response.data.a;
-      $scope.idToName = {};
-      for (var i = 0; i < $scope.leagues.length; i++) {
-        $scope.leagues[i].lastUpdate = new Date($scope.leagues[i].lastUpdate);
-        var league = $scope.leagues[i];
-        $scope.idToName[league.id] = league.name;
-      }
+      loadLeagues(response.data.a);
     }, function(response) {
       $scope.isLoading = false;
       $loadError = true;
@@ -60,5 +54,34 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
         }],
       });
     };
+
+    var isUpdating = false;
+    $scope.updateLeagues = function() {
+      if (!isUpdating) {
+        isUpdating = true;
+        $http.post('api/LeaguesControl/Update').then(function(response) {
+          isUpdating = false;
+          if (response.data.success) {
+            loadLeagues(response.data.leagues);
+            $rootScope.$broadcast('flashSuccess', 'Successfully refreshed any outdated stats for your Leagues.');
+          } else {
+            $rootScope.$broadcast('flashError', response.data.reason);
+          }
+        }, function(response) {
+          isUpdating = false;
+          $rootScope.$broadcast('flashError', 'Error updating your Leagues. Server responded with status code ' + response.status);
+        });
+      }
+    };
+
+    function loadLeagues(leagues) {
+      $scope.leagues = leagues;
+      $scope.idToName = {};
+      for (var i = 0; i < leagues.length; i++) {
+        var league = $scope.leagues[i];
+        league.lastUpdate = new Date(league.lastUpdate);
+        $scope.idToName[league.id] = league.name;
+      }
+    }
   }
 ]);

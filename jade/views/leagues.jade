@@ -16,3 +16,5 @@
             span You have no Leagues! Visit the #[a(href='CreateLeague') Create a League] page to create one.
         .leagues-list__error(data-ng-show='loadError')
           span Your Leagues failed to load. Try refreshing the page in a few minutes.
+        .leagues-list__control
+          button.button(data-ng-click='updateLeagues()') Refresh Stats
