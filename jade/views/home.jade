@@ -1,8 +1,10 @@
 div
   .marketing-row
     .container
-      .row
+      .row.flex
         .col-xs-4
+          .market-img-container
+            img.market-img(src='imgs/market_sign_up.jpg')
         .col-xs-8
           h1.marketing-row__header Sign Up
           p.marketing-row__text.
@@ -13,7 +15,7 @@ div
 
   .marketing-row
     .container
-      .row
+      .row.flex
         .col-xs-8
           h1.marketing-row__header Create a League
           p.marketing-row__text.
@@ -22,11 +24,15 @@ div
             we will tally important stats such as kills, assists, and, of course, deaths (for all those
             feeders out there).
         .col-xs-4
+          .market-img-container
+            img.market-img.market-img--right(src='imgs/market_create.jpg')
 
   .marketing-row
     .container
-      .row
+      .row.flex
         .col-xs-4
+          .market-img-container
+            img.market-img(src='imgs/market_play.jpg')
         .col-xs-8
           h1.marketing-row__header Play!
           p.marketing-row__text.
