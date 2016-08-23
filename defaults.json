@@ -18,7 +18,6 @@
   "redirect_default_port": false,
   "redis_host": "localhost",
   "redis_port": 6379,
-  "refresh_period": 3600000,
   "server_http_port": 80,
   "server_https_port": 443,
   "sign_up_burst_count": 10,
