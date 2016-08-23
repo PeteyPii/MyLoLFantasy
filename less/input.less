@@ -1,13 +1,18 @@
 @input-height: 36px;
 @input-colour: @dark-grey-bg-colour;
 @input-border-colour: lighten(@input-colour, 10%);
+@input-font-size: 14px;
+@input-margin: 6px;
+@input-border-width: 2px;
+@input-padding: 2px;
 
 .input {
   background-color: @input-colour;
   height: @input-height;
-  border: 2px solid @input-border-colour;
-  padding: 2px;
-  margin: 6px;
+  border: @input-border-width solid @input-border-colour;
+  padding: @input-padding;
+  margin: @input-margin;
+  font-size: @input-font-size;
 
   &:focus {
     outline-width: 0;
@@ -17,21 +22,48 @@
 .input--nav {
   margin-top: (@navbar-height - @input-height) / 2;
   margin-bottom: (@navbar-height - @input-height) / 2;
-  margin-left: 6px;
-  margin-right: 6px;
+  margin-left: @input-margin;
+  margin-right: @input-margin;
 }
 
 .input--form {
   width: 100%;
   box-sizing: border-box;
-  margin: 0 0 6px 0;
+  margin: 0 0 @input-margin 0;
 }
 
 .input--error {
-  border: 2px solid @error-colour;
+  border: @input-border-width solid @error-colour;
 }
 
 .input--flex {
-  margin: 0 6px 0 0;
+  margin: 0 @input-margin 0 0;
   flex: 1;
+}
+
+// Only needed for displaying anchor tags inside of an input.
+.input-container {
+  display: inline-block;
+  position: relative;
+}
+
+// Use of !important because of over-specificity of Bootstrap navbar styling.
+.input-link {
+  right: @input-margin + @input-border-width + @input-padding + 2px !important;
+  line-height: @navbar-height !important;
+  position: absolute !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  color: @link-colour !important;
+  font-size: @input-font-size !important;
+  height: initial !important;
+  display: inline !important;
+
+  &:hover,
+  &:focus {
+    color: @link-colour-hover !important;
+    outline-width: initial !important;
+    text-decoration: underline !important;
+  }
 }

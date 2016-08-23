@@ -1,8 +1,9 @@
 {
+  "importantRule": false,
+  "propertyOrdering": false,
   "spaceAroundComma": {
     "enabled": true,
     "allowNewline": true
   },
-  "propertyOrdering": false,
   "zeroUnit": false
 }

@@ -54,6 +54,16 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
       templateUrl: 'views/privacy_policy.html',
       controller: 'PrivacyPolicyController',
       caseInsensitiveMatch: true,
+    }).when('/ResetPassword', {
+      templateUrl: 'views/reset_password.html',
+      controller: 'ResetPasswordController',
+      caseInsensitiveMatch: true,
+      loggedIn: false,
+    }).when('/ResetPassword/:token', {
+      templateUrl: 'views/reset_new_password.html',
+      controller: 'ResetNewPasswordController',
+      caseInsensitiveMatch: true,
+      loggedIn: false,
     }).otherwise({
       templateUrl: 'views/page_not_found.html',
       controller: 'MissingPageController',

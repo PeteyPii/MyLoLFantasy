@@ -53,6 +53,8 @@ html(lang='en')
     script(src='js/controllers/eula.js')
     script(src='js/controllers/about.js')
     script(src='js/controllers/privacy_policy.js')
+    script(src='js/controllers/reset_password.js')
+    script(src='js/controllers/reset_new_password.js')
     script(src='js/directives/logged_in.js')
     script(src='js/directives/no_click_focus.js')
     script(src='js/directives/no_email_validation.js')
@@ -74,7 +76,9 @@ html(lang='en')
             ul.nav.navbar-nav.navbar-right
               li(data-logged-in='false')
                 input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}', data-ng-keydown="$event.which === 13 && logIn()")
-                input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}', data-ng-keydown="$event.which === 13 && logIn()")
+                .input-container
+                  input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}', data-ng-keydown="$event.which === 13 && logIn()")
+                  a.input-link(href='ResetPassword', data-ng-hide='password') Forgot?
                 button.button.button--nav.button--fixed-width(data-ng-click='logIn()', data-no-click-focus) Log In
                 .navbar-text or
                 button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up

@@ -2,4 +2,7 @@
 - Mobile prettiness
 - Build script (copy, concat, minify, clean)
 - Update README
-- Reset password
+- Get rid of refresh period setting
+- Proper trust proxy setting
+- Remove SSL handling
+- Cache static resources better
