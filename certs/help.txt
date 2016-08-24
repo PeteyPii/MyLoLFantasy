@@ -1,1 +1,0 @@
-IMPORTANT NOTE: Only use these for development. It would be extremely insecure to use them on production environments.
