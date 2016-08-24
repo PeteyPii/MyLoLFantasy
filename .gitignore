@@ -3,6 +3,7 @@
 *.map
 *.sublime-workspace
 bower_components/
+dist/
 node_modules/
 public/css/
 public/js/lib/

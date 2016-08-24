@@ -14,12 +14,11 @@ html(lang='en')
 
     title(data-ng-bind="(title ? title + ' - ' : '') + 'My LoL Fantasy'") My LoL Fantasy
 
-    link(rel='stylesheet', href='css/bootstrap.css')
-    link(rel='stylesheet', href='css/bootstrap-theme.css')
-    link(rel='stylesheet', href='css/font-awesome.css')
-    link(rel='stylesheet', href='css/ngDialog.css')
-
-    link(rel='stylesheet', href='css/theme.css')
+    if settings.is_prod
+      link(rel='stylesheet', href='css/bundle.css')
+    else
+      for dep in deps.css
+        link(rel='stylesheet', href=dep)
 
     if settings.is_prod
       script.
@@ -31,33 +30,11 @@ html(lang='en')
         ga('create', '#{settings.ga_key}', 'auto');
         ga('send', 'pageview');
 
-    script(src='js/lib/jquery.js')
-    script(src='js/lib/angular.js')
-    script(src='js/lib/angular-route.js')
-    script(src='js/lib/angular-cookies.js')
-    script(src='js/lib/angular-local-storage.js')
-    script(src='js/lib/ngDialog.js')
-
-    script(src='js/app.js')
-    script(src='js/services/auth_service.js')
-    script(src='js/providers/csrf.js')
-    script(src='js/controllers/main.js')
-    script(src='js/controllers/home.js')
-    script(src='js/controllers/sign_up.js')
-    script(src='js/controllers/page_not_found.js')
-    script(src='js/controllers/flash.js')
-    script(src='js/controllers/log_in.js')
-    script(src='js/controllers/create_league.js')
-    script(src='js/controllers/leagues.js')
-    script(src='js/controllers/league.js')
-    script(src='js/controllers/eula.js')
-    script(src='js/controllers/about.js')
-    script(src='js/controllers/privacy_policy.js')
-    script(src='js/controllers/reset_password.js')
-    script(src='js/controllers/reset_new_password.js')
-    script(src='js/directives/logged_in.js')
-    script(src='js/directives/no_click_focus.js')
-    script(src='js/directives/no_email_validation.js')
+    if settings.is_prod
+      script(src='js/bundle_head.js')
+    else
+      for dep in deps.headJs
+        script(src=dep)
 
   body(data-ng-controller='MainController')
     nav.navbar.navbar-static-top
@@ -107,5 +84,8 @@ html(lang='en')
           .col-md-4
             p.footer__legal #[a(href='PrivacyPolicy') Privacy Policy] and #[a(href='About') About]
 
-    script(src='js/lib/bootstrap.js')
-    script(src='js/lib/lodash.js')
+    if settings.is_prod
+      script(src='js/bundle_final.js')
+    else
+      for dep in deps.finalJs
+        script(src=dep)
