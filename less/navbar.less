@@ -46,6 +46,8 @@
 }
 
 .navbar-nav {
+  margin-top: 0;
+  margin-bottom: 0;
   & > li {
     & > a {
       height: @navbar-height;
@@ -96,16 +98,19 @@
   @media(min-width: @sm-min-width) {
     margin-right: 0;
   }
+
+  & > li {
+    display: flex;
+  }
 }
 
 .navbar-text {
   display: inline;
+  margin: 0 6px;
+  margin-left: 6px;
+  margin-right: 6px;
   padding-top: 22px;
   padding-bottom: 22px;
   height: @navbar-height;
   float: none; // Bootstrap override
-}
-
-.navbar-text__spaced {
-  margin-right: 6px;
 }

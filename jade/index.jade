@@ -53,14 +53,17 @@ html(lang='en')
             ul.nav.navbar-nav.navbar-right
               li(data-logged-in='false')
                 input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}', data-ng-keydown="$event.which === 13 && logIn()")
-                .input-container
+                .input-container.input-container--nav
                   input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}', data-ng-keydown="$event.which === 13 && logIn()")
                   a.input-link(href='ResetPassword', data-ng-hide='password') Forgot?
                 button.button.button--nav.button--fixed-width(data-ng-click='logIn()', data-no-click-focus) Log In
-                .navbar-text or
-                button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up
+                .hidden-xs
+                  .navbar-text or
+                  button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up
+              li.hidden-sm.hidden-md.hidden-lg(data-logged-in='false')
+                button.button.button--nav.button--fixed-width.pull-right(data-ng-click='signUp()', data-no-click-focus) Sign Up
               li(data-logged-in='true')
-                .navbar-text.navbar-text__spaced Welcome,
+                .navbar-text Welcome,
                   em {{ ' ' + displayUsername }}
                 button.button.button--nav.button--fixed-width(data-ng-click='logOut()') Log Out
 

@@ -1,5 +1,5 @@
 h1.dialog__title Are you sure?
 p.dialog__text Are you sure you want to delete your League '{{ leagueName }}'? This action cannot be undone.
 .dialog__options
-  button.button.button--dialog(data-ng-click='cancelClick()', data-no-click-focus) No
   button.button.button--dialog(data-ng-click='confirmClick()', data-no-click-focus) Yes
+  button.button.button--dialog(autofocus, data-ng-click='cancelClick()', data-no-click-focus) No

@@ -1,6 +1,16 @@
 .island-form {
   background-color: @main-colour-dark;
-  margin: 24px;
+  margin: 15px 0;
+
+  @media(min-width: @sm-min-width) {
+    width: 60%;
+    margin: 24px auto;
+  }
+
+  @media(min-width: @md-min-width) {
+    width: 50%;
+    margin: 24px auto;
+  }
   padding: 12px;
 }
 

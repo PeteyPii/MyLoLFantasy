@@ -1,5 +1,13 @@
 .league-container {
-  margin: 24px;
+  margin: 15px 0;
+
+  @media(min-width: @sm-min-width) {
+    margin: 24px 0;
+  }
+
+  @media(min-width: @md-min-width) {
+    margin: 24px;
+  }
 }
 
 .league {
@@ -29,10 +37,15 @@
   color: @faded-main-text-colour;
 }
 
+.league-table-container {
+  margin: 12px;
+  overflow-x: auto;
+}
+
 .league-table {
   width: 100%;
+  min-width: 868px;
   display: block;
-  padding: 12px;
 
   tbody {
     display: block;
@@ -75,7 +88,7 @@
   }
 
   .league-table__turrets {
-    flex: 7;
+    flex: 9;
   }
 
   .league-table__doubles,

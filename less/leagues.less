@@ -1,5 +1,13 @@
 .leagues-list {
-  margin: 24px;
+  margin: 15px 0;
+
+  @media(min-width: @sm-min-width) {
+    margin: 24px 0;
+  }
+
+  @media(min-width: @md-min-width) {
+    margin: 24px;
+  }
 }
 
 .leagues-list__header {
@@ -19,6 +27,7 @@
 }
 
 .leagues-list__item {
+  display: flex;
   background-color: darken(@main-colour-dark, 10%);
   font-size: 24px;
   padding-top: 6px;
@@ -30,6 +39,7 @@
 
   span {
     margin: 0 6px;
+    overflow: hidden;
   }
 
   .fa {
@@ -46,6 +56,11 @@
 
   &:hover {
     box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+
+  .main {
+    flex: 1;
+    white-space: nowrap;
   }
 
   .meta {

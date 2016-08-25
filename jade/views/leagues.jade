@@ -9,9 +9,9 @@
           span.fa.fa-spinner.fa-spin
         ul.leagues-list__list(data-ng-hide='isLoading || loadError')
           li.leagues-list__item(data-ng-repeat='league in leagues', data-ng-click='goToLeague(league.id)')
-            span {{ league.name }}
-            span.pull-right.fa.fa-lg.fa-times(title='Delete League', data-ng-click='deleteLeague(league.id); $event.stopPropagation()')
-            span.pull-right.meta {{ league.lastUpdate.toLocaleString() }}
+            span.main {{ league.name }}
+            span.meta.hidden-xs {{ league.lastUpdate.toLocaleString() }}
+            span.fa.fa-lg.fa-times(title='Delete League', data-ng-click='deleteLeague(league.id); $event.stopPropagation()')
           li.leagues-list__empty(data-ng-if='leagues.length === 0')
             span You have no Leagues! Visit the #[a(href='CreateLeague') Create a League] page to create one.
         .leagues-list__error(data-ng-show='loadError')
