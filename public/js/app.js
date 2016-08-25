@@ -17,55 +17,55 @@ angular.element(document).ready(function() {
 app.config(['$routeProvider', '$locationProvider', '$httpProvider',
   function($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider.when('/Home', {
-      templateUrl: 'views/home.html',
+      templateUrl: 'views/home.html?v=' + gVersion,
       controller: 'HomeController',
       caseInsensitiveMatch: true,
     }).when('/', {
       redirectTo: '/Home',
       caseInsensitiveMatch: true,
     }).when('/SignUp', {
-      templateUrl: 'views/sign_up.html',
+      templateUrl: 'views/sign_up.html?v=' + gVersion,
       controller: 'SignUpController',
       caseInsensitiveMatch: true,
       loggedIn: false,
     }).when('/CreateLeague', {
-      templateUrl: 'views/create_league.html',
+      templateUrl: 'views/create_league.html?v=' + gVersion,
       controller: 'CreateLeagueController',
       caseInsensitiveMatch: true,
       loggedIn: true,
     }).when('/Leagues', {
-      templateUrl: 'views/leagues.html',
+      templateUrl: 'views/leagues.html?v=' + gVersion,
       controller: 'LeaguesController',
       caseInsensitiveMatch: true,
       loggedIn: true,
     }).when('/League/:leagueId', {
-      templateUrl: 'views/league.html',
+      templateUrl: 'views/league.html?v=' + gVersion,
       controller: 'LeagueController',
       caseInsensitiveMatch: true,
     }).when('/EULA', {
-      templateUrl: 'views/eula.html',
+      templateUrl: 'views/eula.html?v=' + gVersion,
       controller: 'EULAController',
       caseInsensitiveMatch: true,
     }).when('/About', {
-      templateUrl: 'views/about.html',
+      templateUrl: 'views/about.html?v=' + gVersion,
       controller: 'AboutController',
       caseInsensitiveMatch: true,
     }).when('/PrivacyPolicy', {
-      templateUrl: 'views/privacy_policy.html',
+      templateUrl: 'views/privacy_policy.html?v=' + gVersion,
       controller: 'PrivacyPolicyController',
       caseInsensitiveMatch: true,
     }).when('/ResetPassword', {
-      templateUrl: 'views/reset_password.html',
+      templateUrl: 'views/reset_password.html?v=' + gVersion,
       controller: 'ResetPasswordController',
       caseInsensitiveMatch: true,
       loggedIn: false,
     }).when('/ResetPassword/:token', {
-      templateUrl: 'views/reset_new_password.html',
+      templateUrl: 'views/reset_new_password.html?v=' + gVersion,
       controller: 'ResetNewPasswordController',
       caseInsensitiveMatch: true,
       loggedIn: false,
     }).otherwise({
-      templateUrl: 'views/page_not_found.html',
+      templateUrl: 'views/page_not_found.html?v=' + gVersion,
       controller: 'MissingPageController',
     });
 

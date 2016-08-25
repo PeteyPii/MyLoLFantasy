@@ -25,7 +25,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
     var $outerScope = $scope;
     $scope.deleteLeague = function(leagueId) {
       ngDialog.open({
-        template: 'views/dialogs/delete_league.html',
+        template: 'views/dialogs/delete_league.html?v=' + gVersion,
         className: 'dialog',
         disableAnimation: true,
         controller: ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {

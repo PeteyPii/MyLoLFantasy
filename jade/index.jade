@@ -15,7 +15,7 @@ html(lang='en')
     title(data-ng-bind="(title ? title + ' - ' : '') + 'My LoL Fantasy'") My LoL Fantasy
 
     if settings.is_prod
-      link(rel='stylesheet', href='css/bundle.css')
+      link(rel='stylesheet', href='css/bundle.css?v=' + version)
     else
       for dep in deps.css
         link(rel='stylesheet', href=dep)
@@ -30,8 +30,11 @@ html(lang='en')
         ga('create', '#{settings.ga_key}', 'auto');
         ga('send', 'pageview');
 
+    script.
+      var gVersion = '#{version}';
+
     if settings.is_prod
-      script(src='js/bundle_head.js')
+      script(src='js/bundle_head.js?v=' + version)
     else
       for dep in deps.headJs
         script(src=dep)
@@ -88,7 +91,7 @@ html(lang='en')
             p.footer__legal #[a(href='PrivacyPolicy') Privacy Policy] and #[a(href='About') About]
 
     if settings.is_prod
-      script(src='js/bundle_final.js')
+      script(src='js/bundle_final.js?v=' + version)
     else
       for dep in deps.finalJs
         script(src=dep)
