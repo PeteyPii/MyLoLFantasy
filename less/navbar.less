@@ -1,0 +1,116 @@
+@navbar-height: 64px;
+@navbar-brand-font-size: 32px;
+@navbar-link-font-size: 18px;
+@navbar-icon-size: 40px;
+@navbar-icon-horizontal-padding: 10px;
+@navbar-btn-colour: #4a2b54;
+@navbar-btn-colour-hover: darken(@navbar-btn-colour, 3%);
+@navbar-btn-colour-focus: darken(@navbar-btn-colour, 5%);
+
+.navbar {
+  background-color: @main-colour;
+}
+
+.navbar-collapse {
+  border: 0;
+}
+
+.navbar-static-top {
+  margin-bottom: 0;
+  border: 0;
+}
+
+.navbar-brand {
+  font-size: @navbar-brand-font-size;
+  font-weight: bold;
+  line-height: @navbar-brand-font-size + 2;
+  height: @navbar-height;
+  color: @white-text-colour;
+
+  &:hover {
+    color: @white-text-colour;
+  }
+
+  &:focus {
+    color: @white-text-colour;
+    background-color: @main-colour-highlight-double;
+    outline-width: 0;
+  }
+
+  @media(max-width: @sm-max-width) {
+    margin-right: 0;
+  }
+  @media(min-width: @md-min-width) {
+    margin-right: 25px;
+  }
+}
+
+.navbar-nav {
+  margin-top: 0;
+  margin-bottom: 0;
+  & > li {
+    & > a {
+      height: @navbar-height;
+      padding: 22px;
+      font-size: @navbar-link-font-size;
+      color: @white-text-colour;
+
+      @media(max-width: @md-max-width) {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      &:hover,
+      &:focus {
+        background-color: @main-colour-highlight-double;
+        outline-width: 0;
+      }
+    }
+  }
+  & > li.active {
+    & > a {
+      background-color: @main-colour-highlight;
+
+      &:hover,
+      &:focus {
+        background-color: @main-colour-highlight-double;
+        outline-width: 0;
+      }
+    }
+  }
+}
+
+.navbar-toggle {
+  color: @white-text-colour;
+  font-size: @navbar-icon-size;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 @navbar-icon-horizontal-padding;
+  height: @navbar-height;
+
+  &:hover,
+  &:focus, {
+    background-color: @main-colour-highlight-double;
+  }
+}
+
+.navbar-right {
+  @media(min-width: @sm-min-width) {
+    margin-right: 0;
+  }
+
+  & > li {
+    display: flex;
+  }
+}
+
+.navbar-text {
+  display: inline;
+  margin: 0 6px;
+  margin-left: 6px;
+  margin-right: 6px;
+  padding-top: 22px;
+  padding-bottom: 22px;
+  height: @navbar-height;
+  float: none; // Bootstrap override
+}

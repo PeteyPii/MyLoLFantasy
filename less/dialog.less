@@ -1,0 +1,66 @@
+.dialog {
+  padding-bottom: 160px;
+  padding-top: 160px;
+
+  .ngdialog-content {
+    margin: 0 auto;
+    width: 450px;
+    max-width: 100%;
+    position: relative;
+    background-color: @main-colour-dark;
+    animation: initial;
+  }
+
+  .ngdialog-overlay {
+    animation: initial;
+  }
+
+  .ngdialog-close {
+    position: absolute;
+    right: 6px;
+    top: 0;
+    cursor: pointer;
+    font-size: 22px;
+
+    &:before {
+      font-family: FontAwesome;
+      content: '\f00d';
+    }
+
+    &:hover {
+      color: darken(@white-text-colour, 20%);
+    }
+    &:active {
+      color: darken(@white-text-colour, 40%);
+    }
+  }
+}
+
+.ngdialog.ngdialog-closing {
+  .ngdialog-content {
+    animation: initial;
+  }
+
+  .ngdialog-overlay {
+    animation: initial;
+  }
+}
+
+.dialog__title {
+  font-size: 24px;
+  text-align: center;
+  padding: 12px 0;
+  margin: 0;
+}
+
+.dialog__text {
+  text-align: center;
+  font-size: 18px;
+  line-height: 26px;
+  margin: 0;
+}
+
+.dialog__options {
+  text-align: center;
+  padding: 12px 0;
+}

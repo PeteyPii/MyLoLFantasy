@@ -1,0 +1,62 @@
+@btn-height: 42px;
+@btn-font-size: 18px;
+
+.button {
+  border: 0;
+  height: @btn-height;
+  font-size: @btn-font-size;
+  background-color: @main-colour;
+
+  &:hover {
+    background-color: @main-colour-highlight;
+  }
+
+  &:active {
+    background-color: @main-colour-highlight-double;
+  }
+
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+}
+
+.button--nav {
+  background-color: @navbar-btn-colour;
+  margin-top: (@navbar-height - @btn-height) / 2;
+  margin-bottom: (@navbar-height - @btn-height) / 2;
+  margin-left: 6px;
+  margin-right: 6px;
+
+  &:hover {
+    background-color: @navbar-btn-colour-hover;
+  }
+
+  &:active {
+    background-color: @navbar-btn-colour-focus;
+  }
+
+  &:focus {
+    outline-width: 0;
+    box-shadow: inset 0 0 0 2px @white-text-colour;
+  }
+}
+
+.button--fixed-width {
+  width: 80px;
+}
+
+.button--flex {
+  flex: 0;
+  margin: 3px 0;
+}
+
+.button--dialog {
+  margin: 0 6px;
+  width: 80px;
+}
+
+.button--icon {
+  min-width: @btn-height;
+  margin-right: 6px;
+}

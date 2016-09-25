@@ -1,0 +1,27 @@
+.footer {
+  margin-top: 12px;
+  padding-top: 12px;
+  margin-bottom: 12px;
+  border-top: 1px solid @white-text-colour;
+  font-size: 18px;
+}
+
+.footer__version {
+  text-align: left;
+}
+
+.footer__github {
+  text-align: center;
+}
+
+.footer__legal {
+  text-align: right;
+}
+
+@media(max-width: @sm-max-width) {
+  .footer__version,
+  .footer__github,
+  .footer__legal {
+    text-align: center;
+  }
+}

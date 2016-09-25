@@ -1,0 +1,142 @@
+.league-container {
+  margin: 15px 0;
+
+  @media(min-width: @sm-min-width) {
+    margin: 24px 0;
+  }
+
+  @media(min-width: @md-min-width) {
+    margin: 24px;
+  }
+}
+
+.league {
+  display: block;
+}
+
+.league-header {
+  background-color: darken(@main-colour, 10%);
+  padding: 12px;
+  margin: 0;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.league-header__name {
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.league-header__game-count {
+  float: right;
+  line-height: 36px;
+  font-size: 20px;
+  color: @faded-main-text-colour;
+}
+
+.league-table-container {
+  margin: 12px;
+  overflow-x: auto;
+}
+
+.league-table {
+  width: 100%;
+  min-width: 868px;
+  display: block;
+
+  tbody {
+    display: block;
+  }
+
+  th {
+    cursor: pointer;
+  }
+
+  tr {
+    display: flex;
+    background-color: darken(@main-colour-dark, 10%);
+    font-size: 20px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    &:nth-child(odd) {
+      background-color: darken(@main-colour-dark, 5%);
+    }
+    &:first-child {
+      background-color: @main-colour-dark;
+      border-bottom: solid @white-text-colour 2px;
+    }
+  }
+
+  td,
+  th {
+    text-align: center;
+    flex: 10;
+    min-width: 0;
+    margin: 0 6px;
+  }
+
+  .league-table__summoner {
+    text-align: left;
+    flex: 15;
+  }
+
+  .league-table__kda {
+    flex: 22;
+  }
+
+  .league-table__turrets {
+    flex: 9;
+  }
+
+  .league-table__doubles,
+  .league-table__triples,
+  .league-table__quadras,
+  .league-table__pentas {
+    flex: 5;
+  }
+
+  .league-table__summoner,
+  .league-table__kda,
+  .league-table__cs,
+  .league-table__turrets,
+  .league-table__doubles,
+  .league-table__triples,
+  .league-table__quadras,
+  .league-table__pentas,
+  .league-table__points {
+    .fa {
+      margin-left: 6px;
+    }
+  }
+}
+
+.league-actions {
+  float: left;
+}
+
+.league-actions__info {
+  font-size: 18px;
+  margin-left: 6px;
+}
+
+.league-display-type {
+  float: right;
+}
+
+.league-loading,
+.league-error,
+.league-not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: darken(@main-colour-dark, 5%);
+  height: 300px;
+  font-size: 24px;
+
+  span {
+    margin: 0 6px;
+  }
+}

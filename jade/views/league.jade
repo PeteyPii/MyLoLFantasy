@@ -1,0 +1,62 @@
+.container
+  .row
+    .col-xs-12
+      .league-container.clearfix
+        .league(data-ng-show='!isLoading && !loadError && exists')
+          .league-header
+            span.league-header__name {{ league.name }}
+            span.league-header__game-count(data-ng-show='league.gameCount !== 1') {{ league.gameCount }} games
+            span.league-header__game-count(data-ng-show='league.gameCount === 1') 1 game played
+          .league-table-container
+            table.league-table
+              tr
+                th.league-table__summoner(data-ng-click='activateColumnForSorting(Column.NAME)') Summoner
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.NAME, "fa-sort-asc": sortedColumn === Column.NAME && ascendingSort, "fa-sort-desc": sortedColumn === Column.NAME && !ascendingSort}')
+                th.league-table__kda(data-ng-click='activateColumnForSorting(Column.KDA)') K / D / A
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.KDA, "fa-sort-asc": sortedColumn === Column.KDA && ascendingSort, "fa-sort-desc": sortedColumn === Column.KDA && !ascendingSort}')
+                th.league-table__cs(data-ng-click='activateColumnForSorting(Column.CS)') CS
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.CS, "fa-sort-asc": sortedColumn === Column.CS && ascendingSort, "fa-sort-desc": sortedColumn === Column.CS && !ascendingSort}')
+                th.league-table__turrets(data-ng-click='activateColumnForSorting(Column.TURRETS)') Turrets
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.TURRETS, "fa-sort-asc": sortedColumn === Column.TURRETS && ascendingSort, "fa-sort-desc": sortedColumn === Column.TURRETS && !ascendingSort}')
+                th.league-table__doubles(data-ng-click='activateColumnForSorting(Column.DOUBLES)') 2x
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.DOUBLES, "fa-sort-asc": sortedColumn === Column.DOUBLES && ascendingSort, "fa-sort-desc": sortedColumn === Column.DOUBLES && !ascendingSort}')
+                th.league-table__triples(data-ng-click='activateColumnForSorting(Column.TRIPLES)') 3x
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.TRIPLES, "fa-sort-asc": sortedColumn === Column.TRIPLES && ascendingSort, "fa-sort-desc": sortedColumn === Column.TRIPLES && !ascendingSort}')
+                th.league-table__quadras(data-ng-click='activateColumnForSorting(Column.QUADRAS)') 4x
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.QUADRAS, "fa-sort-asc": sortedColumn === Column.QUADRAS && ascendingSort, "fa-sort-desc": sortedColumn === Column.QUADRAS && !ascendingSort}')
+                th.league-table__pentas(data-ng-click='activateColumnForSorting(Column.PENTAS)') 5x
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.PENTAS, "fa-sort-asc": sortedColumn === Column.PENTAS && ascendingSort, "fa-sort-desc": sortedColumn === Column.PENTAS && !ascendingSort}')
+                th.league-table__points(data-ng-click='activateColumnForSorting(Column.POINTS)') Points
+                  span.fa(data-ng-class='{ "fa-sort": sortedColumn !== Column.POINTS, "fa-sort-asc": sortedColumn === Column.POINTS && ascendingSort, "fa-sort-desc": sortedColumn === Column.POINTS && !ascendingSort}')
+              tr(data-ng-repeat='summonerDataPair in activeData')
+                td.league-table__summoner {{ summonerDataPair[0] }}
+                td.league-table__kda {{ summonerDataPair[1].stats.championKills }} / {{ summonerDataPair[1].stats.deaths }} / {{ summonerDataPair[1].stats.assists }}
+                td.league-table__cs {{ summonerDataPair[1].stats.minionKills }}
+                td.league-table__turrets {{ summonerDataPair[1].stats.turretKills }}
+                td.league-table__doubles {{ summonerDataPair[1].stats.doubleKills }}
+                td.league-table__triples {{ summonerDataPair[1].stats.tripleKills }}
+                td.league-table__quadras {{ summonerDataPair[1].stats.quadraKills }}
+                td.league-table__pentas {{ summonerDataPair[1].stats.pentaKills }}
+                td.league-table__points {{ summonerDataPair[1].points }}
+          .league-actions
+            button.button.button--icon(data-ng-click='deleteLeague()')
+              .fa.fa-trash
+            button.button.button--icon(data-ng-click='updateLeague()')
+              .fa.fa-refresh
+            span.league-actions__info Last updated on {{ league.lastUpdate.toLocaleString() }}
+          .league-display-type
+            form.selector
+              label.selector__label(data-ng-class='{ active: activeData === totalData }')
+                input.selector__input(type='radio', data-ng-model='activeData', data-ng-value='totalData', data-ng-change='updateDisplayType()')
+                | Total
+              label.selector__label(data-ng-class='{ active: activeData === perGameData }')
+                input.selector__input(type='radio', data-ng-model='activeData', data-ng-value='perGameData', data-ng-change='updateDisplayType()')
+                | Per Game
+        .league-loading(data-ng-show='isLoading')
+          span Loading...
+          span.fa.fa-spinner.fa-spin
+        .league-error(data-ng-show='!isLoading && loadError')
+          span League failed to load. Try refreshing the page in a few minutes.
+        .league-not-found(data-ng-show='!isLoading && !loadError && !exists')
+          span The League you are looking for does not exist.
+

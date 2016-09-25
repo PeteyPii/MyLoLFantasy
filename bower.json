@@ -1,0 +1,26 @@
+{
+  "name": "my-lol-fantasy",
+  "description": "Full My LoL Fantasy App",
+  "main": "README.md",
+  "license": "MIT",
+  "keywords": [
+    "league",
+    "lol",
+    "fantasy",
+    "mlf"
+  ],
+  "homepage": "https://github.com/PeteyPii/MyLoLFantasy",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "3.3.6",
+    "font-awesome": "4.6.1",
+    "angular": "1.5.5",
+    "angular-route": "1.5.5",
+    "angular-cookies": "1.5.5",
+    "ng-dialog": "0.6.2",
+    "jquery": "2.2.4",
+    "bower-pt-sans": "pt-sans#*",
+    "angular-local-storage": "0.3.0",
+    "lodash": "4.14.2"
+  }
+}

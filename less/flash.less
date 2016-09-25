@@ -1,0 +1,39 @@
+@flash-item-height: 32px;
+
+.flash {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.flash__item {
+  position: relative;
+  margin: 6px;
+  padding: 6px;
+  padding-right: 34px;
+  font-size: @flash-item-height - 12;
+  line-height: @flash-item-height - 12;
+}
+
+.flash__item--error {
+  background-color: @error-colour;
+}
+
+.flash__item--success {
+  background-color: @success-colour;
+}
+
+.flash__close {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  background-color: transparent;
+  border: 0;
+  outline-width: 0;
+  &:hover {
+    color: darken(@white-text-colour, 20%);
+  }
+  &:active {
+    color: darken(@white-text-colour, 40%);
+  }
+}

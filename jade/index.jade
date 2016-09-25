@@ -1,0 +1,97 @@
+doctype html
+//- ngApp is not set here since we bootstrap ourselves manually
+html(lang='en')
+  head
+    base(href=settings.base_path)
+
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='author', content='MyLF')
+    meta(name='description', content='A web app for tracking League of Legends statistics for games containing you and your friends!')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+
+    link(rel='icon', href='imgs/favicon.ico')
+
+    title(data-ng-bind="(title ? title + ' - ' : '') + 'My LoL Fantasy'") My LoL Fantasy
+
+    if settings.is_prod
+      link(rel='stylesheet', href='css/bundle.css?v=' + version)
+    else
+      for dep in deps.css
+        link(rel='stylesheet', href=dep)
+
+    if settings.is_prod
+      script.
+        !function(f,a,n,t,A,s,y){f.GoogleAnalyticsObject=n;f[n]||(f[n]=function(){
+        (f[n].q=f[n].q||[]).push(arguments)});f[n].l=+new Date;s=a.createElement(t);
+        y=a.getElementsByTagName(t)[0];s.src=A;y.parentNode.insertBefore(s,y)}
+        (window,document,'ga','script','//www.google-analytics.com/analytics.js');
+
+        ga('create', '#{settings.ga_key}', 'auto');
+        ga('send', 'pageview');
+
+    script.
+      var gVersion = '#{version}';
+
+    if settings.is_prod
+      script(src='js/bundle_head.js?v=' + version)
+    else
+      for dep in deps.headJs
+        script(src=dep)
+
+  body(data-ng-controller='MainController')
+    nav.navbar.navbar-static-top
+      .container
+        .navbar-header
+          a.navbar-brand(href='Home', tabindex='-1') MyLF
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.fa.fa-bars
+        #navbar.navbar-collapse.collapse(aria-expanded='false')
+          ul.nav.navbar-nav
+            li(data-ng-class='{ active: activeNavLinks.home }'): a(href='Home', data-no-click-focus) Home
+            li(data-ng-class='{ active: activeNavLinks.leagues }', data-logged-in='true'): a(href='Leagues', data-no-click-focus) Leagues
+            li(data-ng-class='{ active: activeNavLinks.createLeague }', data-logged-in='true'): a(href='CreateLeague', data-no-click-focus) Create League
+          div(data-ng-controller='LogInController')
+            ul.nav.navbar-nav.navbar-right
+              li(data-logged-in='false')
+                input.input.input--nav(type='text', placeholder='Username', data-ng-model='username', data-ng-class='{"input--error": error.username}', data-ng-keydown="$event.which === 13 && logIn()")
+                .input-container.input-container--nav
+                  input.input.input--nav(type='password', placeholder='Password', data-ng-model='password', data-ng-class='{"input--error": error.password}', data-ng-keydown="$event.which === 13 && logIn()")
+                  a.input-link(href='ResetPassword', data-ng-hide='password') Forgot?
+                button.button.button--nav.button--fixed-width(data-ng-click='logIn()', data-no-click-focus) Log In
+                .hidden-xs
+                  .navbar-text or
+                  button.button.button--nav.button--fixed-width(data-ng-click='signUp()', data-no-click-focus) Sign Up
+              li.hidden-sm.hidden-md.hidden-lg(data-logged-in='false')
+                button.button.button--nav.button--fixed-width.pull-right(data-ng-click='signUp()', data-no-click-focus) Sign Up
+              li(data-logged-in='true')
+                .navbar-text Welcome,
+                  em {{ ' ' + displayUsername }}
+                button.button.button--nav.button--fixed-width(data-ng-click='logOut()') Log Out
+
+    .div(data-ng-controller='FlashController')
+      .container
+        .row
+          ul.flash
+            li(data-ng-repeat='message in messages')
+              .flash__item(data-ng-class='{"flash__item--error": message.type == "error", "flash__item--success": message.type == "success"}'): |{{ message.text }}
+                button.flash__close.fa.fa-times.pull-right(tabindex='-1', data-ng-click='close($index)')
+
+    div(data-ng-view)
+
+    .container
+      .footer
+        .row
+          .col-md-4
+            p.footer__version My LoL Fantasy #{version}
+          .col-md-4
+            p.footer__github #[span.fa.fa-github.fa-lg] View this project on #[a(href='https://github.com/PeteyPii/MyLoLFantasy') GitHub]
+          .col-md-4
+            p.footer__legal #[a(href='PrivacyPolicy') Privacy Policy] and #[a(href='About') About]
+
+    if settings.is_prod
+      script(src='js/bundle_final.js?v=' + version)
+    else
+      for dep in deps.finalJs
+        script(src=dep)

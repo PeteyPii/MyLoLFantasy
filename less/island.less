@@ -1,0 +1,72 @@
+.island-form {
+  background-color: @main-colour-dark;
+  margin: 15px 0;
+
+  @media(min-width: @sm-min-width) {
+    width: 60%;
+    margin: 24px auto;
+  }
+
+  @media(min-width: @md-min-width) {
+    width: 50%;
+    margin: 24px auto;
+  }
+  padding: 12px;
+}
+
+.island-form--loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  font-size: 24px;
+
+  span {
+    margin: 0 6px;
+  }
+}
+
+.island-form__flex {
+  display: flex;
+  align-items: center;
+}
+
+.island-form__header {
+  margin: 12px 0 18px 0;
+  text-align: center;
+}
+
+.island-form__input-hint {
+  position: relative;
+
+  .input {
+    padding-right: 30px;
+  }
+
+  .fa {
+    position: absolute;
+    right: 11px;
+    top: 11px;
+  }
+}
+
+.island-form__checkbox {
+  margin-left: 6px;
+
+  .fa {
+    margin-top: 4px;
+  }
+}
+
+.island-form__break {
+  height: 12px;
+}
+
+.island-form__submit {
+  width: 100%;
+}
+
+.island-form__centered {
+  display: block;
+  margin: auto;
+}

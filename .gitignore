@@ -1,12 +1,12 @@
-*.css
-*.map
+*.html
 *.log
+*.map
 *.sublime-workspace
+bower_components/
+dist/
 node_modules/
+public/css/
+public/js/lib/
+public/fonts/
 settings.json
 Thumbs.db
-
-# Still include 3rd party library stuff
-!bootstrap-theme.min.css
-!bootstrap.min.css
-!font-awesome.min.css
