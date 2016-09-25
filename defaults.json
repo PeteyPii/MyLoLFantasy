@@ -1,6 +1,6 @@
 {
   "asset_cache_time": 31536000000,
-  "base_path": "/MLF/",
+  "base_path": "/mlf/",
   "cookie_age": 2592000000,
   "failed_log_in_count": 10,
   "failed_log_in_reset_time": 900000,
@@ -19,10 +19,7 @@
   "redirect_default_port": false,
   "redis_host": "localhost",
   "redis_port": 6379,
-  "server_http_port": 80,
-  "server_https_port": 443,
+  "server_port": 80,
   "sign_up_burst_count": 10,
-  "sign_up_burst_period": 10000,
-  "ssl_cert_path": "server.crt",
-  "ssl_key_path": "server.key"
+  "sign_up_burst_period": 10000
 }

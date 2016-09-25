@@ -36,7 +36,7 @@ app.controller('LogInController', ['$rootScope', '$scope', '$http', '$location',
             username: $scope.username,
             password: $scope.password,
           };
-          $http.post('api/LogIn', postData).then(function(response) {
+          $http.post('api/log-in', postData).then(function(response) {
             $scope.password = '';
             if (response.data.success) {
               $scope.username = '';
@@ -63,7 +63,7 @@ app.controller('LogInController', ['$rootScope', '$scope', '$http', '$location',
     $scope.logOut = function() {
       if (!isWorking) {
         isWorking = true;
-        $http.post('api/LogOut', {}).then(function(response) {
+        $http.post('api/log-out', {}).then(function(response) {
           if (response.data.success) {
             authService.setProfile(response.data.profile);
           } else {
@@ -79,7 +79,7 @@ app.controller('LogInController', ['$rootScope', '$scope', '$http', '$location',
 
     $scope.signUp = function() {
       if (!isWorking) {
-        $location.path('SignUp');
+        $location.path('sign-up');
       }
     };
   }

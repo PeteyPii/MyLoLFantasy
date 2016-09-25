@@ -23,10 +23,10 @@ app.controller('ResetPasswordController', ['$scope', '$rootScope', '$http', '$lo
           var postData = {
             username: $scope.username,
           };
-          $http.post('api/ResetPassword', postData).then(function(response) {
+          $http.post('api/reset-password', postData).then(function(response) {
             if (response.data.success) {
               $rootScope.$broadcast('flashSuccess', 'A password reset link will be sent to your account\'s linked email address if it exists.');
-              $location.path('Home');
+              $location.path('home');
             } else {
               $rootScope.$broadcast('flashError', response.data.reason);
             }

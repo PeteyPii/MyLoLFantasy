@@ -22,7 +22,7 @@ try {
     });
     app.use(settings.base_path, mlfApp);
 
-    var httpServer = http.createServer(app).listen(settings.server_http_port, function() {
+    var httpServer = http.createServer(app).listen(settings.server_port, function() {
       var host = httpServer.address().address;
       var port = httpServer.address().port;
       logger.log('Server listening at http://' + host + ':' + port);

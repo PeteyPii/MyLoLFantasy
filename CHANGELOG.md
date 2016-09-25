@@ -1,4 +1,8 @@
 # Changelog
+## v2.0.1
+- Remove dsome obsolete settings
+- Changed URLs to prefer lowercase
+
 ## v2.0.0
 - Big rewrite and redesign of the site
 - Lots of code (re)organization

@@ -4,7 +4,7 @@ app.controller('ResetNewPasswordController', ['$scope', '$rootScope', '$routePar
     $rootScope.title = 'Reset Password';
 
     $scope.isLoading = true;
-    $http.get('api/ResetPassword/' + $routeParams.token).then(function(response) {
+    $http.get('api/reset-password/' + $routeParams.token).then(function(response) {
       $scope.isLoading = false;
     }, function(response) {
       if (response.status === 404) {
@@ -12,7 +12,7 @@ app.controller('ResetNewPasswordController', ['$scope', '$rootScope', '$routePar
       } else {
         $rootScope.$broadcast('flashError', 'Server responded with status code ' + response.status);
       }
-      $location.path('Home').replace();
+      $location.path('home').replace();
     });
 
     $scope.password = '';
@@ -46,12 +46,12 @@ app.controller('ResetNewPasswordController', ['$scope', '$rootScope', '$routePar
           var postData = {
             password: $scope.password,
           };
-          $http.post('api/ResetPassword/' + $routeParams.token, postData).then(function(response) {
+          $http.post('api/reset-password/' + $routeParams.token, postData).then(function(response) {
             $scope.password = '';
             $scope.confirmPassword = '';
             if (response.data.success) {
               $rootScope.$broadcast('flashSuccess', 'Your password has been successfully changed. Log in to your account to access your Leagues.');
-              $location.path('Home');
+              $location.path('home');
             } else {
               $rootScope.$broadcast('flashError', response.data.reason);
             }

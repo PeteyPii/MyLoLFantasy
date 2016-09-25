@@ -71,12 +71,12 @@ app.controller('SignUpController', ['$scope', '$rootScope', '$http', '$location'
             agree: $scope.agree,
           };
 
-          $http.post('api/SignUp', postData).then(function(response) {
+          $http.post('api/sign-up', postData).then(function(response) {
             $scope.password = '';
             $scope.confirmPassword = '';
             if (response.data.success) {
               authService.setProfile(response.data.profile);
-              $location.path('Home');
+              $location.path('home');
             } else {
               $rootScope.$broadcast('flashError', response.data.reason);
             }
