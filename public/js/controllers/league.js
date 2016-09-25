@@ -33,7 +33,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
       NONE: 'none',
     };
 
-    $http.get('api/Leagues/' + $routeParams.leagueId).then(function(response) {
+    $http.get('api/leagues/' + $routeParams.leagueId).then(function(response) {
       $scope.isLoading = false;
       $scope.exists = true;
       loadLeague(response.data);
@@ -156,11 +156,11 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
         controller: ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location) {
           $scope.leagueName = $outerScope.league.name;
           $scope.confirmClick = function() {
-            $http.delete('api/Leagues/' + $outerScope.league.id).then(function(response) {
+            $http.delete('api/leagues/' + $outerScope.league.id).then(function(response) {
               if (response.data.success) {
                 $rootScope.$broadcast('flashSuccess', 'Successfully deleted \'' + $scope.leagueName + '\'');
                 $scope.closeThisDialog();
-                $location.path('Leagues');
+                $location.path('leagues');
               } else {
                 $rootScope.$broadcast('flashError', response.data.reason);
                 $scope.closeThisDialog();
@@ -181,7 +181,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
     $scope.updateLeague = function() {
       if (!isUpdating) {
         isUpdating = true;
-        $http.post('api/Leagues/' + $scope.league.id + '/Update').then(function(response) {
+        $http.post('api/leagues/' + $scope.league.id + '/update').then(function(response) {
           isUpdating = false;
           if (response.data.success) {
             loadLeague(response.data.league);

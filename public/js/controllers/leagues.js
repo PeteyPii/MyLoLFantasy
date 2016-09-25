@@ -9,7 +9,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
     $scope.leagues = null;
     $scope.idToName = null;
 
-    $http.get('api/Leagues').then(function(response) {
+    $http.get('api/leagues').then(function(response) {
       $scope.isLoading = false;
       loadLeagues(response.data.a);
     }, function(response) {
@@ -19,7 +19,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
     });
 
     $scope.goToLeague = function(leagueId) {
-      $location.path('League/' + leagueId);
+      $location.path('league/' + leagueId);
     };
 
     var $outerScope = $scope;
@@ -31,7 +31,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
         controller: ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http) {
           $scope.leagueName = $outerScope.idToName[leagueId];
           $scope.confirmClick = function() {
-            $http.delete('api/Leagues/' + leagueId).then(function(response) {
+            $http.delete('api/leagues/' + leagueId).then(function(response) {
               if (response.data.success) {
                 $rootScope.$broadcast('flashSuccess', 'Successfully deleted \'' + $scope.leagueName + '\'');
                 for (var i = 0; i < $outerScope.leagues.length; i++) {
@@ -59,7 +59,7 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
     $scope.updateLeagues = function() {
       if (!isUpdating) {
         isUpdating = true;
-        $http.post('api/LeaguesControl/Update').then(function(response) {
+        $http.post('api/leagues-control/update').then(function(response) {
           isUpdating = false;
           if (response.data.success) {
             loadLeagues(response.data.leagues);

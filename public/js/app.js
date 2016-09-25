@@ -8,7 +8,7 @@ var app = angular.module('mlf', [
 var profile;
 
 angular.element(document).ready(function() {
-  $.get('api/Profile', function(data) {
+  $.get('api/profile', function(data) {
     profile = data;
     angular.bootstrap(document, ['mlf']);
   });
@@ -21,45 +21,45 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider',
       controller: 'HomeController',
       caseInsensitiveMatch: true,
     }).when('/', {
-      redirectTo: '/Home',
+      redirectTo: '/home',
       caseInsensitiveMatch: true,
-    }).when('/SignUp', {
+    }).when('/sign-up', {
       templateUrl: 'views/sign_up.html?v=' + gVersion,
       controller: 'SignUpController',
       caseInsensitiveMatch: true,
       loggedIn: false,
-    }).when('/CreateLeague', {
+    }).when('/create-league', {
       templateUrl: 'views/create_league.html?v=' + gVersion,
       controller: 'CreateLeagueController',
       caseInsensitiveMatch: true,
       loggedIn: true,
-    }).when('/Leagues', {
+    }).when('/leagues', {
       templateUrl: 'views/leagues.html?v=' + gVersion,
       controller: 'LeaguesController',
       caseInsensitiveMatch: true,
       loggedIn: true,
-    }).when('/League/:leagueId', {
+    }).when('/league/:leagueId', {
       templateUrl: 'views/league.html?v=' + gVersion,
       controller: 'LeagueController',
       caseInsensitiveMatch: true,
-    }).when('/EULA', {
+    }).when('/eula', {
       templateUrl: 'views/eula.html?v=' + gVersion,
       controller: 'EULAController',
       caseInsensitiveMatch: true,
-    }).when('/About', {
+    }).when('/about', {
       templateUrl: 'views/about.html?v=' + gVersion,
       controller: 'AboutController',
       caseInsensitiveMatch: true,
-    }).when('/PrivacyPolicy', {
+    }).when('/privacy-policy', {
       templateUrl: 'views/privacy_policy.html?v=' + gVersion,
       controller: 'PrivacyPolicyController',
       caseInsensitiveMatch: true,
-    }).when('/ResetPassword', {
+    }).when('/reset-password', {
       templateUrl: 'views/reset_password.html?v=' + gVersion,
       controller: 'ResetPasswordController',
       caseInsensitiveMatch: true,
       loggedIn: false,
-    }).when('/ResetPassword/:token', {
+    }).when('/reset-password/:token', {
       templateUrl: 'views/reset_new_password.html?v=' + gVersion,
       controller: 'ResetNewPasswordController',
       caseInsensitiveMatch: true,

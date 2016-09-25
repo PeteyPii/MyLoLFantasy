@@ -13,7 +13,7 @@
             span.meta.hidden-xs {{ league.lastUpdate.toLocaleString() }}
             span.fa.fa-lg.fa-times(title='Delete League', data-ng-click='deleteLeague(league.id); $event.stopPropagation()')
           li.leagues-list__empty(data-ng-if='leagues.length === 0')
-            span You have no Leagues! Visit the #[a(href='CreateLeague') Create a League] page to create one.
+            span You have no Leagues! Visit the #[a(href='create-league') Create a League] page to create one.
         .leagues-list__error(data-ng-show='loadError')
           span Your Leagues failed to load. Try refreshing the page in a few minutes.
         .leagues-list__control

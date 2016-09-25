@@ -6,10 +6,10 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', 'authServ
       if (loggedIn !== undefined) {
         if (loggedIn === true && !authService.isLoggedIn()) {
           $rootScope.$broadcast('flashError', 'You must be logged in to view that page!');
-          $location.path('Home');
+          $location.path('home');
         } else if (loggedIn === false && authService.isLoggedIn()) {
           $rootScope.$broadcast('flashError', 'You are already logged in!');
-          $location.path('Home');
+          $location.path('home');
         }
       }
     });
@@ -21,9 +21,9 @@ app.controller('MainController', ['$rootScope', '$scope', '$location', 'authServ
     $scope.$on('profileChanged', function(event) {
       if (logInRequirements !== undefined) {
         if (logInRequirements === true && !authService.isLoggedIn()) {
-          $location.path('Home');
+          $location.path('home');
         } else if (logInRequirements === false && authService.isLoggedIn()) {
-          $location.path('Home');
+          $location.path('home');
         }
       }
     });
