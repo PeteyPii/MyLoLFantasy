@@ -1,4 +1,21 @@
 # Changelog
+## v2.0.0
+- Big rewrite and redesign of the site
+- Lots of code (re)organization
+- Using Angular for frontend goodies
+- Added ability to create spectator Leagues
+- Made logs more consistent
+- Licensed under MIT
+- Switched from grunt to gulp
+- Updated dependencies
+- Added a League creation limit
+- Throttled many state changing requests
+- Implemented CSRF protection
+- Encoded League IDs
+- Users can refresh and delete Leagues individually or from their Leagues page
+- Site is minified on prod
+- Frontend resource caching is improved
+
 ## v1.0.4
 - Made cookies not session based
 - Made cookies secure
