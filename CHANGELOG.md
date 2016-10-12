@@ -1,4 +1,11 @@
 # Changelog
+## v2.1.0
+- Fixed URL sent in password reset emails after changing URLs to be lowercase
+- User's Leagues are sorted by name on the Leagues page
+- HTML title for League page fixed and is now correctly the title of the League
+- Database connections are now pooled
+- Slight refactorings to the database and Redis APIs
+
 ## v2.0.1
 - Remove dsome obsolete settings
 - Changed URLs to prefer lowercase
