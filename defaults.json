@@ -16,6 +16,7 @@
   "password_reset_burst_count": 2,
   "password_reset_burst_period": 900000,
   "password_reset_link_duration": 900000,
+  "postgre_pool_connection_count": 10,
   "redirect_default_port": false,
   "redis_host": "localhost",
   "redis_port": 6379,
