@@ -7,7 +7,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
     };
 
     $rootScope.setActiveNavLink('league');
-    $rootScope.title = 'Leagues';
+    $rootScope.title = 'League';
 
     $scope.isLoading = true;
     $scope.loadError = false;
@@ -197,6 +197,7 @@ app.controller('LeagueController', ['$rootScope', '$scope', '$routeParams', '$ht
     };
 
     function loadLeague(league) {
+      $rootScope.title = league.name;
       $scope.league = league;
       $scope.league.lastUpdate = new Date($scope.league.lastUpdate);
 

@@ -75,7 +75,9 @@ app.controller('LeaguesController', ['$rootScope', '$scope', '$http', '$location
     };
 
     function loadLeagues(leagues) {
-      $scope.leagues = leagues;
+      $scope.leagues = _.sortBy(leagues, function(league) {
+        return league.name.toLowerCase();
+      });
       $scope.idToName = {};
       for (var i = 0; i < leagues.length; i++) {
         var league = $scope.leagues[i];
