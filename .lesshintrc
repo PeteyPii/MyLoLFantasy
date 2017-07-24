@@ -1,5 +1,6 @@
 {
   "importantRule": false,
+  "newlineAfterBlock": false,
   "propertyOrdering": false,
   "spaceAroundComma": {
     "enabled": true,
