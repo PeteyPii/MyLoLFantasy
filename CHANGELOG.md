@@ -1,4 +1,8 @@
 # Changelog
+## v2.2.0
+- League updater uses Riot's new API for retrieving data
+- Update DB to include account IDs in Leagues
+
 ## v2.1.0
 - Fixed URL sent in password reset emails after changing URLs to be lowercase
 - User's Leagues are sorted by name on the Leagues page
@@ -7,7 +11,7 @@
 - Slight refactorings to the database and Redis APIs
 
 ## v2.0.1
-- Remove dsome obsolete settings
+- Removed some obsolete settings
 - Changed URLs to prefer lowercase
 
 ## v2.0.0
