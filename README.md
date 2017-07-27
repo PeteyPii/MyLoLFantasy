@@ -43,7 +43,7 @@ Where:
 - `secret_key` is used for cookies, use some cryptographically random string here
 
 Finally, as long as you've done everything correctly so far, you should be able to run `node batch/create_db.js` to initialize database tables (CAUTION:
-this wipes any exisitng tables for MyLF; don't perform this  step if your DB is already set up). Now, install gulp, `npm install -g gulp`, and then
+this wipes any exisitng tables for MyLF; don't perform this  step if your DB is already set up). Now, install gulp, `npm install -g gulp-cli`, and then
 run `gulp bower` to install front-end dependencies. Finally, you can run `gulp` to build the Less and Jade files and start the webserver. Once it is running
 you should be able to view the app in your browser at [localhost](http://localhost/).
 
