@@ -1,4 +1,7 @@
 # Changelog
+## v2.2.1
+- Fixed issue with tracking turret kills
+
 ## v2.2.0
 - League updater uses Riot's new API for retrieving data
 - Update DB to include account IDs in Leagues
