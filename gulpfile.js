@@ -171,12 +171,12 @@ gulp.task('build_misc', function() {
     .pipe(copy(paths.build));
 });
 
-gulp.task('build_assets', ['jade'], function() {
+gulp.task('build_assets', ['bower', 'jade'], function() {
   return gulp.src(paths.assets)
     .pipe(copy(paths.build));
 });
 
-gulp.task('build_js', function() {
+gulp.task('build_js', ['bower'], function() {
   var headFiles = frontEndDependencies.headJs.map(function(fileName) {
     return paths.public + fileName;
   });
@@ -195,7 +195,7 @@ gulp.task('build_js', function() {
   return merge(head, final);
 });
 
-gulp.task('build_css', ['less'], function() {
+gulp.task('build_css', ['bower', 'less'], function() {
   var files = frontEndDependencies.css.map(function(fileName) {
     return paths.public + fileName;
   });
