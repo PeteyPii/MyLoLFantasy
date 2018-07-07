@@ -1,6 +1,6 @@
 {
   "name": "my-lol-fantasy",
-  "version": "v2.2.1",
+  "version": "v2.2.2",
   "description": "Full My LoL Fantasy App",
   "dependencies": {
     "bcrypt": "0.8.7",

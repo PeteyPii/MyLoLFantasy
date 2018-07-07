@@ -1,4 +1,8 @@
 # Changelog
+## v2.2.2
+- Fixed league updating issues due to Riot API changes
+- Made some development stuff better
+
 ## v2.2.1
 - Fixed issue with tracking turret kills
 
