@@ -1,4 +1,8 @@
 # Changelog
+## v2.2.3
+- Fixed issue where some leagues would not update in batch updates
+- Added feature to automatically deactivate leagues where match history could nto be retrieved
+
 ## v2.2.2
 - Fixed league updating issues due to Riot API changes
 - Made some development stuff better
