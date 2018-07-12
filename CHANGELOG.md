@@ -1,4 +1,8 @@
 # Changelog
+## v2.2.4
+- Set the DB version correctly when updating from v1.2.0 to v1.3.0
+- Improved error logging
+
 ## v2.2.3
 - Fixed issue where some leagues would not update in batch updates
 - Added feature to automatically deactivate leagues where match history could nto be retrieved
