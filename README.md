@@ -2,6 +2,8 @@ My LoL Fantasy
 ==============
 Play fantasy League of Legends with your friends by earning your team's points yourself. Play League of Legends games with friends to compete and see who is the best!
 
+NOTE: This project is dead.
+
 Technologies
 ------------
 - Node.js
