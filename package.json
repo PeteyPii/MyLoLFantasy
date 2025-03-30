@@ -34,7 +34,7 @@
     "passport-local": "1.0.0",
     "pg": "6.0.5",
     "q": "1.4.1",
-    "redis": "2.6.2",
+    "redis": "3.1.1",
     "request": "2.74.0",
     "serve-favicon": "2.3.0",
     "serve-static": "1.16.0"
