@@ -27,7 +27,7 @@
     "gulp-uglify": "2.0.0",
     "gulp-watch": "4.3.9",
     "jshint": "2.9.2",
-    "lodash": "4.17.19",
+    "lodash": "4.17.21",
     "merge-stream": "1.0.0",
     "nodemailer": "6.9.9",
     "passport": "0.3.2",
