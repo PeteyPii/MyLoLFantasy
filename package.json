@@ -30,7 +30,7 @@
     "lodash": "4.17.21",
     "merge-stream": "1.0.0",
     "nodemailer": "6.9.9",
-    "passport": "0.3.2",
+    "passport": "0.6.0",
     "passport-local": "1.0.0",
     "pg": "6.0.5",
     "q": "1.4.1",
